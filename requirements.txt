@@ -1,0 +1,18 @@
+# apt-get install python-dev jpegoptim optipng
+#django<1.11
+#pillow
+#mysql-python
+
+Django==2.1.7
+pytz==2018.9
+gunicorn
+django-localflavor
+django-recaptcha
+requests
+
+# CMS
+django-mptt
+django-smart-selects
+easy_thumbnails
+django-admin-tools
+django-filebrowser

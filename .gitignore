@@ -1,0 +1,12 @@
+.DS_Store
+.idea
+*.pyc
+*.swp
+*.sqlite3
+*.fuse_hidden*
+manage.py
+colunistas/local.py
+colunistas/test.py
+colunistas/media/*
+colunistas/static/*
+theme
