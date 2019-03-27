@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import unicodecsv as csv
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.admin import helpers
