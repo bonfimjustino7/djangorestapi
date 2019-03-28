@@ -45,16 +45,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'localflavor',
     'tabbed_admin',
-    'base',
-    'cms',
-    'util',
     'captcha',
     'ckeditor',
-    'import_export',
     'mptt',
     'smart_selects',
     'easy_thumbnails',
     'django.contrib.sitemaps',
+    'util',
+    'cms',
+    'base',
+    'inscricao',
 ]
 
 # Install theme
@@ -117,18 +117,9 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
 ]
 
 TIME_ZONE = 'America/Sao_Paulo'

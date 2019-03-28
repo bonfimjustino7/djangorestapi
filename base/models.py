@@ -12,9 +12,24 @@ class Regional(models.Model):
         return u'%s' % self.nome
 
 
+class UF(models.Model):
+    sigla = models.CharField(max_length=2,primary_key=True)
+    nome = models.CharField(max_length=40)
+
+
 class Categoria(models.Model):
+    codigo = models.CharField(max_length=6)
     nome = models.CharField(max_length=40)
     descricao = models.TextField()
+    grupo = models.BooleanField(default=False)
+
+    def __str__(self):
+        return u'%s' % self.nome
+
+
+class Area(models.Model):
+    codigo = models.CharField(max_length=8)
+    descricao = models.CharField(max_length=40)
 
     def __str__(self):
         return u'%s' % self.nome

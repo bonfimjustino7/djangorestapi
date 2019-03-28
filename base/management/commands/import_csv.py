@@ -14,6 +14,9 @@ headers = [
     {'filename': 'premiacoes.csv', 'app': 'base', 'modelo': 'Premiacao', 'fields': ['codigo','nome','ordem']},
     {'filename': 'formatos.csv', 'app': 'base', 'modelo': 'Formato', 'fields': ['codigo', 'nome', 'cod_premiacao']},
     {'filename': 'regionais.csv', 'app': 'base', 'modelo': 'Regional', 'fields': ['codigo', 'nome']},
+    {'filename': 'area.csv', 'app': 'base', 'modelo': 'Area', 'fields': ['codigo', 'nome']},
+    {'filename': 'categoria.csv', 'app': 'base', 'modelo': 'Categoria', 'fields': ['codigo', 'nome']},
+    {'filename': 'atividade.csv', 'app': 'base', 'modelo': 'Atividade', 'fields': ['codigo', 'nome']},
 ]
 
 
