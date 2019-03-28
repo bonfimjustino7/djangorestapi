@@ -24,13 +24,10 @@ SECRET_KEY = 'lb)gvnos2w+y0ii)l7-sn2v6(ky-q4a+0cv-9n1*e%-bwh5l5z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SITE_HOST = u'http://localhost:8000'
-ALLOWED_HOSTS = []
+SITE_HOST = 'http://localhost:8000'
+ALLOWED_HOSTS = ['localhost', ]
 
 # Application definition
-
-INSTALLED_APPS = [
-]
 
 INSTALLED_APPS = [
     'poweradmin',
@@ -76,28 +73,28 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'colunistas.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-        ],
-        'APP_DIRS': False,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-                'admin_tools.template_loaders.Loader',
-            ]
-        },
-    },
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [
+			os.path.join(BASE_DIR, 'templates'),
+		],
+		'APP_DIRS': False,
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.template.context_processors.media',
+				'django.template.context_processors.static',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+			'loaders': [
+				'django.template.loaders.filesystem.Loader',
+				'django.template.loaders.app_directories.Loader',
+				'admin_tools.template_loaders.Loader',
+			]
+		},
+	},
 ]
 
 WSGI_APPLICATION = 'colunistas.wsgi.application'
@@ -106,10 +103,10 @@ WSGI_APPLICATION = 'colunistas.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.sqlite3',
+		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	}
 }
 
 
@@ -118,8 +115,8 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
 ]
 
 TIME_ZONE = 'America/Sao_Paulo'
@@ -165,10 +162,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
 ADMIN_MEDIA_ROOT = os.path.join(STATIC_ROOT, 'admin')
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
@@ -185,55 +178,57 @@ CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads')
 CKEDITOR_UPLOAD_PREFIX = MEDIA_URL + 'uploads/'
 CKEDITOR_UPLOAD_SLUGIFY_FILENAME = True
 CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': [
-            {
-                'name': 'document',
-                'items': [
-                    'Source', '-', 'Preview'
-                ]
-            },
-            {
-                'name': 'basicstyles',
-                'groups': [
-                    'basicstyles', 'cleanup'
-                ],
-                'items': [
-                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'
-                ]
-            },
-            {'name': 'paragraph', 'groups': ['list', 'indent', 'blocks', 'align'], 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
-            '/',
-            {
-                'name': 'styles',
-                'items': [
-                    'Styles', 'Format'
-                ]
-            },
-            {
-                'name': 'colors',
-                'items': [
-                    'TextColor', 'BGColor'
-                ]
-            },
-            {
-                'name': 'tools',
-                'items': [
-                    'Maximize', 'ShowBlocks'
-                ]
-            },
-            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert', 'items': ['Image', 'Table', 'HorizontalRule']},
-        ],
-        'contentsCss': [
-            os.path.join(STATIC_URL, 'ckeditor_config/content.css'),
-        ],
-        'stylesSet': 'my_styles:%s' % os.path.join(STATIC_URL, 'site/js/ckeditor_styles.js'),
-        'allowedContent': True,
-    },
+	'default': {
+		'toolbar': [
+			{
+				'name': 'document',
+				'items': [
+					'Source', '-', 'Preview'
+				]
+			},
+			{
+				'name': 'basicstyles',
+				'groups': [
+					'basicstyles', 'cleanup'
+				],
+				'items': [
+					'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'
+				]
+			},
+			{'name': 'paragraph', 'groups': ['list', 'indent', 'blocks', 'align'], 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+			'/',
+			{
+				'name': 'styles',
+				'items': [
+					'Styles', 'Format'
+				]
+			},
+			{
+				'name': 'colors',
+				'items': [
+					'TextColor', 'BGColor'
+				]
+			},
+			{
+				'name': 'tools',
+				'items': [
+					'Maximize', 'ShowBlocks'
+				]
+			},
+			{'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+			{'name': 'insert', 'items': ['Image', 'Table', 'HorizontalRule']},
+		],
+		'contentsCss': [
+			os.path.join(STATIC_URL, 'ckeditor_config/content.css'),
+		],
+		'stylesSet': 'my_styles:%s' % os.path.join(STATIC_URL, 'site/js/ckeditor_styles.js'),
+		'allowedContent': True,
+	},
 }
 
 RECAPTCHA_PUBLIC_KEY = '6LcUBgcUAAAAAEPpHcdxWJXTEsUGbnqZB9t52dkl'
 RECAPTCHA_PRIVATE_KEY = '6LcUBgcUAAAAABIxgUX7WSI2pk1cvg4a4uMM1RE-'
 NOCAPTCHA = True
 RECAPTCHA_USE_SSL = True
+
+LOGIN_URL = '/login/'

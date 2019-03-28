@@ -1,18 +1,20 @@
-# apt-get install python-dev jpegoptim optipng
-#django<1.11
-#pillow
-#mysql-python
-
+backports.csv==1.0.7
+certifi==2019.3.9
+chardet==3.0.4
+defusedxml==0.5.0
+diff-match-patch==20181111
 Django==2.1.7
-pytz==2018.9
-gunicorn
-django-localflavor
-django-recaptcha
-requests
-
-# CMS
-django-mptt
-django-smart-selects
-easy_thumbnails
-django-admin-tools
-django-filebrowser
+django-admin-tools==0.8.1
+django-filebrowser==3.11.1
+django-grappelli==2.12.2
+django-import-export==1.2.0
+django-js-asset==1.2.2
+django-localflavor==2.1
+django-mptt==0.9.1
+django-recaptcha==2.0.2
+django-smart-selects==1.5.4
+django-tabbed-admin==1.0.4
+easy-thumbnails==2.6
+et-xmlfile==1.0.1
+gunicorn==19.9.0
+html5lib==1.0.1
