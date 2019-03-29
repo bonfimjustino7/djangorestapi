@@ -92,8 +92,3 @@ class Premio(models.Model):
         ordering = ('ano', )
         verbose_name = 'Premio'
         verbose_name_plural = 'Premios'
-
-
-class Usuario(User):
-    user = models.ForeignKey(User, null = True, blank = True, on_delete = models.CASCADE)
-    token = models.CharField(max_length = 32)

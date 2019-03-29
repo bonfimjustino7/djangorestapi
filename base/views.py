@@ -1,42 +1,28 @@
 #coding: utf-8
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import *
-from .forms import *
-from .models import *
 from django.views import View
 
-def gerar_token(tamanho = 32):
-	chars = []
-	chars.extend([i for i in string.ascii_letters])
-	chars.extend([i for i in string.digits])
-	#chars.extend([i for i in '#$%*'])
+from django.contrib import messages
+from django.contrib.auth.models import *
 
-	passwd = ''
+from util.models import create_token, UserToken
 
-	for i in range(tamanho):
-		passwd += chars[random.randint(0,  len(chars) - 1)]
-
-		random.seed = int(time.time())
-		random.shuffle(chars)
-
-return passwd
+from .forms import *
+from .models import *
 
 class LoginView(View):
 	template = ''
 	dados = {}
 
 	def get(self, request, **kwargs):
-		self.dados = inicializa_dados()
 		self.dados['formulario_login'] = LoginForm()
 		if 'next' in request.GET:
 			request.session['next'] = request.GET.get('next')
 		return render(request, self.template, self.dados)
 
 	def post(self, request, **kwargs):
-		self.dados = inicializa_dados()
 		self.dados['formulario_login'] = LoginForm(request.POST)
 		if self.dados['formulario_login'].is_valid():
 			usuario = authenticate(
@@ -72,17 +58,19 @@ class Registro1View(View):
 		self.dados['formulario_registro'] = RegistroForm(request.POST)
 		if self.dados['formulario_registro'].is_valid():
 			try:
-				usuario = Usuario.objects.create(
-					token = gerar_token()
+
+				user = User.objects.create(
+					username = create_token(10),
+					first_name = self.dados['formulario_registro'].cleaned_data['nome'],
+					last_name = self.dados['formulario_registro'].cleaned_data['sobrenome'],
+					email = self.dados['formulario_registro'].cleaned_data['email'],
 				)
 
-				mensagem = 'Olá {},\nVocê demonstrou interesse em realizar o cadastro no site Colunistas.\nPara completar o seu cadastro, clique no link ou copie o endereço no seu navegador:\n{}/novo-usuario/{}/{}/{}/{}/\nAtenciosamente,\nEquipe Colunistas'.format(
+				token_usuario = UserToken.objects.create(owner = user.username)
+
+				mensagem = 'Olá {},\nVocê demonstrou interesse em realizar o cadastro no site Colunistas.\nPara completar o seu cadastro, clique no link ou copie o endereço no seu navegador:\n{}\nAtenciosamente,\nEquipe Colunistas'.format(
 					self.dados['formulario_registro'].cleaned_data['nome'],
-					settings.SITE_HOST,
-					usuario.token,
-					self.dados['formulario_registro'].cleaned_data['nome'],
-					self.dados['formulario_registro'].cleaned_data['sobrenome'],
-					self.dados['formulario_registro'].cleaned_data['email'],
+					token_usuario.link(),
 				)
 
 				# TODO: Incluir rotina para enviar o e-mail
@@ -101,9 +89,6 @@ class Registro2View(View):
 		if Usuario.objects.filter(token = self.kwargs['token']).exists():
 			request.session['usuario'] = {
 				'token': self.kwargs['token'],
-				'nome': self.kwargs['nome'],
-				'sobrenome': self.kwargs['sobrenome'],
-				'email': self.kwargs['email'],
 			}
 		else:
 			messages.error(request, 'Pré-cadastro não encontrado.')
@@ -111,21 +96,25 @@ class Registro2View(View):
 
 	def post(self, request, **kwargs):
 		self.dados['formulario_registro'] = Registro2Form(request.POST)
+
+		if User.objects.filter(username = request.POST.get('usuario')).exists():
+			self.dados['formulario_registro'].add_error('usuario', 'Esse nome de usuário já foi utilizado. Por favor, escolha outro.')
+
 		if self.dados['formulario_registro'].is_valid():
 			try:
-				usuario = Usuario.objects.get(token = request.session['usuario']['token'])
-				usuario.user = User.objects.create(
-					first_name = request.session['usuario']['nome'],
-					last_name = request.session['usuario']['sobrenome'],
-					email = request.session['usuario']['email'],
-					username = self.dados['formulario_registro'].cleaned_data['usuario'],
+				user = User.objects.get(
+					username = UserToken.objects.get(token = request.session['token']).owner,
 				)
-				usuario.user.set_password(self.dados['formulario_registro'].cleaned_data['senha'])
-				usuario.save()
+				if valid_token(owner = user.username, tk = UserToken.objects.get(owner = user.username).token):
+					user.username = self.dados['formulario_registro'].cleaned_data['usuario']
+					user.set_password(self.dados['formulario_registro'].cleaned_data['senha'])
+					user.save()
 
-				del request.session['usuario']
+					del request.session['usuario']
 
-				messages.success(request, 'Usuário cadastrado com sucesso.')
+					messages.success(request, 'Usuário cadastrado com sucesso.')
+				else:
+					messages.error(request, 'Token inválido ou desativado. Realize seu pré-cadastro novamente.')
 			except:
 				messages.error(request, 'Erro ao cadastrar o usuário.')
 		return redirect('start')
@@ -149,16 +138,15 @@ class ReiniciaSenha1View(View):
 		self.dados['formulario'] = ResetSenhaForm(request.POST)
 		if self.dados['formulario'].is_valid():
 			try:
-				usuario = Usuario.objects.get(user__email = self.dados['formulario'].cleaned_data['email'])
-
-				#Modifica o token do usuario:
-				usuario.token = gerar_token()
-				usuario.save()
+				user = User.objects.get(user__email = self.dados['formulario'].cleaned_data['email'])
+				token_usuario = UserToken.objects.create(
+					owner = user.username,
+				)
 
 				mensagem = 'Olá {},\nFoi solicitado ao sistema modificar a sua senha no nosso site.\nPara realizar essa operação, clique no link abaixo ou copie o endereço em seu navegador:\n\n{}/nova-senha/{}/\n\nCaso você não tenha solicitado uma nova senha, desconsidere essa mensagem.\nAtenciosamente,\nEquipe Colunistas'.format(
-					usuario.user.first_name,
+					user.first_name,
 					settings.SITE_HOST,
-					usuario.token,
+					token_usuario.token,
 				)
 				# TODO: Incluir código para enviar o e-mail
 
@@ -172,26 +160,31 @@ class ReiniciaSenha2View(View):
 	dados = {}
 
 	def get(self, request, **kwargs):
-		if Usuario.objects.filter(token = self.kwargs['token']).exists():
+		if UserToken.objects.filter(token = self.kwargs['token']).exists():
 			self.dados['formulario'] = Registro2Form()
 			self.dados['formulario'].fields['usuario'].required = False
-			self.dados['formulario'].fields['usuario'].disabled = True
+			self.dados['formulario'].fields['usuario'].widget.attrs['disabled'] = 'disabled'
 
-			request.session['usuario'] = Usuario.objects.get(token = self.kwargs['token']).id
+			request.session['token'] = self.kwargs['token']
 		else:
 			messages.error(request, 'Usuário não encontrado.')
 
 		return render(request, self.template, self.dados)
 
 	def post(self, request, **kwargs):
-		usuario = Usuario.objects.get(id = request.session['usuario'])
-		self.dados['formulario'] = Registro2Form(request.POST)
-		if self.dados['formulario'].is_valid():
-			try:
-				usuario.user.set_password(self.dados['formulario'].cleaned_data['senha'])
-				messages.success(request, 'Senha alterada com sucesso.')
-			except:
-				messages.error(request, 'Erro ao alterar a senha.')
+		if UserToken.objects.filter(token = self.kwargs['token']).exists():
+			self.dados['formulario'] = Registro2Form(request.POST)
+
+			if self.dados['formulario'].is_valid():
+				try:
+					user = User.objects.get(username = UserToken.objects.get(token = self.kwargs['token']))
+					if valid_token(owner = user.username, tk = self.kwargs['token']):
+						user.set_password(self.dados['formulario'].cleaned_data['senha'])
+						messages.success(request, 'Senha alterada com sucesso.')
+					else:
+						messages.error(request, 'Token inválido.')
+				except:
+					messages.error(request, 'Erro ao alterar a senha.')
 		return render(request, self.template, self.dados)
 
 class InicioView(LoginRequiredMixin, View):
