@@ -2,9 +2,9 @@
 from django import forms
 from inscricao.models import Empresa
 
-CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {})
-CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {})
-CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {})
+CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {'class': 'form-control'})
+CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {'class': 'form-control'})
+CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'form-control'})
 
 
 class LoginForm(forms.Form):

@@ -24,9 +24,6 @@ SECRET_KEY = 'lb)gvnos2w+y0ii)l7-sn2v6(ky-q4a+0cv-9n1*e%-bwh5l5z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SITE_HOST = 'http://localhost:8000'
-ALLOWED_HOSTS = ['localhost', ]
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -99,16 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'colunistas.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -117,8 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
 ]
-
-TIME_ZONE = 'America/Sao_Paulo'
 
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 LANGUAGE_CODE = 'pt-br'

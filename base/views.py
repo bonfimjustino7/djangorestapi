@@ -14,7 +14,7 @@ from .models import *
 from inscricao.models import EmpresaUsuario
 
 class LoginView(View):
-    template = ''
+    template = 'base/login.html'
     dados = {}
 
     def get(self, request, **kwargs):
@@ -40,7 +40,7 @@ class LoginView(View):
                         del request.session['next']
                         return redirect(retorno)
                     else:
-                        return redirect('home')
+                        return redirect('start')
                 else:
                     messages.warning(request, 'Conta desabilitada. :(')
             else:
@@ -189,7 +189,7 @@ class ReiniciaSenha2View(View):
         return render(request, self.template, self.dados)
 
 class InicioView(LoginRequiredMixin, View):
-    template = ''
+    template = 'base/base.html'
     dados = {}
 
     def get(self, request, **kwargs):
@@ -225,6 +225,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
 def logoutview(request):
     logout(request)
+    return redirect('login')
 
 ###################
 #### Consultas ####
