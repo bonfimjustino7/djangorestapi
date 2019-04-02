@@ -17,11 +17,13 @@ def create_token(num = 30):
         token += random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
     return token
 
+
 def token_age():
     try:
         return settings.SESSION_TOKEN_AGE
     except:
         return 60*48 # 48 horas
+
 
 def valid_token(owner, tk, auto_remove = True):
     token = UserToken.objects.filter(owner = owner, token = tk)

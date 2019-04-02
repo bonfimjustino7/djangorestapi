@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 
 class Regional(models.Model):
-    nome = models.CharField(max_length = 30)
+    nome = models.CharField(max_length=30)
+    estados = models.CharField(max_length=100, help_text='Separe os estados com vírgula',null=True)
 
     class Meta:
         ordering = ('nome', )
@@ -36,6 +37,7 @@ class Area(models.Model):
     def __str__(self):
         return u'%s' % self.nome
 
+
 class Premiacao(models.Model):
     nome = models.CharField(max_length = 40)
     codigo = models.CharField(max_length = 3)
@@ -49,6 +51,7 @@ class Premiacao(models.Model):
         verbose_name = 'Premiação'
         verbose_name_plural = 'Premiações'
 
+
 class Formato(models.Model):
     nome = models.CharField(max_length = 40)
     codigo = models.CharField(max_length = 3)
@@ -57,6 +60,7 @@ class Formato(models.Model):
 
     def __str__(self):
         return self.nome
+
 
 class Atividade(models.Model):
     nome = models.CharField(max_length = 40)

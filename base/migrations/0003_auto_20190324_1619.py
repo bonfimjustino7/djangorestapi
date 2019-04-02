@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='premio',
             name='regional',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='base.Regional'),
+            field=models.ForeignKey(default=1,on_delete=django.db.models.deletion.PROTECT, to='base.Regional'),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='premio',
             name='premiacao',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='base.Premiacao'),
+            field=models.ForeignKey(default=1,on_delete=django.db.models.deletion.PROTECT, to='base.Premiacao'),
             preserve_default=False,
         ),
     ]

@@ -2,7 +2,6 @@
 from django import forms
 #Isnard 10/06/2012 - #0001 - Inclusao da classe SpanWidget e comentario da UFChoiceFormField
 from django.utils.safestring import mark_safe
-from django.utils.encoding import force_unicode
 from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
 
@@ -37,9 +36,6 @@ class SpanWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-
-        if isinstance(value, basestring):
-            value = force_unicode(value)
 
         return mark_safe(u'<span%s>%s</span>\n%s' % (
             flatatt(self.build_attrs(attrs)),

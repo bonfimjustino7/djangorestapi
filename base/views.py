@@ -6,12 +6,12 @@ from django.views import View
 from django.http import JsonResponse
 
 from django.contrib import messages
-from django.contrib.auth.models import *
 
-from util.models import create_token, UserToken
+from util.models import create_token, UserToken, valid_token
 
 from .forms import *
 from .models import *
+from inscricao.models import EmpresaUsuario
 
 class LoginView(View):
     template = ''
@@ -52,11 +52,11 @@ class Registro1View(View):
     dados = {}
 
     def get(self, request, **kwargs):
-        self.dados['formulario_registro'] = RegistroForm()
+        self.dados['formulario_registro'] = Registro1Form()
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
-        self.dados['formulario_registro'] = RegistroForm(request.POST)
+        self.dados['formulario_registro'] = Registro1Form(request.POST)
         if self.dados['formulario_registro'].is_valid():
             try:
 

@@ -35,7 +35,7 @@ if 'theme' in settings.INSTALLED_APPS:
 
 urlpatterns += [
 	# CMS
-	path('', include('cms.urls')),
+	# path('', include('cms.urls')),
 	path('ckeditor/', include('ckeditor.urls')),
 	path('chaining/', include('smart_selects.urls')),
 ]

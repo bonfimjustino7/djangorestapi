@@ -59,24 +59,77 @@ class EmpresaAgencia(models.Model):
     def __str__(self):
         return u'%s (%s)' % (self.agencia, self.uf)
 
+
 class EmpresaUsuario(models.Model):
     empresa = models.ForeignKey(Empresa,on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
     dtinclusao = models.DateTimeField(auto_now_add=True)
 
 
-'''
 class Inscricao(models.Model):
     premio = models.ForeignKey(Premio,on_delete=models.PROTECT)
     usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
     empresa = models.ForeignKey(Empresa,on_delete=models.PROTECT)
-    agencia = models.ForeignKey(EmpresaAgencia,on_delete=models.PROTECT)
     seq = models.IntegerField('Seq')
+    formato = models.ForeignKey(Formato,on_delete=models.PROTECT)
     titulo = models.CharField(max_length=60)
+    agencia = models.ForeignKey(EmpresaAgencia,on_delete=models.PROTECT)
+    categoria = models.ForeignKey(Categoria,on_delete=models.PROTECT)
+    parcerias = models.CharField(max_length=50, null=True, blank=True)
+    cliente = models.CharField(max_length=60, null=True, blank=True)
+    produto = models.CharField(max_length=30, null=True, blank=True)
+    dtinicio = models.DateField('Veiculação ou Início')
+    isolada = models.BooleanField(default=False)
+    DiretorCriacao = models.CharField(max_length=100, null=True, blank=True)
+    Planejamento = models.CharField(max_length=100, null=True, blank=True)
+    Redacao = models.CharField(max_length=140, null=True, blank=True)
+    DiretorArte = models.CharField(max_length=140, null=True, blank=True)
+    ProducaoGrafica = models.CharField(max_length=80, null=True, blank=True)
+    ProducaoRTVC = models.CharField(max_length=80, null=True, blank=True)
+    TecnologiaDigital = models.CharField(max_length=80, null=True, blank=True)
+    OutrosAgencia1 = models.CharField(max_length=80, null=True, blank=True)
+    OutrosAgencia2 = models.CharField(max_length=80, null=True, blank=True)
+    Midia = models.CharField(max_length=60, null=True, blank=True)
+    Atendimento = models.CharField(max_length=80, null=True, blank=True)
+    Aprovacao = models.CharField(max_length=100, null=True, blank=True)
+    ProdutoraFilme = models.CharField(max_length=50, null=True, blank=True)
+    DiretorFilme = models.CharField(max_length=50, null=True, blank=True)
+    ProdutoraAudio = models.CharField(max_length=50, null=True, blank=True)
+    DiretorAudio = models.CharField(max_length=50, null=True, blank=True)
+    EstudioFotografia = models.CharField(max_length=40, null=True, blank=True)
+    Fotografo = models.CharField(max_length=50, null=True, blank=True)
+    EstudioIlustracao = models.CharField(max_length=40, null=True, blank=True)
+    Ilustrador = models.CharField(max_length=50, null=True, blank=True)
+    ManipulacaoDigital = models.CharField(max_length=40, null=True, blank=True)
+    Finalizacao = models.CharField(max_length=40, null=True, blank=True)
+    OutrosFornecedor1 = models.CharField(max_length=80, null=True, blank=True)
+    OutrosFornecedor2 = models.CharField(max_length=80, null=True, blank=True)
+    roteiro = models.TextField('Roteiro de Rádio', null=True, blank=True)
+
+    def __str__(self):
+        return u'%s' % (self.seq)
 
     class Meta:
         ordering = ('seq', )
         verbose_name = u'Inscrição'
         verbose_name_plural = u'Inscrições'
         indexes = [models.Index(fields=['usuario', 'empresa', 'seq']),]
-'''
+
+
+class TipoMaterial(models.Model):
+    descricao = models.CharField(max_length=40)
+
+    def __str__(self):
+        return u'%s' % (self.descricao)
+
+
+class Material(models.Model):
+    inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
+    tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
+    arquivo = models.FileField(null=True, blank=True)
+    url = models.URLField(null=True, blank=True)
+    idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
+
+    def __str__(self):
+        return u'%s (%s)' % (self.formato, self.id)
+
