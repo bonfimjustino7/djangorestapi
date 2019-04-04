@@ -1,0 +1,260 @@
+{% extends "base/base.html" %}
+
+{% block conteudo %}
+    <div class="row my-2">
+        <div class="col-md-8 offset-md-2">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <p class="card-title">
+                                <h1 class="text-center">Nova Empresa</h1>
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-center mt-2">
+                            <a href="{% url 'start' %}" class="btn btn-primary">Página inicial</a>
+                        </div>
+                    </div>
+
+
+                    {% include "base/includes/messages.html" with messages=messages %}
+
+                    <form action="{% url 'nova-empresa' %}" method="post">
+                        {% csrf_token %}
+
+                        {% comment %}
+                            'regional', 'nome', 'area',
+                            'cep', 'endereco', 'bairro', 'municipio', 'uf',
+                            'ddd', 'telefone', 'celular',
+                            'homepage', 'email',
+                            'VP_Nome', 'VP_Cargo', 'VP_Email', 'VP_DDD', 'VP_Telefone',
+                            'C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone',
+                            'C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',
+                        {% endcomment %}
+
+                        <div class="row my-2">
+                            <div class="col-md-4">
+                                {{formulario_cadastro.regional.label_tag}}
+                                {{formulario_cadastro.regional}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.regional.help_text}}</span>
+                                {{formulario_cadastro.regional.errors}}
+                            </div>
+                            <div class="col-md-4">
+                                {{formulario_cadastro.nome.label_tag}}
+                                {{formulario_cadastro.nome}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.nome.help_text}}</span>
+                                {{formulario_cadastro.nome.errors}}
+                            </div>
+                            <div class="col-md-4">
+                                {{formulario_cadastro.area.label_tag}}
+                                {{formulario_cadastro.area}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.area.help_text}}</span>
+                                {{formulario_cadastro.area.errors}}
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-3">
+                                {{formulario_cadastro.cep.label_tag}}
+                                {{formulario_cadastro.cep}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.cep.help_text}}</span>
+                                {{formulario_cadastro.cep.errors}}
+                            </div>
+                            <div class="col-md-6">
+                                {{formulario_cadastro.endereco.label_tag}}
+                                {{formulario_cadastro.endereco}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.endereco.help_text}}</span>
+                                {{formulario_cadastro.endereco.errors}}
+                            </div>
+                            <div class="col-md-3">
+                                {{formulario_cadastro.bairro.label_tag}}
+                                {{formulario_cadastro.bairro}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.bairro.help_text}}</span>
+                                {{formulario_cadastro.bairro.errors}}
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-2">
+                                {{formulario_cadastro.uf.label_tag}}
+                                {{formulario_cadastro.uf}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.uf.help_text}}</span>
+                                {{formulario_cadastro.uf.errors}}
+                            </div>
+                            <div class="col-md-4">
+                                {{formulario_cadastro.municipio.label_tag}}
+                                {{formulario_cadastro.municipio}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.municipio.help_text}}</span>
+                                {{formulario_cadastro.municipio.errors}}
+                            </div>
+                            <div class="col-md-2">
+                                {{formulario_cadastro.ddd.label_tag}}
+                                {{formulario_cadastro.ddd}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.ddd.help_text}}</span>
+                                {{formulario_cadastro.ddd.errors}}
+                            </div>
+                            <div class="col-md-2">
+                                {{formulario_cadastro.telefone.label_tag}}
+                                {{formulario_cadastro.telefone}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.telefone.help_text}}</span>
+                                {{formulario_cadastro.telefone.errors}}
+                            </div>
+                            <div class="col-md-2">
+                                {{formulario_cadastro.celular.label_tag}}
+                                {{formulario_cadastro.celular}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.celular.help_text}}</span>
+                                {{formulario_cadastro.celular.errors}}
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-6">
+                                {{formulario_cadastro.homepage.label_tag}}
+                                {{formulario_cadastro.homepage}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.homepage.help_text}}</span>
+                                {{formulario_cadastro.homepage.errors}}
+                            </div>
+                            <div class="col-md-6">
+                                {{formulario_cadastro.email.label_tag}}
+                                {{formulario_cadastro.email}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.email.help_text}}</span>
+                                {{formulario_cadastro.email.errors}}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row my-3">
+                            <div class="col-12 text-center font-weight-bold">VP ou Diretor responsável pelas inscrições</div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                {{formulario_cadastro.VP_Nome.label_tag}}
+                                {{formulario_cadastro.VP_Nome}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_Nome.help_text}}</span>
+                                {{formulario_cadastro.VP_Nome.errors}}
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-3">
+                                {{formulario_cadastro.VP_Cargo.label_tag}}
+                                {{formulario_cadastro.VP_Cargo}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_Cargo.help_text}}</span>
+                                {{formulario_cadastro.VP_Cargo.errors}}
+                            </div>
+                            <div class="col-md-3">
+                                {{formulario_cadastro.VP_Email.label_tag}}
+                                {{formulario_cadastro.VP_Email}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_Email.help_text}}</span>
+                                {{formulario_cadastro.VP_Email.errors}}
+                            </div>
+                            <div class="col-md-2">
+                                {{formulario_cadastro.VP_DDD.label_tag}}
+                                {{formulario_cadastro.VP_DDD}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_DDD.help_text}}</span>
+                                {{formulario_cadastro.VP_DDD.errors}}
+                            </div>
+                            <div class="col-md-4">
+                                {{formulario_cadastro.VP_Telefone.label_tag}}
+                                {{formulario_cadastro.VP_Telefone}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_Telefone.help_text}}</span>
+                                {{formulario_cadastro.VP_Telefone.errors}}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row my-3">
+                            <div class="col-12 text-center font-weight-bold">Outros Contatos na Empresa (Nomes que também receberão as comunicações da Abracomp sobre a premiação.)</div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                {{formulario_cadastro.C1_Nome.label_tag}}
+                                {{formulario_cadastro.C1_Nome}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_Nome.help_text}}</span>
+                                {{formulario_cadastro.C1_Nome.errors}}
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-3">
+                                {{formulario_cadastro.C1_Cargo.label_tag}}
+                                {{formulario_cadastro.C1_Cargo}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_Cargo.help_text}}</span>
+                                {{formulario_cadastro.C1_Cargo.errors}}
+                            </div>
+                            <div class="col-md-3">
+                                {{formulario_cadastro.C1_Email.label_tag}}
+                                {{formulario_cadastro.C1_Email}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_Email.help_text}}</span>
+                                {{formulario_cadastro.C1_Email.errors}}
+                            </div>
+                            <div class="col-md-2">
+                                {{formulario_cadastro.C1_DDD.label_tag}}
+                                {{formulario_cadastro.C1_DDD}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_DDD.help_text}}</span>
+                                {{formulario_cadastro.C1_DDD.errors}}
+                            </div>
+                            <div class="col-md-4">
+                                {{formulario_cadastro.C1_Telefone.label_tag}}
+                                {{formulario_cadastro.C1_Telefone}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_Telefone.help_text}}</span>
+                                {{formulario_cadastro.C1_Telefone.errors}}
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                {{formulario_cadastro.C2_Nome.label_tag}}
+                                {{formulario_cadastro.C2_Nome}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_Nome.help_text}}</span>
+                                {{formulario_cadastro.C2_Nome.errors}}
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-3">
+                                {{formulario_cadastro.C2_Cargo.label_tag}}
+                                {{formulario_cadastro.C2_Cargo}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_Cargo.help_text}}</span>
+                                {{formulario_cadastro.C2_Cargo.errors}}
+                            </div>
+                            <div class="col-md-3">
+                                {{formulario_cadastro.C2_Email.label_tag}}
+                                {{formulario_cadastro.C2_Email}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_Email.help_text}}</span>
+                                {{formulario_cadastro.C2_Email.errors}}
+                            </div>
+                            <div class="col-md-2">
+                                {{formulario_cadastro.C2_DDD.label_tag}}
+                                {{formulario_cadastro.C2_DDD}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_DDD.help_text}}</span>
+                                {{formulario_cadastro.C2_DDD.errors}}
+                            </div>
+                            <div class="col-md-4">
+                                {{formulario_cadastro.C2_Telefone.label_tag}}
+                                {{formulario_cadastro.C2_Telefone}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_Telefone.help_text}}</span>
+                                {{formulario_cadastro.C2_Telefone.errors}}
+                            </div>
+                        </div>
+
+                        <p class="text-center">
+                            <input type="submit" class="btn btn-primary disabled" disabled value="Enviar">
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function(){
+            $('input[type="text"], input[type="email"], input[type="url"], select').addClass('form-control');
+        })
+    </script>
+{% endblock %}

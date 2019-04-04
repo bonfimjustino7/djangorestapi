@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -122,6 +123,14 @@ DATE_FORMAT = 'd/m/Y'
 SHORT_DATE_FORMAT = 'd/m/Y'
 DATETIME_FORMAT = 'd/m/Y, H:i'
 SHORT_DATETIME_FORMAT = 'd/m/Y, H:i'
+
+MESSAGE_TAGS = {
+	message_constants.DEBUG: 'debug',
+	message_constants.INFO: 'info',
+	message_constants.SUCCESS: 'success',
+	message_constants.WARNING: 'warning',
+	message_constants.ERROR: 'danger',
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

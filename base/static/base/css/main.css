@@ -1,0 +1,74 @@
+body {
+    background: url(../img/back.jpg) no-repeat;
+    background-position: center top;
+    background-size: 100% auto;
+}
+
+.campo {
+    border: 1px solid #efefef;
+    padding: 10px;
+}
+
+.campo input, .campo input:focus {
+    border: 0;
+    box-shadow: none
+}
+
+.campo .required {
+    color: dimgray;
+    margin-left: 20px;
+}
+
+.login {
+    margin-top: 200px;
+}
+
+.login a {
+    color: dimgray;
+}
+
+.login a:hover {
+    color: black;
+}
+
+.title {
+    margin-bottom: 10px;
+}
+
+.bt1 {
+    background: #e37568!important;
+    color: white!important;
+    padding: 10px 20px;
+    height: auto!important;
+}
+
+.bt2 {
+    background: #9c4d48!important;
+    color: white!important;
+    padding: 10px 20px;
+    height: auto!important;
+}
+
+.bt1:hover {
+    background: #cf5c51!important;
+}
+
+.bt2:hover {
+    background: #853936!important;
+}
+
+@media only screen and (max-width: 767px) {
+    body {
+        background: url(../img/back.jpg) no-repeat;
+        background-position: center top;
+        background-size: auto 50%;
+    }
+    .login {
+        margin-top: 0px;
+    }
+    .box {
+        -webkit-box-shadow: 0px 0px 24px 0px rgba(105,105,105,1);
+        -moz-box-shadow: 0px 0px 24px 0px rgba(105,105,105,1);
+        box-shadow: 0px 0px 24px 0px rgba(105,105,105,1);
+    }
+}

@@ -7,19 +7,17 @@
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">
-                        <h1 class="text-center">Login</h1>
+                        <h1 class="text-center">Pré-cadastro de Usuário</h1>
                     </p>
 
                     {% include "base/includes/messages.html" with messages=messages %}
 
-                    <form action="{% url 'login' %}" method="post">
+                    <form action="{% url 'registro' %}" method="post">
                         {% csrf_token %}
-                        {{formulario_login.as_p}}
+                        {{formulario_registro.as_p}}
                         <p class="text-center">
                             <input type="submit" class="btn btn-primary" value="Enviar">
                         </p>
-
-                        <p class="text-center"><a href="{% url 'reset-senha' %}">Esqueci minha senha...</a></p>
                     </form>
                 </div>
             </div>
