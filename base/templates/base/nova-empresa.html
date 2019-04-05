@@ -331,7 +331,7 @@
             $.post(url, dados)
             .done(resposta => {
                 if (resposta.status == 200) {
-                    btn_agencias
+                    habilitar_btns()
                     Swal.fire({
                         type: 'success',
                         text: 'Empresa cadastrada com sucesso',
