@@ -14,6 +14,8 @@ from .forms import *
 from .models import *
 from inscricao.models import EmpresaUsuario
 
+# TODO: (Nova Empresa): Além dos 3 botões, deve-se habilitar um inline onde o usuário poderá preencher uma ou mais agências (os dados serão gravados em EmpresaAgencia). O inline só precisa conter o Nome e a UF. Deve existir uma crítica para não permitir que o Estado da Agência não esteja contido em Regional.estados.
+
 ################
 #### Testes ####
 ################
@@ -226,26 +228,12 @@ class InicioView(LoginRequiredMixin, View):
         return render(request, self.template, self.dados)
 
 class NovaEmpresaView(LoginRequiredMixin, View):
-    '''
-    View /nova_empresa que permitirá que um usuário logado possa registrar os dados de uma nova empresa na classe inscricao.Empresa e inscricao.EmpresaUsuario.
-
-    A validação deve verificar se já existe uma outra empresa com o mesmo nome via javascript para que o usuário não tenha que preencher tudo de novo. Caso a empresa já exista, deve-se informar ao usuário e não permitir o cadastro.
-
-    Pode desprezar o CNPJ por enquanto.
-
-    Após o Submit dos dados cadastrais, a rotina não deve sair da tela. Ela deve manter a tela de edição e habilitar 3 botões: "Agências", "Dados Fiscais" e "Iniciar Inscrições". Ao clicar no botão Dados Fiscais, habilitar uma outra tela (como se fosse um popup) onde o usuário irá preencher o CNPJ, Inscrição Estadual e Inscrição Municipal, um botão de "Gravar" e um botão de "cancelar".
-
-    Além dos 3 botões, deve-se habilitar um inline onde o usuário poderá preencher uma ou mais agências (os dados serão gravados em EmpresaAgencia). O inline só precisa conter o Nome e a UF. Deve existir uma crítica para não permitir que o Estado da Agência não esteja contido em Regional.estados.
-
-    Ao clicar em inscrições, o sistema deve chamar a tela padrão de Inscrição do Admin (/admin/inscricao/inscricao/add/)
-
-    '''
-
     template = 'base/nova-empresa.html'
     dados = {}
 
     def get(self, request, **kwargs):
         self.dados['formulario_cadastro'] = RegistroEmpresaForm()
+        self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
@@ -272,9 +260,9 @@ def logoutview(request):
     logout(request)
     return redirect('login')
 
-###################
-#### Consultas ####
-###################
+####################
+#### Auxiliares ####
+####################
 
 def consulta_empresa(request, nome):
     resposta = {}
@@ -282,4 +270,23 @@ def consulta_empresa(request, nome):
         resposta['existe'] = True
     else:
         resposta['existe'] = False
+    return JsonResponse(resposta)
+
+def cadastro_fiscal(request): # TODO: Desenvolver cadastro
+    resposta = {}
+    if request.POST:
+        formulario = DadosFiscaisEmpresaForm(request.POST)
+        if formulario.is_valid():
+            print('\n\nCNPJ: {}\nIE: {}\nIM: {}\n\n'.format(
+                formulario.cleaned_data['cnpj'],
+                formulario.cleaned_data['inscricao_estadual'],
+                formulario.cleaned_data['inscricao_municipal'],
+            ))
+            resposta['status'] = 200
+        else:
+            resposta['status'] = 500
+            resposta['texto'] = 'Dados incorretos. Por favor, tente novamente.'
+    else:
+        resposta['status'] = 500
+        resposta['texto'] = 'Método de requisição inválido.'
     return JsonResponse(resposta)

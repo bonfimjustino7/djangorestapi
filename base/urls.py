@@ -15,5 +15,6 @@ urlpatterns = [
     path('start/', InicioView.as_view(), name = 'start'),
     path('nova-empresa/', NovaEmpresaView.as_view(), name = 'nova-empresa'),
 
-    path('consulta-empresa/<str:nome>/', consulta_empresa, name = 'consulta-empresa')
+    path('consulta-empresa/<str:nome>/', consulta_empresa, name = 'consulta-empresa'),
+    path('cadastro-fiscal/', cadastro_fiscal, name = 'cadastro-fiscal'),
 ]

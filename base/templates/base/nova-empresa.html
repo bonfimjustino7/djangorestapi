@@ -17,7 +17,6 @@
                         </div>
                     </div>
 
-
                     {% include "base/includes/messages.html" with messages=messages %}
 
                     <form action="{% url 'nova-empresa' %}" method="post">
@@ -240,8 +239,28 @@
                             </div>
                         </div>
 
+                        {% comment %}
+                        View /nova_empresa que permitirá que um usuário logado possa registrar os dados de uma nova empresa na classe inscricao.Empresa e inscricao.EmpresaUsuario.
+
+                        Pedidos:
+
+                        Além dos 3 botões, deve-se habilitar um inline onde o usuário poderá preencher uma ou mais agências (os dados serão gravados em EmpresaAgencia). O inline só precisa conter o Nome e a UF. Deve existir uma crítica para não permitir que o Estado da Agência não esteja contido em Regional.estados.
+                        {% endcomment %}
+
+                        <div class="row my-2">
+                            <div class="col-md-4 text-center">
+                                <a href="#" id="btn_agencias" class="btn btn-outline-primary disabled" disabled>Agências</a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary disabled" disabled>Dados Fiscais</a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary disabled" disabled>Iniciar Inscrições</a>
+                            </div>
+                        </div>
+
                         <p class="text-center">
-                            <input type="submit" class="btn btn-primary disabled" disabled value="Enviar">
+                            <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary disabled" disabled>Enviar</button>
                         </p>
                     </form>
                 </div>
@@ -253,8 +272,160 @@
 
 {% block js %}
     <script>
+        function enviar() {
+            var dados = {
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                regional: $('#id_regional').val(),
+                nome: $('#id_nome').val(),
+                area: $('#id_area').val(),
+                cep: $('#id_cep').val(),
+                endereco: $('#id_endereco').val(),
+                bairro: $('#id_bairro').val(),
+                municipio: $('#id_municipio').val(),
+                uf: $('#id_uf').val(),
+                ddd: $('#id_ddd').val(),
+                telefone: $('#id_telefone').val(),
+                celular: $('#id_celular').val(),
+                homepage: $('#id_homepage').val(),
+                email: $('#id_email').val(),
+                VP_Nome: $('#id_VP_Nome').val(),
+                VP_Cargo: $('#id_VP_Cargo').val(),
+                VP_Email: $('#id_VP_Email').val(),
+                VP_DDD: $('#id_VP_DDD').val(),
+                VP_Telefone: $('#id_VP_Telefone').val(),
+                C1_Nome: $('#id_C1_Nome').val(),
+                C1_Cargo: $('#id_C1_Cargo').val(),
+                C1_Email: $('#id_C1_Email').val(),
+                C1_DDD: $('#id_C1_DDD').val(),
+                C1_Telefone: $('#id_C1_Telefone').val(),
+                C2_Nome: $('#id_C2_Nome').val(),
+                C2_Cargo: $('#id_C2_Cargo').val(),
+                C2_Email: $('#id_C2_Email').val(),
+                C2_DDD: $('#id_C2_DDD').val(),
+                C2_Telefone: $('#id_C2_Telefone').val(),
+            }
+            var url = '{% url 'nova-empresa' %}'
+
+            var habilitar_btns = function() {
+                $('#btn_agencias').prop('disabled', false)
+                $('#btn_agencias').removeClass('disabled')
+
+                $('#btn_dados_fiscais').prop('disabled', false)
+                $('#btn_dados_fiscais').removeClass('disabled')
+
+                $('#btn_inscricoes').prop('disabled', false)
+                $('#btn_inscricoes').removeClass('disabled')
+            }
+
+            var desabilitar_btns = function() {
+                $('#btn_agencias').prop('disabled', true)
+                $('#btn_agencias').addClass('disabled')
+
+                $('#btn_dados_fiscais').prop('disabled', true)
+                $('#btn_dados_fiscais').addClass('disabled')
+
+                $('#btn_inscricoes').prop('disabled', true)
+                $('#btn_inscricoes').addClass('disabled')
+            }
+
+            $.post(url, dados)
+            .done(resposta => {
+                if (resposta.status == 200) {
+                    btn_agencias
+                    Swal.fire({
+                        type: 'success',
+                        text: 'Empresa cadastrada com sucesso',
+                    })
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        text: `Erro: ${resposta.texto}`,
+                    })
+                }
+            })
+            .fail(resposta => {
+                Swal.fire({
+                    type: 'error',
+                    text: `Erro: ${resposta.statusText}`,
+                })
+            })
+        }
+
+        function verificar_nome_empresa() {
+            if ($('#id_nome').val()) {
+                var url = `/consulta-empresa/${$('#id_nome').val()}/`
+                $.get(url)
+                .done(function(resposta) {
+                    if (resposta.existe) {
+                        $('#btn_submit').prop('disabled', false)
+                        $('#btn_submit').removeClass('disabled')
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'AVISO',
+                            text: 'Empresa já cadastrada',
+                        })
+                    } else {
+                        $('#btn_submit').prop('disabled', false)
+                        $('#btn_submit').removeClass('disabled')
+                    }
+                })
+                .fail(function() {
+                    console.log('Erro ao acessar o servidor')
+                });
+            }
+        }
+
+        function dados_fiscais() {
+            Swal.fire({
+                html: `{{formulario_fiscal.as_p}}`,
+                showCancelButton: true,
+                confirmButtonText: 'Gravar',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    dados = {
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                        cnpj: $('#id_cnpj').val(),
+                        inscricao_estadual: $('#id_inscricao_estadual').val(),
+                        inscricao_municipal: $('#id_inscricao_municipal').val(),
+                    }
+
+                    $.post('/cadastro-fiscal/', dados)
+                    .done((resposta) => {
+                        if (resposta.status == 200) {
+                            Swal.fire({
+                                type: 'success',
+                                text: 'Dados cadastrados com sucesso.',
+                            })
+                        } else {
+                            Swal.fire({
+                                type: 'error',
+                                text: resposta.texto,
+                            })
+                        }
+                    })
+                    .fail((resposta) => {
+                        if (resposta) {
+                            Swal.fire({
+                                type: 'error',
+                                text: `Erro: ${resposta.statusText}`,
+                            })
+                        } else {
+                            Swal.fire({
+                                type: 'error',
+                                text: 'Erro ao conectar com o servidor.',
+                            })
+                        }
+                    })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+        }
+
         $(document).ready(function(){
             $('input[type="text"], input[type="email"], input[type="url"], select').addClass('form-control');
+
+            $('#id_nome').blur(verificar_nome_empresa);
         })
     </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 #coding: utf-8
 from django import forms
-from inscricao.models import Empresa
+from localflavor.br.forms import BRCNPJField
+from inscricao.models import Empresa, Regional
 
 CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {'class': 'form-control'})
 CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {'class': 'form-control'})
@@ -47,3 +48,15 @@ class RegistroEmpresaForm(forms.ModelForm):
             'C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone',
             'C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',
         ]
+
+class RegistroRegionalForm(forms.ModelForm):
+    class Meta:
+        model = Regional
+        fields = [
+            'nome', 'estados',
+        ]
+
+class DadosFiscaisEmpresaForm(forms.Form):
+    cnpj = BRCNPJField(label = 'CNPJ', widget = CAMPO_TEXTO_PADRAO)
+    inscricao_estadual = forms.CharField(label = 'Inscrição Estadual', required = False, widget = CAMPO_TEXTO_PADRAO)
+    inscricao_municipal = forms.CharField(label = 'Inscrição Municipal', required = False, widget = CAMPO_TEXTO_PADRAO)
