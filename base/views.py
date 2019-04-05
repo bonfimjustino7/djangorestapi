@@ -237,24 +237,29 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
-        self.dados['formulario_cadastro'] = RegistroEmpresaForm(request.POST)
+        resposta = {}
+        formulario = RegistroEmpresaForm(request.POST)
 
         if Empresa.objects.filter(nome = request.POST.get('nome')).exists():
-            self.dados['formulario_cadastro'].add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
+            formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
-        if self.dados['formulario_cadastro'].is_valid():
+        if formulario.is_valid():
             try:
-                empresa = self.dados['formulario_cadastro'].save()
+                empresa = formulario.save()
 
                 EmpresaUsuario.objects.create(
                     empresa = empresa,
                     usuario = request.user.usuario_set.first(),
                 )
 
-                messages.success(request, 'Empresa cadastrada com sucesso.')
+                resposta['status'] = 200
             except Exception as erro:
-                messages.error(request, 'Erro: {}'.format(erro.__str__()))
-        return render(request, self.template, self.dados)
+                resposta['status'] = 500
+                resposta['texto'] = 'Erro: {}'.format(erro.__str__())
+        else:
+            resposta['status'] = 500
+            resposta['texto'] = 'Dados preenchidos incorretamente.'
+        return JsonResponse(resposta)
 
 def logoutview(request):
     logout(request)
