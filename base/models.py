@@ -19,6 +19,9 @@ class UF(models.Model):
     sigla = models.CharField(max_length=2,primary_key=True)
     nome = models.CharField(max_length=40)
 
+    def __str__(self):
+        return self.sigla
+
 
 class Categoria(models.Model):
     codigo = models.CharField(max_length=6)
@@ -35,7 +38,7 @@ class Area(models.Model):
     descricao = models.CharField(max_length=40)
 
     def __str__(self):
-        return u'%s' % self.nome
+        return self.codigo
 
 
 class Premiacao(models.Model):

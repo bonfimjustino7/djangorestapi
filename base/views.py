@@ -8,11 +8,14 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.contrib import messages
 
+from django.forms import formset_factory
+
 from util.models import create_token, UserToken, valid_token
 
-from .forms import *
-from .models import *
-from inscricao.models import EmpresaUsuario
+from base.forms import *
+from base.models import *
+from inscricao.forms import *
+from inscricao.models import *
 
 # TODO: (Nova Empresa): Além dos 3 botões, deve-se habilitar um inline onde o usuário poderá preencher uma ou mais agências (os dados serão gravados em EmpresaAgencia). O inline só precisa conter o Nome e a UF. Deve existir uma crítica para não permitir que o Estado da Agência não esteja contido em Regional.estados.
 
@@ -234,31 +237,46 @@ class NovaEmpresaView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
         self.dados['formulario_cadastro'] = RegistroEmpresaForm()
         self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
+        self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm, extra = 0)
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
         resposta = {}
         formulario = RegistroEmpresaForm(request.POST)
+        formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
 
         if Empresa.objects.filter(nome = request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         if formulario.is_valid():
             try:
+                #Salvando Empresa
                 empresa = formulario.save()
 
-                EmpresaUsuario.objects.create(
-                    empresa = empresa,
+                #Salvando EmpresaUsuario
+                empresa.empresausuario_set.create(
                     usuario = request.user.usuario_set.first(),
                 )
+
+                #Salvando objetos EmpresaAgencia
+                for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
+                    print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
+                    empresa.empresaagencia_set.create(
+                        agencia = request.POST.get('form-{}-nome'.format(i)),
+                        uf = UF.objects.get(sigla = request.POST.get('form-{}-uf'.format(i))),
+                    )
+
+                request.session['empresa'] = empresa.id
 
                 resposta['status'] = 200
             except Exception as erro:
                 resposta['status'] = 500
                 resposta['texto'] = 'Erro: {}'.format(erro.__str__())
         else:
+            print(formulario.cleaned_data)
+            print(formulario.errors)
             resposta['status'] = 500
-            resposta['texto'] = 'Dados preenchidos incorretamente.'
+            resposta['texto'] = formulario.errors.as_text()
         return JsonResponse(resposta)
 
 def logoutview(request):
@@ -277,17 +295,23 @@ def consulta_empresa(request, nome):
         resposta['existe'] = False
     return JsonResponse(resposta)
 
-def cadastro_fiscal(request): # TODO: Desenvolver cadastro
+def estados_regional(request):
+    resposta = {
+        'estados': Regional.objects.get(id = request.GET.get('regional')).estados.split(','),
+    }
+    return JsonResponse(resposta)
+
+def cadastro_fiscal(request):
     resposta = {}
     if request.POST:
         formulario = DadosFiscaisEmpresaForm(request.POST)
         if formulario.is_valid():
-            print('\n\nCNPJ: {}\nIE: {}\nIM: {}\n\n'.format(
-                formulario.cleaned_data['cnpj'],
-                formulario.cleaned_data['inscricao_estadual'],
-                formulario.cleaned_data['inscricao_municipal'],
-            ))
-            resposta['status'] = 200
+            try:
+                empresa = Empresa.objects.get(id = request.session['empresa'])
+                resposta['status'] = 200
+            except Exception as erro:
+                resposta['status'] = 500
+                resposta['texto'] = erro.__str__()
         else:
             resposta['status'] = 500
             resposta['texto'] = 'Dados incorretos. Por favor, tente novamente.'
