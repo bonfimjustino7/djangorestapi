@@ -17,26 +17,6 @@ from base.models import *
 from inscricao.forms import *
 from inscricao.models import *
 
-# TODO: (Nova Empresa): Além dos 3 botões, deve-se habilitar um inline onde o usuário poderá preencher uma ou mais agências (os dados serão gravados em EmpresaAgencia). O inline só precisa conter o Nome e a UF. Deve existir uma crítica para não permitir que o Estado da Agência não esteja contido em Regional.estados.
-
-################
-#### Testes ####
-################
-
-def envia_email(remetente = '', destinatario = '', assunto = '', mensagem = ''):
-    print(
-        '\n\nE-mail:\n{} -> {}\n{}\n{}\n\n'.format(
-            remetente,
-            destinatario,
-            assunto,
-            mensagem,
-        )
-    )
-
-#####################################
-#### Fim das rotinas para testes ####
-#####################################
-
 class LoginView(View):
     template = 'base/login_bulma.html'
     dados = {}
@@ -101,8 +81,11 @@ class Registro1View(View):
                     token_usuario.link(),
                 )
 
-                # TODO: Incluir rotina para enviar o e-mail.
-                envia_email('sistema', 'usuário', 'Cadastro em Colunistas', mensagem)
+                EmailAgendado.objects.create(
+                    subject = 'Cadastro em Colunistas',
+                    to = self.dados['formulario_registro'].cleaned_data['email'],
+                    html = mensagem,
+                )
 
                 messages.success(request, 'Verifique seu e-mail para completar o cadastro.')
             except:
@@ -177,8 +160,12 @@ class ReiniciaSenha1View(View):
                         settings.SITE_HOST,
                         token_usuario.token,
                     )
-                    # TODO: Incluir código para enviar o e-mail
-                    envia_email('sistema', user.email, 'Recuperação de Senha', mensagem)
+
+                    EmailAgendado.objects.create(
+                        to = self.dados['formulario'].cleaned_data['email'],
+                        subject = 'Recuperação de Senha',
+                        html = mensagem,
+                    )
 
                     messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
                 else:
@@ -302,6 +289,7 @@ def estados_regional(request):
     return JsonResponse(resposta)
 
 def cadastro_fiscal(request):
+    # TODO: Desenvolver cadastros fiscais
     resposta = {}
     if request.POST:
         formulario = DadosFiscaisEmpresaForm(request.POST)
