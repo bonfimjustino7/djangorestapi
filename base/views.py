@@ -1,21 +1,21 @@
-#coding: utf-8
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import JsonResponse
+from django.contrib.auth.models import User, Group
 
-from django.conf import settings
 from django.contrib import messages
 
 from django.forms import formset_factory
 
 from util.models import create_token, UserToken, valid_token
+from util.email import sendmail
 
 from base.forms import *
-from base.models import *
 from inscricao.forms import *
 from inscricao.models import *
+
 
 class LoginView(View):
     template = 'base/login_bulma.html'
@@ -33,6 +33,7 @@ class LoginView(View):
     def post(self, request, **kwargs):
         self.dados['formulario_login'] = LoginForm(request.POST)
         if self.dados['formulario_login'].is_valid():
+
             usuario = authenticate(
                 username = self.dados['formulario_login'].cleaned_data['usuario'],
                 password = self.dados['formulario_login'].cleaned_data['senha']
@@ -54,6 +55,7 @@ class LoginView(View):
                 messages.warning(request, 'Usuário ou senha incorretos. Tente novamente.')
         return render(request, self.template, self.dados)
 
+
 class Registro1View(View):
     template = 'base/registro.html'
     dados = {}
@@ -65,32 +67,26 @@ class Registro1View(View):
     def post(self, request, **kwargs):
         self.dados['formulario_registro'] = Registro1Form(request.POST)
         if self.dados['formulario_registro'].is_valid():
-            try:
 
-                user = User.objects.create(
-                    username = create_token(10),
-                    first_name = self.dados['formulario_registro'].cleaned_data['nome'],
-                    last_name = self.dados['formulario_registro'].cleaned_data['sobrenome'],
-                    email = self.dados['formulario_registro'].cleaned_data['email'],
-                )
+            user = User.objects.create(
+                username=create_token(10),
+                first_name=self.dados['formulario_registro'].cleaned_data['nome'],
+                last_name=self.dados['formulario_registro'].cleaned_data['sobrenome'],
+                email=self.dados['formulario_registro'].cleaned_data['email'],
+                is_active=False
+            )
 
-                token_usuario = UserToken.objects.create(owner = user.username)
+            token = UserToken.objects.create(owner=user.username)
 
-                mensagem = 'Olá {},\nVocê demonstrou interesse em realizar o cadastro no site Colunistas.\nPara completar o seu cadastro, clique no link ou copie o endereço no seu navegador:\n{}\nAtenciosamente,\nEquipe Colunistas'.format(
-                    self.dados['formulario_registro'].cleaned_data['nome'],
-                    token_usuario.link(),
-                )
+            sendmail(
+                to=[ self.dados['formulario_registro'].cleaned_data['email'], ],
+                subject=u'Registro do Prêmio Colunistas',
+                params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link()},
+                template='emails/confirma-email.html', )
 
-                EmailAgendado.objects.create(
-                    subject = 'Cadastro em Colunistas',
-                    to = self.dados['formulario_registro'].cleaned_data['email'],
-                    html = mensagem,
-                )
-
-                messages.success(request, 'Verifique seu e-mail para completar o cadastro.')
-            except:
-                messages.error(request, 'Houve um erro ao cadastrar o usuário e enviar o e-mail.')
+            messages.success(request, 'Verifique seu e-mail para completar o registro')
         return redirect('instrucoes-login')
+
 
 class Registro2View(View):
     template = 'base/registro2.html'
@@ -101,7 +97,7 @@ class Registro2View(View):
         if UserToken.objects.filter(token = self.kwargs['token']).exists():
             self.dados['token_usuario'] = self.kwargs['token']
         else:
-            messages.error(request, 'Pré-cadastro não encontrado.')
+            messages.error(request, 'Pré-cadastro não encontrado')
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
@@ -110,16 +106,21 @@ class Registro2View(View):
         if not request.POST.get('usuario'):
             self.dados['formulario_registro'].add_error('usuario', 'O campo usuário é obrigatório.')
         elif User.objects.filter(username = request.POST.get('usuario')).exists():
-            self.dados['formulario_registro'].add_error('usuario', 'Esse nome de usuário já foi utilizado. Por favor, escolha outro.')
+            self.dados['formulario_registro'].add_error('usuario',
+                    'Esse nome de usuário já foi utilizado. Por favor, escolha outro.')
 
         if self.dados['formulario_registro'].is_valid():
             try:
                 user = User.objects.get(
-                    username = UserToken.objects.get(token = self.kwargs['token']).owner,
+                    username=UserToken.objects.get(token = self.kwargs['token']).owner,
                 )
                 if valid_token(owner = user.username, tk = UserToken.objects.get(owner = user.username).token):
                     user.username = self.dados['formulario_registro'].cleaned_data['usuario']
                     user.set_password(self.dados['formulario_registro'].cleaned_data['senha'])
+                    user.is_active = True
+                    user.is_staff = True
+                    grupo = Group.objects.get_or_create(name='Agência')
+                    user.groups.add(grupo)
                     user.save()
 
                     messages.success(request, 'Usuário cadastrado com sucesso.')
@@ -130,12 +131,14 @@ class Registro2View(View):
                 messages.error(request, 'Erro: {}'.format(erro.__str__()))
         return render(request, self.template, self.dados)
 
+
 class InstrucoesLoginView(View):
     template = 'base/instrucoes-login.html'
     dados = {}
 
     def get(self, request, **kwargs):
         return render(request, self.template, self.dados)
+
 
 class ReiniciaSenha1View(View):
     template = 'base/reinicia-senha.html'
@@ -151,21 +154,7 @@ class ReiniciaSenha1View(View):
             try:
                 if User.objects.filter(email = self.dados['formulario'].cleaned_data['email']).exists():
                     user = User.objects.get(email = self.dados['formulario'].cleaned_data['email'])
-                    token_usuario = UserToken.objects.create(
-                        owner = user.username,
-                    )
-
-                    mensagem = 'Olá {},\nFoi solicitado ao sistema modificar a sua senha no nosso site.\nPara realizar essa operação, clique no link abaixo ou copie o endereço em seu navegador:\n\n{}/nova-senha/{}/\n\nCaso você não tenha solicitado uma nova senha, desconsidere essa mensagem.\nAtenciosamente,\nEquipe Colunistas'.format(
-                        user.first_name,
-                        settings.SITE_HOST,
-                        token_usuario.token,
-                    )
-
-                    EmailAgendado.objects.create(
-                        to = self.dados['formulario'].cleaned_data['email'],
-                        subject = 'Recuperação de Senha',
-                        html = mensagem,
-                    )
+                    token = UserToken.objects.create(owner = user.username)
 
                     messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
                 else:
@@ -237,15 +226,15 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
         if formulario.is_valid():
             try:
-                #Salvando Empresa
+                # Salvando Empresa
                 empresa = formulario.save()
 
-                #Salvando EmpresaUsuario
+                # Salvando EmpresaUsuario
                 empresa.empresausuario_set.create(
                     usuario = request.user.usuario_set.first(),
                 )
 
-                #Salvando objetos EmpresaAgencia
+                # Salvando objetos EmpresaAgencia
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
                     print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
                     empresa.empresaagencia_set.create(

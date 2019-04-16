@@ -6,7 +6,6 @@ import uuid
 
 from django.urls import reverse
 from django.db.models import signals
-# from django.core.cache import cache
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
@@ -17,10 +16,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from smart_selects.db_fields import ChainedForeignKey
 from easy_thumbnails.files import get_thumbnailer
 
-from datetime import datetime
 from .signals import slug_pre_save
-from .fields import ListField
-from .email import resendmail_email_agendado
 
 
 class ItemManager(models.Manager):
@@ -391,32 +387,6 @@ class FileDownload(models.Model):
 
     def __unicode__(self):
         return self.title
-
-
-STATUS_EMAIL = (
-    ("A", u"Aguardando envio manual..."),
-    ("S", u"Enviando..."),
-    ("R", u"Re-enviando"),
-    ("E", u"Erro ao enviar"),
-    ("K", u"Enviado"),
-)
-
-
-class EmailAgendado(models.Model):
-    class Meta:
-        ordering = ('-date', )
-
-    subject = models.CharField(max_length=90, default="")
-    status = models.CharField(max_length=1, choices=STATUS_EMAIL, default="S")
-    date = models.DateTimeField(default=datetime.now)
-    to = ListField()
-    html = models.TextField()
-
-    def send_email(self):
-        resendmail_email_agendado(self)
-
-    def __unicode__(self):
-        return u"%s" % self.id
 
 
 RECURSOS = (

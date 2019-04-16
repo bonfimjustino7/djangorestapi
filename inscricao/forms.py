@@ -4,6 +4,7 @@ from inscricao.models import *
 from localflavor.br.forms import BRCNPJField
 from base.forms import CAMPO_TEXTO_PADRAO, CAMPO_EMAIL_PADRAO, CAMPO_SENHA_PADRAO
 
+
 class RegistroEmpresaForm(forms.ModelForm):
     class Meta:
         model = Empresa

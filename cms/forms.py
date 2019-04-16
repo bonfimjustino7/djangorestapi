@@ -15,8 +15,9 @@ from datetime import datetime, date
 from captcha.fields import ReCaptchaField
 from ckeditor.widgets import CKEditorWidget
 
-from cms.models import SectionItem, ArticleComment, Recurso, Theme, Article, GroupType, EmailAgendado
-from cms.email import sendmail
+from cms.models import SectionItem, ArticleComment, Recurso, Theme, Article, GroupType
+from util.models import EmailAgendado
+from util.email import sendmail
 
 import os
 import zipfile

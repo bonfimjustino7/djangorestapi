@@ -44,7 +44,7 @@ class _BaseForm(object):
         for field in self.cleaned_data:
             # py2 and py3
             try:
-               localbasestring = basestring
+               localbasestring = basesstring
             except NameError:
                 # Python 3
                 localbasestring = str

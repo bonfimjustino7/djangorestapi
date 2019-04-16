@@ -46,13 +46,8 @@ class CustomIndexDashboard(Dashboard):
             ),
             modules.ModelList(
                 u'Adminstração',
-                models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',  'core.models.PagSeguroRetorno', ),
-            ),
-            modules.ModelList(
-                u'Parâmetros do Sistema',
-                models=(
-                    'cms.models.Recurso', 'cms.models.EmailAgendado', 'cms.models.Theme',
-                ),
+                models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',
+                        'util.models.EmailAgendado', 'util.models.UserToken', ),
             ),
         ]
 
