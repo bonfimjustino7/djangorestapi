@@ -115,6 +115,10 @@ class Inscricao(models.Model):
         verbose_name_plural = u'Inscrições'
         indexes = [models.Index(fields=['usuario', 'empresa', 'seq']),]
 
+    @property
+    def total_inscricoes(self):
+        return u'%d' % self.inscricao_set.count()
+
 
 class TipoMaterial(models.Model):
     descricao = models.CharField(max_length=40)

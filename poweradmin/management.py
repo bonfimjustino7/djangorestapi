@@ -5,7 +5,6 @@ from django.db.models import signals
 from django.conf import settings
 
 
-
 def create_and_update_permissions(sender, app_config, **kwargs):
     app_name = app_config.name.split('.')[-1]
 
@@ -18,10 +17,7 @@ def create_and_update_permissions(sender, app_config, **kwargs):
             else:
                 for permission in Permission.objects.filter(codename=codename):
                     if permission.name != name:
-                        try:
-                            print(u"Updating Permission's name: '%s' -> '%s'" % (permission.name, name, ))
-                        except:
-                            print(u"Updating Permission's ...")
+                        print("Updating Permission's name: '%s' -> '%s'" % (permission.name, name, ))
                         permission.name=name
                         permission.save()
 

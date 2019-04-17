@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-@python_2_unicode_compatible
 class UserAdminConfig(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     url_name = models.CharField(max_length=100)  # identify the config

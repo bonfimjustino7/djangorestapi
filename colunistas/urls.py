@@ -14,31 +14,38 @@ Including another URLconf
 	2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
-
 from filebrowser.sites import site
 
+from django.conf.urls import url, include
+
+# django 2
+# from django.urls import path
+# from django.conf.urls import include
+# urlpatterns = [
+# 	path('admin_tools/', include('admin_tools.urls')),
+# 	path('', include('base.urls')),
+# ]
+
 urlpatterns = [
-	path('admin/', admin.site.urls),
-	path('admin/filebrowser/', site.urls),
-	path('admin_tools/', include('admin_tools.urls')),
-	path('', include('base.urls')),
+	url(r'^admin/', admin.site.urls),
+	url(r'^admin_tools/', include('admin_tools.urls')),
+	url(r'^ckeditor/', include('ckeditor.urls')),
+	url(r'^chaining/', include('smart_selects.urls')),
 ]
 
 if 'theme' in settings.INSTALLED_APPS:
-	urlpatterns += [url(r'^', include('theme.urls')), ]
+	urlpatterns += [ url(r'^/', include('theme.urls')), ]
 
-urlpatterns += [
-	# CMS
-	# path('', include('cms.urls')),
-	path('ckeditor/', include('ckeditor.urls')),
-	path('chaining/', include('smart_selects.urls')),
-]
+# urlpatterns += [
+# CMS
+# url(r'^/', include('cms.urls')), # django 1
+# path('', include('cms.urls')), # django 2
+# ]
 
 if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

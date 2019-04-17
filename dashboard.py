@@ -34,15 +34,8 @@ class CustomIndexDashboard(Dashboard):
                 models=('base.*',)
             ),
             modules.ModelList(
-                u'CMS',
-                models=(
-                    'cms.models.Article', 'cms.models.Section', 'cms.models.Menu',
-                    'cms.models.FileDownload', 'cms.models.URLMigrate', 'cms.models.GroupType'
-                ),
-                exclude=('cms.models.EmailAgendado', 'cms.models.Theme', 'cms.models.Recurso', 'cms.models.'),
-                extra=[
-                    {'title': u'Visualizador de Arquivos', 'add_url': reverse('filebrowser:fb_upload'), 'change_url': reverse('filebrowser:fb_browse')},
-                ]
+                u'Inscrições',
+                models=('inscricao.*',)
             ),
             modules.ModelList(
                 u'Adminstração',

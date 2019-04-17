@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import operator
 from .models import UserAdminConfig
-from django.db import models
-from django.contrib import admin, messages
+from django.contrib import admin
 from django.contrib.admin.options import InlineModelAdmin
 from django.contrib.admin.utils import flatten_fieldsets
 from django.conf import settings
@@ -13,9 +12,6 @@ from django import forms
 
 import json
 
-from django.utils.text import get_text_list
-from django.utils.translation import ugettext as _
-from django.utils.encoding import force_text
 from django.contrib.auth import get_permission_codename
 
 from .actions import export_as_csv_action, delete_selected, report_action
@@ -34,17 +30,13 @@ from .actions import export_as_csv_action, delete_selected, report_action
 '''
 
 
-POWERADMIN_USE_WIKI = getattr(settings, 'POWERADMIN_USE_WIKI', False)
-POWERADMIN_WIKI_ARTICLE_URL = getattr(settings, 'POWERADMIN_WIKI_ARTICLE_URL', '/wiki/{path}/')
-
-
-#Trim solution
+# Trim solution
 class _BaseForm(object):
     def clean(self):
         for field in self.cleaned_data:
             # py2 and py3
             try:
-               localbasestring = basesstring
+               localbasestring = str
             except NameError:
                 # Python 3
                 localbasestring = str
@@ -52,6 +44,7 @@ class _BaseForm(object):
                self.cleaned_data[field] = self.cleaned_data[field].strip()
 
         return super(_BaseForm, self).clean()
+
 
 class BaseModelForm(_BaseForm, forms.ModelForm):
     pass
@@ -131,12 +124,12 @@ class PowerModelAdmin(admin.ModelAdmin):
         report = report_action(fields=self.get_list_report(request), header=self.get_header_report(request))
         actions['report'] = (report, 'report', report.short_description)
 
-        #Ajustes no log do action delete_selected
+        # Ajustes no log do action delete_selected
         actions['delete_selected'] = (delete_selected, 'delete_selected', delete_selected.short_description)
         return actions
 
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
-        #Verifica se a tela é readonly
+        # Verifica se a tela é readonly
         if self.has_readonly_permission(request, obj):
             readonly = True
         else:
@@ -161,36 +154,6 @@ class PowerModelAdmin(admin.ModelAdmin):
 
         object_id = obj.pk if obj else obj
         buttons = self.get_buttons(request, object_id)
-
-        if POWERADMIN_USE_WIKI:
-            path = '{0}-{1}'.format(app_label.lower(), opts.object_name.lower())
-            from .wiki.models import Article, ArticleRevision, URLPath
-            from django.contrib.sites.shortcuts import get_current_site
-
-            if not URLPath.objects.filter(slug=path).count():
-                if not URLPath.objects.count():
-                    URLPath.create_root(
-                        site=get_current_site(request),
-                        title=u'Root',
-                        content=u"",
-                        request=request
-                    )
-                root = URLPath.objects.order_by('id')[0]
-
-                URLPath.create_article(
-                    root,
-                    path,
-                    site=get_current_site(request),
-                    title=path,
-                    content=u"",
-                    user_message=u"",
-                    user=request.user,
-                    ip_address=request.META['REMOTE_ADDR'],
-                    article_kwargs={
-                        'owner': request.user
-                    }
-                )
-            buttons.append(PowerButton(url=POWERADMIN_WIKI_ARTICLE_URL.format(path=path), label=u'Ajuda'))
 
         context.update({
             'buttons': buttons,
@@ -284,36 +247,6 @@ class PowerModelAdmin(admin.ModelAdmin):
 
         buttons = self.get_buttons(request, None)
 
-        if POWERADMIN_USE_WIKI:
-            path = '{0}-{1}'.format(app_label.lower(), opts.object_name.lower())
-            from .wiki.models import Article, ArticleRevision, URLPath
-            from django.contrib.sites.shortcuts import get_current_site
-
-            if not URLPath.objects.filter(slug=path).count():
-                if not URLPath.objects.count():
-                    URLPath.create_root(
-                        site=get_current_site(request),
-                        title=u'Root',
-                        content=u"",
-                        request=request
-                    )
-                root = URLPath.objects.order_by('id')[0]
-
-                URLPath.create_article(
-                    root,
-                    path,
-                    site=get_current_site(request),
-                    title=path,
-                    content=u"",
-                    user_message=u"",
-                    user=request.user,
-                    ip_address=request.META['REMOTE_ADDR'],
-                    article_kwargs={
-                        'owner': request.user
-                    }
-                )
-            buttons.append(PowerButton(url=POWERADMIN_WIKI_ARTICLE_URL.format(path=path), label=u'Ajuda', attrs={'target': '_blank'}))
-
         context_data = {
             'buttons': buttons,
             'multi_search': True,
@@ -339,8 +272,8 @@ class PowerButton(object):
         return self.url or (self.flag + '/')
 
 
-
 class PowerInlineModelAdmin(InlineModelAdmin):
+
     def has_change_permission(self, request, obj=None):
         change_permission = super(PowerInlineModelAdmin, self).has_change_permission(request, obj) # Alterar
         view = get_permission_codename('view', self.opts) # Visualizar
@@ -348,7 +281,6 @@ class PowerInlineModelAdmin(InlineModelAdmin):
         if obj:
             return change_permission or request.user.has_perm("%s.%s" % (self.opts.app_label, view))
         return change_permission or request.user.has_perm("%s.%s" % (self.opts.app_label, browser))
-
 
     def _all_fields(self, request, obj=None):
         if self.fields:

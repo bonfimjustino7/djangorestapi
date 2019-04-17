@@ -13,18 +13,17 @@ from django.contrib.admin.utils import label_for_field, display_for_field, displ
 
 from django.template.loader import get_template
 from django.template import RequestContext
-
 from io import StringIO
-
-import os
 import cgi
-from xhtml2pdf.pisa import pisaDocument
+
+import csv
+# from xhtml2pdf.pisa import pisaDocument
 
 
 def export_as_csv_action(description=u"Exportar CSV", fields=None, header=True):
     def export_as_csv(modeladmin, request, queryset):
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=%s.csv' % modeladmin.opts.replace('.', '_')
+        response['Content-Disposition'] = 'attachment; filename=%s.csv' % modeladmin.opts.db_table
 
         writer = csv.writer(response)
         if header:
@@ -91,13 +90,11 @@ def report_action(description=u"Impressão", fields=None, header='', template_na
                 line.append(strip_tags(u'%s' % result_repr))
             results['results'].append(line)
 
-
         template = get_template(template_name)
         html  = template.render(RequestContext(request, {
             'header': header,
             'results': results,
         }))
-        #return HttpResponse(html)
         result = StringIO.StringIO()
         pdf = pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, link_callback=lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, "")))
         if not pdf.err:

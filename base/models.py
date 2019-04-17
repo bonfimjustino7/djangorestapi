@@ -38,7 +38,7 @@ class Area(models.Model):
     descricao = models.CharField(max_length=40)
 
     def __str__(self):
-        return self.codigo
+        return self.descricao
 
 
 class Premiacao(models.Model):

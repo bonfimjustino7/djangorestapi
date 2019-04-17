@@ -94,7 +94,7 @@ class Registro2View(View):
 
     def get(self, request, **kwargs):
         self.dados['formulario_registro'] = Registro2Form()
-        if UserToken.objects.filter(token = self.kwargs['token']).exists():
+        if UserToken.objects.filter(token=self.kwargs['token']).exists():
             self.dados['token_usuario'] = self.kwargs['token']
         else:
             messages.error(request, 'Pré-cadastro não encontrado')
@@ -105,7 +105,7 @@ class Registro2View(View):
 
         if not request.POST.get('usuario'):
             self.dados['formulario_registro'].add_error('usuario', 'O campo usuário é obrigatório.')
-        elif User.objects.filter(username = request.POST.get('usuario')).exists():
+        elif User.objects.filter(username=request.POST.get('usuario')).exists():
             self.dados['formulario_registro'].add_error('usuario',
                     'Esse nome de usuário já foi utilizado. Por favor, escolha outro.')
 
@@ -169,7 +169,7 @@ class ReiniciaSenha2View(View):
     dados = {}
 
     def get(self, request, **kwargs):
-        if UserToken.objects.filter(token = self.kwargs['token']).exists():
+        if UserToken.objects.filter(token=self.kwargs['token']).exists():
             self.dados['formulario'] = Registro2Form()
             self.dados['formulario'].fields['usuario'].initial = UserToken.objects.get(token = self.kwargs['token']).owner
             self.dados['formulario'].fields['usuario'].widget.attrs['disabled'] = 'disabled'
@@ -199,12 +199,14 @@ class ReiniciaSenha2View(View):
                     messages.error(request, 'Erro: {}'.format(erro.__str__()))
         return render(request, self.template, self.dados)
 
+
 class InicioView(LoginRequiredMixin, View):
     template = 'base/base.html'
     dados = {}
 
     def get(self, request, **kwargs):
         return render(request, self.template, self.dados)
+
 
 class NovaEmpresaView(LoginRequiredMixin, View):
     template = 'base/nova-empresa.html'
@@ -213,7 +215,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
         self.dados['formulario_cadastro'] = RegistroEmpresaForm()
         self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
-        self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm, extra = 0)
+        self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm, extra=0)
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
@@ -221,7 +223,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         formulario = RegistroEmpresaForm(request.POST)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
 
-        if Empresa.objects.filter(nome = request.POST.get('nome')).exists():
+        if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         if formulario.is_valid():
@@ -238,8 +240,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
                     print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
                     empresa.empresaagencia_set.create(
-                        agencia = request.POST.get('form-{}-nome'.format(i)),
-                        uf = UF.objects.get(sigla = request.POST.get('form-{}-uf'.format(i))),
+                        agencia=request.POST.get('form-{}-nome'.format(i)),
+                        uf=UF.objects.get(sigla = request.POST.get('form-{}-uf'.format(i))),
                     )
 
                 request.session['empresa'] = empresa.id
@@ -255,6 +257,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             resposta['texto'] = formulario.errors.as_text()
         return JsonResponse(resposta)
 
+
 def logoutview(request):
     logout(request)
     return redirect('login')
@@ -262,6 +265,7 @@ def logoutview(request):
 ####################
 #### Auxiliares ####
 ####################
+
 
 def consulta_empresa(request, nome):
     resposta = {}
@@ -271,11 +275,13 @@ def consulta_empresa(request, nome):
         resposta['existe'] = False
     return JsonResponse(resposta)
 
+
 def estados_regional(request):
     resposta = {
         'estados': Regional.objects.get(id = request.GET.get('regional')).estados.split(','),
     }
     return JsonResponse(resposta)
+
 
 def cadastro_fiscal(request):
     # TODO: Desenvolver cadastros fiscais

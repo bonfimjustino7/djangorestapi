@@ -28,10 +28,9 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
-    # 'poweradmin',
-    #'filebrowser',
     'admin_tools',
     'admin_tools.dashboard',
+    'poweradmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,9 +44,7 @@ INSTALLED_APPS = [
     'mptt',
     'smart_selects',
     'easy_thumbnails',
-    'django.contrib.sitemaps',
     'util',
-    # 'cms',
     'base',
     'inscricao',
 ]
@@ -105,9 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
 ]
 
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
 LANGUAGE_CODE = 'pt-br'
-
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
@@ -118,17 +113,17 @@ THOUSAND_SEPARATOR = '.'
 USE_THOUSAND_SEPARATOR = True
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y',)
-DATE_FORMAT = 'd/m/Y'
 SHORT_DATE_FORMAT = 'd/m/Y'
-DATETIME_FORMAT = 'd/m/Y, H:i'
-SHORT_DATETIME_FORMAT = 'd/m/Y, H:i'
+DATE_FORMAT = 'd/m/Y'
+DATETIME_FORMAT = 'd/m/Y H:i:s'
+SHORT_DATETIME_FORMAT = 'd/m/Y, H:i:s'
 
 MESSAGE_TAGS = {
-	message_constants.DEBUG: 'debug',
-	message_constants.INFO: 'info',
-	message_constants.SUCCESS: 'success',
-	message_constants.WARNING: 'warning',
-	message_constants.ERROR: 'danger',
+    message_constants.DEBUG: 'debug',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'danger',
 }
 
 # Static files (CSS, JavaScript, Images)
