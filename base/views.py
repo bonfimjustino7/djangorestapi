@@ -69,7 +69,7 @@ class Registro1View(View):
 
             email = self.dados['formulario_registro'].cleaned_data['email']
             try:
-                user = User.objects.get(email)
+                user = User.objects.get(email = email)
             except User.DoesNotExist:
                 user = User.objects.create(
                     username=create_token(10),
@@ -127,6 +127,13 @@ class Registro2View(View):
                         Group.objects.get_or_create(name = 'Agência')[0]
                     )
                     user.save()
+
+                    #Criando inscricao.Usuario:
+                    Usuario.objects.create(
+                        nome_completo = user.get_full_name(),
+                        user = user
+                    )
+
                     login(request, user)
 
                     messages.success(request, 'Usuário cadastrado com sucesso.')
@@ -232,6 +239,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
         if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
+
+        print(formulario.is_valid(), formset_agencias.is_valid())
 
         if formulario.is_valid():
             try:

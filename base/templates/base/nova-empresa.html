@@ -5,7 +5,7 @@
         <div class="col-md-8 offset-md-2">
 
             <div class="card">
-                <div class="card-body">
+                <div class="card-body formulario-empresa">
                     <div class="row">
                         <div class="col-md-6 text-center">
                             <p class="card-title">
@@ -20,19 +20,22 @@
                         {% csrf_token %}
 
                         <div class="row my-2">
-                            <div class="col-md-4">
-                                {{formulario_cadastro.regional.label_tag}}
-                                {{formulario_cadastro.regional}}
-                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.regional.help_text}}</span>
-                                {{formulario_cadastro.regional.errors}}
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 {{formulario_cadastro.nome.label_tag}}
                                 {{formulario_cadastro.nome}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.nome.help_text}}</span>
                                 {{formulario_cadastro.nome.errors}}
                             </div>
-                            <div class="col-md-4">
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-md-6">
+                                {{formulario_cadastro.regional.label_tag}}
+                                {{formulario_cadastro.regional}}
+                                <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.regional.help_text}}</span>
+                                {{formulario_cadastro.regional.errors}}
+                            </div>
+                            <div class="col-md-6">
                                 {{formulario_cadastro.area.label_tag}}
                                 {{formulario_cadastro.area}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.area.help_text}}</span>
@@ -236,15 +239,15 @@
                             </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row my-2 botoes-adicionais d-none">
                             <div class="col-md-4 text-center">
-                                <a href="#" id="btn_agencias" class="btn btn-outline-primary disabled" disabled>Agências</a>
+                                <a href="#" id="btn_agencias" class="btn btn-outline-primary">Agências</a>
                             </div>
                             <div class="col-md-4 text-center">
-                                <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary disabled" disabled>Dados Fiscais</a>
+                                <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary">Dados Fiscais</a>
                             </div>
                             <div class="col-md-4 text-center">
-                                <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary disabled" disabled>Iniciar Inscrições</a>
+                                <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary">Iniciar Inscrições</a>
                             </div>
                         </div>
 
@@ -322,32 +325,10 @@
             var url = '{% url 'nova-empresa' %}'
             carrega_dados_formulario()
 
-            var habilitar_btns = function() {
-                $('#btn_agencias').prop('disabled', false)
-                $('#btn_agencias').removeClass('disabled')
-
-                $('#btn_dados_fiscais').prop('disabled', false)
-                $('#btn_dados_fiscais').removeClass('disabled')
-
-                $('#btn_inscricoes').prop('disabled', false)
-                $('#btn_inscricoes').removeClass('disabled')
-            }
-
-            var desabilitar_btns = function() {
-                $('#btn_agencias').prop('disabled', true)
-                $('#btn_agencias').addClass('disabled')
-
-                $('#btn_dados_fiscais').prop('disabled', true)
-                $('#btn_dados_fiscais').addClass('disabled')
-
-                $('#btn_inscricoes').prop('disabled', true)
-                $('#btn_inscricoes').addClass('disabled')
-            }
-
             $.post(url, dados)
             .done(resposta => {
                 if (resposta.status == 200) {
-                    habilitar_btns()
+                    $('.botoes-adicionais').removeClass('d-none')
                     Swal.fire({
                         type: 'success',
                         text: 'Empresa cadastrada com sucesso',

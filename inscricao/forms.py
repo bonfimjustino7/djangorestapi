@@ -1,11 +1,18 @@
 #coding: utf-8
 from django import forms
 from inscricao.models import *
+from util.fields import BRPhoneNumberField
 from localflavor.br.forms import BRCNPJField
 from base.forms import CAMPO_TEXTO_PADRAO, CAMPO_EMAIL_PADRAO, CAMPO_SENHA_PADRAO
 
 
 class RegistroEmpresaForm(forms.ModelForm):
+    telefone = BRPhoneNumberField(required = False)
+    celular = BRPhoneNumberField(required = False)
+    VP_Telefone = BRPhoneNumberField(required = False)
+    C1_Telefone = BRPhoneNumberField(required = False)
+    C2_Telefone = BRPhoneNumberField(required = False)
+
     class Meta:
         model = Empresa
         fields = [

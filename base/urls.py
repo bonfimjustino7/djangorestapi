@@ -15,7 +15,7 @@ urlpatterns = [
     url('start/$', InicioView.as_view(), name = 'start'),
     url('nova-empresa/$', NovaEmpresaView.as_view(), name = 'nova-empresa'),
 
-    url('consulta-empresa/(?P<nome>[a-zA-Z0-9]+)/$', consulta_empresa, name = 'consulta_empresa'),
+    url('consulta-empresa/(?P<nome>[a-zA-Z0-9 ]+)/$', consulta_empresa, name = 'consulta-empresa'),
     url('estados-regional/$', estados_regional, name = 'estados-regional'),
     url('cadastro-fiscal/$', cadastro_fiscal, name = 'cadastro-fiscal'),
 ]
