@@ -87,7 +87,8 @@ class Registro1View(View):
                 params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link()},
                 template='emails/confirma-email.html', )
 
-        return redirect('instrucoes-login')
+            return redirect('instrucoes-login')
+        return render(request, self.template, self.dados)
 
 
 class Registro2View(View):

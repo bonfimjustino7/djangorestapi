@@ -20,7 +20,7 @@ class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if User.objects.filter(email=email, is_active=True).count() > 0:
+        if User.objects.filter(email = email, is_active = True).exists():
             raise ValidationError('Já existe um usuário utilizando este email')
         return email
 
