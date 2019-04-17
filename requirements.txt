@@ -2,8 +2,8 @@ Django<2
 mysqlclient
 xhtml2pdf
 django-admin-tools
-django-filebrowser==3.11.1
-django-localflavor==2.1
+django-filebrowser
+django-localflavor
 django-recaptcha
 django-smart-selects
 django-tabbed-admin

@@ -67,13 +67,17 @@ class Registro1View(View):
         self.dados['formulario_registro'] = Registro1Form(request.POST)
         if self.dados['formulario_registro'].is_valid():
 
-            user = User.objects.create(
-                username=create_token(10),
-                first_name=self.dados['formulario_registro'].cleaned_data['nome'],
-                last_name=self.dados['formulario_registro'].cleaned_data['sobrenome'],
-                email=self.dados['formulario_registro'].cleaned_data['email'],
-                is_active=False
-            )
+            email = self.dados['formulario_registro'].cleaned_data['email']
+            try:
+                user = User.objects.get(email)
+            except User.DoesNotExist:
+                user = User.objects.create(
+                    username=create_token(10),
+                    first_name=self.dados['formulario_registro'].cleaned_data['nome'],
+                    last_name=self.dados['formulario_registro'].cleaned_data['sobrenome'],
+                    email=email,
+                    is_active=False
+                )
 
             token = UserToken.objects.create(owner=user.username)
 
@@ -83,8 +87,8 @@ class Registro1View(View):
                 params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link()},
                 template='emails/confirma-email.html', )
 
-            messages.success(request, 'Verifique seu e-mail para completar o registro')
         return redirect('instrucoes-login')
+
 
 class Registro2View(View):
     template = 'base/registro2.html'

@@ -126,6 +126,10 @@ class TipoMaterial(models.Model):
     def __str__(self):
         return u'%s' % (self.descricao)
 
+    class Meta:
+        verbose_name = u'Tipo de Material'
+        verbose_name_plural = u'Tipos de Materiais'
+
 
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
