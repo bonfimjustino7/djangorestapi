@@ -1,27 +1,65 @@
-{% extends "base/base.html" %}
+{% extends "base/base_bulma.html" %}
+{% load staticfiles %}
 
 {% block conteudo %}
-    <div class="row my-2">
-        <div class="col-md-6 offset-md-3">
+    <form action="{% url 'registro' %}" method="post">
+        {% csrf_token %}
 
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-title">
-                        <h1 class="text-center">Pré-cadastro</h1>
-                    </p>
+        <div class="columns">
+            <div class="column is-10 is-offset-1 registro">
+                <div class="box is-radiusless">
+                    <div class="has-text-centered">
+                        <img src="{% static "base/img/logo.png" %}" width="200" alt="">
+                        <h1 class="title">Pré-cadastro de Usuário</h1>
+                    </div>
 
-                    {% include "base/includes/messages.html" with messages=messages %}
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="field campo">
+                                {{formulario_registro.nome.label_tag}}
+                                {% if formulario_registro.nome.field.required %}
+                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                {% endif %}
+                                {{formulario_registro.nome}}
+                                {{formulario_registro.nome.errors}}
+                                {{formulario_registro.nome.help_text}}
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="field campo">
+                                {{formulario_registro.sobrenome.label_tag}}
+                                {% if formulario_registro.sobrenome.field.required %}
+                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                {% endif %}
+                                {{formulario_registro.sobrenome}}
+                                {{formulario_registro.sobrenome.errors}}
+                                {{formulario_registro.sobrenome.help_text}}
+                            </div>
+                        </div>
+                    </div>
 
-                    <form action="{% url 'registro' %}" method="post">
-                        {% csrf_token %}
-                        {{formulario_registro.as_p}}
-                        <p class="text-center">
-                            <input type="submit" class="btn btn-primary" value="Enviar">
-                        </p>
-                    </form>
+                    <div class="columns">
+                        <div class="column is-12">
+                            <div class="field campo">
+                                {{formulario_registro.email.label_tag}}
+                                {% if formulario_registro.email.field.required %}
+                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                {% endif %}
+                                {{formulario_registro.email}}
+                                {{formulario_registro.email.errors}}
+                                {{formulario_registro.email.help_text}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field has-text-centered">
+                        <input type="submit" class="button is-link bt1 is-radiusless" value="Enviar">
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
-{% endblock %}
+
+    </form>
+
+    {% include "base/includes/messages.html" with messages=messages %}
+{% endblock conteudo %}

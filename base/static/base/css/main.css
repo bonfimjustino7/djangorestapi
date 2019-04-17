@@ -19,6 +19,8 @@ body {
     margin-left: 20px;
 }
 
+label {font-weight: bold;}
+
 .login {
     margin-top: 200px;
 }

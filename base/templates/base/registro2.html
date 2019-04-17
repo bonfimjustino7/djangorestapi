@@ -1,29 +1,78 @@
-{% extends "base/base.html" %}
+{% extends "base/base_bulma.html" %}
+{% load staticfiles %}
 
 {% block conteudo %}
-    <div class="row my-2">
-        <div class="col-md-6 offset-md-3">
 
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-title">
-                        <h1 class="text-center">Pré-cadastro de Usuário (Fase 2)</h1>
-                    </p>
+    <form action="{% url 'novo-usuario' token_usuario %}" method="post">
+        {% csrf_token %}
 
-                    {% include "base/includes/messages.html" with messages=messages %}
+        <div class="columns">
+            <div class="column is-10 is-offset-1 registro">
+                <div class="box is-radiusless">
+                    <div class="has-text-centered">
+                        <img src="{% static "base/img/logo.png" %}" width="200" alt="">
+                        <h1 class="title">Cadastro de Usuário</h1>
+                    </div>
 
-                    {% if token_usuario %}
-                        <form action="{% url 'novo-usuario' token_usuario %}" method="post">
-                            {% csrf_token %}
-                            {{formulario_registro.as_p}}
-                            <p class="text-center">
-                                <input type="submit" class="btn btn-primary" value="Enviar">
-                            </p>
-                        </form>
+                    {% if messages %}
+                        <div class="columns">
+                            <div class="column is-12 has-text-centered" style="font-weight: bold;">Aviso:</div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-12">
+                                <ul>
+                                    {% for mensagem in messages %}
+                                        <li class="is-{{mensagem.tags}}">{{mensagem}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                     {% endif %}
+                    <div class="columns">
+                        <div class="column is-12">
+                            <div class="field campo">
+                                {{formulario_registro.usuario.label_tag}}
+                                {% if formulario_registro.usuario.field.required %}
+                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                {% endif %}
+                                {{formulario_registro.usuario}}
+                                {{formulario_registro.usuario.errors}}
+                                {{formulario_registro.usuario.help_text}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="field campo">
+                                {{formulario_registro.senha.label_tag}}
+                                {% if formulario_registro.senha.field.required %}
+                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                {% endif %}
+                                {{formulario_registro.senha}}
+                                {{formulario_registro.senha.errors}}
+                                {{formulario_registro.senha.help_text}}
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="field campo">
+                                {{formulario_registro.senha2.label_tag}}
+                                {% if formulario_registro.senha2.field.required %}
+                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                {% endif %}
+                                {{formulario_registro.senha2}}
+                                {{formulario_registro.senha2.errors}}
+                                {{formulario_registro.senha2.help_text}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field has-text-centered">
+                        <input type="submit" class="button is-link bt1 is-radiusless" value="Enviar">
+                    </div>
+
                 </div>
             </div>
-
         </div>
-    </div>
-{% endblock %}
+    </form>
+
+{% endblock conteudo %}

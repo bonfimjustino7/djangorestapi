@@ -16,9 +16,8 @@ from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
 
-
 class LoginView(View):
-    template = 'base/login_bulma.html'
+    template = 'base/login.html'
     dados = {}
 
     def get(self, request, **kwargs):
@@ -87,13 +86,13 @@ class Registro1View(View):
             messages.success(request, 'Verifique seu e-mail para completar o registro')
         return redirect('instrucoes-login')
 
-
 class Registro2View(View):
     template = 'base/registro2.html'
     dados = {}
 
     def get(self, request, **kwargs):
         self.dados['formulario_registro'] = Registro2Form()
+        self.dados['formulario_registro'].fields['usuario'].required = True
         if UserToken.objects.filter(token=self.kwargs['token']).exists():
             self.dados['token_usuario'] = self.kwargs['token']
         else:
@@ -119,11 +118,14 @@ class Registro2View(View):
                     user.set_password(self.dados['formulario_registro'].cleaned_data['senha'])
                     user.is_active = True
                     user.is_staff = True
-                    grupo = Group.objects.get_or_create(name='Agência')
-                    user.groups.add(grupo)
+                    user.groups.add(
+                        Group.objects.get_or_create(name = 'Agência')[0]
+                    )
                     user.save()
+                    login(request, user)
 
                     messages.success(request, 'Usuário cadastrado com sucesso.')
+                    return redirect('nova-empresa')
                 else:
                     messages.error(request, 'Token inválido ou desativado. Realize seu pré-cadastro novamente.')
                 return redirect('start')

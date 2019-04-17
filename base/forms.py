@@ -1,9 +1,9 @@
 #coding: utf-8
 from django import forms
 
-CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {'class': 'form-control'})
-CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {'class': 'form-control'})
-CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'form-control'})
+CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {'class': 'input'})
+CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {'class': 'input'})
+CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'input'})
 
 
 class LoginForm(forms.Form):

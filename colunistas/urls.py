@@ -21,8 +21,6 @@ from django.contrib import admin
 from django.conf import settings
 from filebrowser.sites import site
 
-from django.conf.urls import url, include
-
 # django 2
 # from django.urls import path
 # from django.conf.urls import include
@@ -36,6 +34,8 @@ urlpatterns = [
 	url(r'^admin_tools/', include('admin_tools.urls')),
 	url(r'^ckeditor/', include('ckeditor.urls')),
 	url(r'^chaining/', include('smart_selects.urls')),
+
+	url(r'^', include('base.urls')),
 ]
 
 if 'theme' in settings.INSTALLED_APPS:

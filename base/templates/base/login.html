@@ -1,29 +1,52 @@
-{% extends "base/base.html" %}
+{% extends "base/base_bulma.html" %}
+{% load staticfiles %}
 
 {% block conteudo %}
-    <div class="row my-2">
-        <div class="col-md-6 offset-md-3">
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
 
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-title">
-                        <h1 class="text-center">Login</h1>
-                    </p>
+        <div class="columns">
+            <div class="column is-6 is-offset-3 login">
+                <div class="box is-radiusless">
+                    <div class="has-text-centered">
+                        <img src="{% static "base/img/logo.png" %}" width="200" alt="">
+                        <h1 class="title">Login</h1>
+                    </div>
 
-                    {% include "base/includes/messages.html" with messages=messages %}
+                    <div class="field campo">
+                        {{formulario_login.usuario.label_tag}}
+                        {% if formulario_login.usuario.field.required %}
+                            <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                        {% endif %}
+                        {{formulario_login.usuario}}
+                        {{formulario_login.usuario.errors}}
+                        {{formulario_login.usuario.help_text}}
+                    </div>
 
-                    <form action="{% url 'login' %}" method="post">
-                        {% csrf_token %}
-                        {{formulario_login.as_p}}
-                        <p class="text-center">
-                            <input type="submit" class="btn btn-primary" value="Enviar">
-                        </p>
+                    <div class="field campo">
+                        {{formulario_login.senha.label_tag}}
+                        {% if formulario_login.senha.field.required %}
+                            <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                        {% endif %}
+                        {{formulario_login.senha}}
+                        {{formulario_login.senha.errors}}
+                        {{formulario_login.senha.help_text}}
+                    </div>
 
-                        <p class="text-center"><a href="{% url 'reset-senha' %}">Esqueci minha senha...</a></p>
-                    </form>
+                    <div class="field has-text-centered">
+                        <input type="submit" class="button is-link bt1 is-radiusless" value="Entrar">
+                        <a href="{% url 'registro' %}" class="button is-link bt2 is-radiusless">Registrar</a>
+                    </div>
+
+                    <div class="field has-text-centered">
+                        <a href="{% url 'reset-senha' %}" class="has-text-weight-bold">Esqueceu sua senha?</a>
+                    </div>
+
                 </div>
             </div>
-
         </div>
-    </div>
-{% endblock %}
+
+    </form>
+
+    {% include "base/includes/messages.html" with messages=messages %}
+{% endblock conteudo %}

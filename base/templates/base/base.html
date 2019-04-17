@@ -7,30 +7,16 @@
 
         {% include "base/includes/css_padrao.html" %}
 
+        {% if messages %}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+        {% endif %}
+
         {% block css %}{% endblock %}
 
         <title>Template provisório</title>
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row my-2">
-                <div class="col-md-6 offset-md-3">
-                    <div class="card">
-                        <div class="card-body">
-
-                            {% if request.user.is_authenticated %}
-                                <p class="text-center">Usuário logado: {{request.user.username}}. <a href="{% url 'logout' %}">Sair</a></p>
-                            {% else %}
-                                <p class="text-center">
-                                    <a href="{% url 'login' %}" class="btn btn-default">Login</a>&nbsp;
-                                    <a href="{% url 'registro' %}" class="btn btn-primary">Registrar</a>
-                                </p>
-                            {% endif %}
-
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             {% block conteudo %}
                 <div class="row my-2">
