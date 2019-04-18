@@ -21,6 +21,8 @@ body {
 
 label {font-weight: bold;}
 
+.formulario-empresa {font-size: 15px;}
+
 .login {
     margin-top: 200px;
 }

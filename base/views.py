@@ -16,6 +16,7 @@ from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
 
+
 class LoginView(View):
     template = 'base/login.html'
     dados = {}
@@ -127,6 +128,13 @@ class Registro2View(View):
                         Group.objects.get_or_create(name = 'Agência')[0]
                     )
                     user.save()
+
+                    #Criando inscricao.Usuario:
+                    Usuario.objects.create(
+                        nome_completo = user.get_full_name(),
+                        user = user
+                    )
+
                     login(request, user)
 
                     messages.success(request, 'Usuário cadastrado com sucesso.')
@@ -170,6 +178,7 @@ class ReiniciaSenha1View(View):
             except Exception as erro:
                 messages.error(request, 'Erro: {}'.format(erro.__str__()))
         return redirect('instrucoes-login')
+
 
 class ReiniciaSenha2View(View):
     template = 'base/reinicia-senha2.html'
@@ -232,6 +241,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
         if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
+
+        print(formulario.is_valid(), formset_agencias.is_valid())
 
         if formulario.is_valid():
             try:

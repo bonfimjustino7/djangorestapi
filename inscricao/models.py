@@ -16,7 +16,7 @@ class Usuario(models.Model):
 class Empresa(models.Model):
     nome = models.CharField(max_length=60)
     cnpj = BRCNPJField()
-    area = models.ForeignKey(Area, on_delete=models.PROTECT)
+    area = models.ForeignKey(Area, verbose_name = 'Área', on_delete=models.PROTECT)
     regional = models.ForeignKey(Regional, on_delete=models.PROTECT)
     cep = models.CharField(u'CEP', max_length=8, blank=True, null=True)
     uf = models.ForeignKey(UF, blank=True, null=True, on_delete=models.PROTECT)
@@ -33,15 +33,15 @@ class Empresa(models.Model):
     VP_Email = models.EmailField(u'E-Mail', blank=True, null=True)
     VP_DDD = models.CharField('DDD', max_length=2)
     VP_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
-    C1_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100)
-    C1_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60)
+    C1_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100, null = True, blank = True)
+    C1_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60, null = True, blank = True)
     C1_Email = models.EmailField(u'E-Mail', blank=True, null=True)
-    C1_DDD = models.CharField('DDD', max_length=2)
+    C1_DDD = models.CharField('DDD', max_length=2, null = True, blank = True)
     C1_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
-    C2_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100)
-    C2_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60)
+    C2_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100, null = True, blank = True)
+    C2_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60, null = True, blank = True)
     C2_Email = models.EmailField(u'E-Mail', blank=True, null=True)
-    C2_DDD = models.CharField('DDD', max_length=2)
+    C2_DDD = models.CharField('DDD', max_length=2, null = True, blank = True)
     C2_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
 
     def __str__(self):
@@ -140,4 +140,3 @@ class Material(models.Model):
 
     def __str__(self):
         return u'%s (%s)' % (self.formato, self.id)
-

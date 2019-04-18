@@ -1,11 +1,14 @@
 # coding:utf-8
 from django.db import models
-from django.forms.fields import Field
+from django.forms.fields import Field, CharField
 from django.core.serializers.json import DjangoJSONEncoder
+from django.core.exceptions import ValidationError
 
-import ast, json, os, uuid
+import ast, json, os, uuid, re
 
 from .forms import BRDateFormField, BRDecimalFormField
+
+from django.core.validators import EMPTY_VALUES
 
 
 def formata_nome_do_arquivo(objeto, nome_arquivo):
@@ -24,6 +27,26 @@ class BRDecimalField(models.DecimalField):
         kwargs.update({'form_class': BRDecimalFormField})
         return super(BRDecimalField, self).formfield(**kwargs)
 
+
+class BRPhoneNumberField(CharField):
+    default_error_messages = {
+        'invalid': 'Telefones precisam estar no formato XXXX-XXXX ou XXXXX-XXXX.',
+    }
+    phone_digits_re = re.compile(r'^(\d{4,5})[-\.]?(\d{4})$')
+
+    def __init__(self, *args, **kwargs):
+        super(BRPhoneNumberField, self).__init__(max_length=10, *args, **kwargs)
+
+
+    def clean(self, value):
+        super(BRPhoneNumberField, self).clean(value)
+        if value in EMPTY_VALUES:
+            return ''
+        value = re.sub('(\(|\)|\s+)', '', value)
+        m = self.phone_digits_re.search(value)
+        if m:
+            return '{}{}'.format(m.group(1), m.group(2))
+        raise ValidationError(self.error_messages['invalid'])
 
 class JSONFormField(Field):
     def clean(self, value):
