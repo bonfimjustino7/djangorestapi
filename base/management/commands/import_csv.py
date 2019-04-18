@@ -30,8 +30,9 @@ class Command(BaseCommand):
         file_name = options['tabela']
         classe = find_header(file_name)
         if not classe:
-            raise Exception('Classe %s não encontrada')
+            raise Exception('Classe %s não encontrada' % file_name)
         modelo = apps.get_model(classe['app'], classe['modelo'])
+        tot_reg = 0
         with open(file_name, encoding='iso-8859-1') as csv_file:
             reader = csv.reader(csv_file, delimiter=';', quotechar='"')
             reader.__next__()  # skip header
@@ -39,6 +40,8 @@ class Command(BaseCommand):
             for row in reader:
                 _object_dict = {key: value for key, value in zip(header, row)}
                 modelo.objects.create(**_object_dict)
+            tot_reg += 1
+        print('Registros importados: %d' % tot_reg)
 
 
 

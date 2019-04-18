@@ -16,7 +16,7 @@ body {
 
 .campo .required {
     color: dimgray;
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 label {font-weight: bold;}
@@ -32,6 +32,8 @@ label {font-weight: bold;}
 .login a:hover {
     color: black;
 }
+
+.errorlist { color: crimson }
 
 .title {
     margin-bottom: 10px;

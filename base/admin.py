@@ -1,4 +1,5 @@
 from django.contrib import admin
+from poweradmin.admin import PowerModelAdmin
 
 from base.models import *
 
@@ -13,12 +14,16 @@ class PremioInline(admin.TabularInline):
 @admin.register(Premiacao)
 class PremiacaoAdmin(admin.ModelAdmin):
     list_display = ['nome', 'codigo', 'ordem']
-    list_editable = ['ordem']
     ordering = ['ordem']
     inlines = [PremioInline]
 
 
+@admin.register(Categoria)
+class CategoriaAdmin(PowerModelAdmin):
+    list_display = ['codigo', 'nome', 'descricao', 'grupo']
+    ordering = ['codigo']
+
+
 admin.site.register(Regional)
-admin.site.register(Categoria)
 admin.site.register(Atividade)
 admin.site.register(UF)

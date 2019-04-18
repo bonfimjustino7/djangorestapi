@@ -17,7 +17,7 @@ class AgenciaInline(admin.TabularInline):
 class EmpresaAdmin(PowerModelAdmin):
     list_filter = ('regional',)
     list_display = ('nome', 'uf', 'municipio')
-    ordering = ['nome']
+    fields = (('nome', ),('cep', 'uf', 'municipio', 'endereco'))
     inlines = [AgenciaInline]
 
 
@@ -27,27 +27,29 @@ class MaterialInline(admin.TabularInline):
 
 
 @admin.register(Inscricao)
-class InscricaoAdmin(TabbedModelAdmin, PowerModelAdmin):
-    list_filter = ('empresa__regional', 'premio', )
+class InscricaoAdmin(TabbedModelAdmin):
+    list_filter = ('premio', )
     list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
-    ordering = ['empresa', 'seq']
 
     tab_info = (
         (None, {'fields': ('empresa', 'titulo', 'categoria', 'cliente')}),
     )
+
     tab_materiais = (
         MaterialInline,
     )
+
     tab_ficha_agencia = (
-        (None, {'fields': ('DiretorCriacao',)})
+        (None, {'fields': ('DiretorCriacao',)}),
     )
+
     tab_ficha_fornec = (
-        (None, {'fields': ('ProdutoraFilme',)})
+        (None, {'fields': ('ProdutoraFilme',)}),
     )
 
     tabs = [
         ('Informações Gerais', tab_info),
-        # ('Quantidade de Materiais', tab_materiais),
+        ('Quantidade de Materiais', tab_materiais),
         ('Ficha Técnica Agência', tab_ficha_agencia),
         ('Ficha Técnica Fornecedores', tab_ficha_fornec),
     ]

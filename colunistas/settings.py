@@ -26,6 +26,7 @@ SECRET_KEY = 'lb)gvnos2w+y0ii)l7-sn2v6(ky-q4a+0cv-9n1*e%-bwh5l5z'
 DEBUG = True
 
 # Application definition
+SITE_NAME = 'Premio Colunistas'
 
 INSTALLED_APPS = [
     'admin_tools',
@@ -92,6 +93,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'colunistas.wsgi.application'
+
+TABBED_ADMIN_USE_JQUERY_UI = True
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

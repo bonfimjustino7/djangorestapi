@@ -29,6 +29,8 @@ from filebrowser.sites import site
 # 	path('', include('base.urls')),
 # ]
 
+admin.site.site_header = settings.SITE_NAME
+
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^admin_tools/', include('admin_tools.urls')),

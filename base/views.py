@@ -69,7 +69,7 @@ class Registro1View(View):
 
             email = self.dados['formulario_registro'].cleaned_data['email']
             try:
-                user = User.objects.get(email)
+                user = User.objects.get(email=email, is_active=False)
             except User.DoesNotExist:
                 user = User.objects.create(
                     username=create_token(10),
