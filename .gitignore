@@ -5,6 +5,7 @@
 *.swp
 *.sqlite3
 *.fuse_hidden*
+data/*
 manage.py
 colunistas/local.py
 colunistas/test.py

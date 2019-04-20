@@ -4,6 +4,12 @@ body {
     background-size: 100% auto;
 }
 
+.col-md-1 { padding-right: 0px; }
+
+.form-control {
+    padding: .375rem .20rem;
+}
+
 .campo {
     border: 1px solid #efefef;
     padding: 10px;
@@ -19,9 +25,9 @@ body {
     margin-left: 15px;
 }
 
-label {font-weight: bold;}
+label {font-weight: bold; margin-bottom: .1rem; margin-top: .4rem;}
 
-.formulario-empresa {font-size: 15px;}
+.formulario-empresa {font-size: 14px;}
 
 .login {
     margin-top: 200px;
@@ -38,7 +44,7 @@ label {font-weight: bold;}
 .errorlist { color: crimson }
 
 .title {
-    margin-bottom: 10px;
+    margin-bottom: 10px; font-size: large;
 }
 
 .bt1 {

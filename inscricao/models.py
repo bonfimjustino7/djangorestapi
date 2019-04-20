@@ -47,6 +47,7 @@ class Empresa(models.Model):
     def __str__(self):
         return u'%s' % self.nome
 
+
 class EmpresaAgencia(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     agencia = models.CharField(max_length=40)
@@ -82,10 +83,10 @@ class Inscricao(models.Model):
     isolada = models.BooleanField(default=False)
     DiretorCriacao = models.CharField(max_length=100, null=True, blank=True)
     Planejamento = models.CharField(max_length=100, null=True, blank=True)
-    Redacao = models.CharField(max_length=140, null=True, blank=True)
-    DiretorArte = models.CharField(max_length=140, null=True, blank=True)
-    ProducaoGrafica = models.CharField(max_length=80, null=True, blank=True)
-    ProducaoRTVC = models.CharField(max_length=80, null=True, blank=True)
+    Redacao = models.CharField('Redação',max_length=140, null=True, blank=True)
+    DiretorArte = models.CharField('Diretor de Arte', max_length=140, null=True, blank=True)
+    ProducaoGrafica = models.CharField('Produção Gráfica', max_length=80, null=True, blank=True)
+    ProducaoRTVC = models.CharField('Produção RTVC', max_length=80, null=True, blank=True)
     TecnologiaDigital = models.CharField(max_length=80, null=True, blank=True)
     OutrosAgencia1 = models.CharField(max_length=80, null=True, blank=True)
     OutrosAgencia2 = models.CharField(max_length=80, null=True, blank=True)
@@ -120,17 +121,6 @@ class Inscricao(models.Model):
         return u'%d' % self.inscricao_set.count()
 
 
-class TipoMaterial(models.Model):
-    descricao = models.CharField(max_length=40)
-
-    def __str__(self):
-        return u'%s' % (self.descricao)
-
-    class Meta:
-        verbose_name = u'Tipo de Material'
-        verbose_name_plural = u'Tipos de Materiais'
-
-
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
@@ -140,3 +130,8 @@ class Material(models.Model):
 
     def __str__(self):
         return u'%s (%s)' % (self.formato, self.id)
+
+    class Meta:
+        ordering = ('tipo', )
+        verbose_name = u'Material'
+        verbose_name_plural = u'Materiais'

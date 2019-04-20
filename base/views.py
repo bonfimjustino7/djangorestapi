@@ -102,7 +102,7 @@ class Registro2View(View):
         if UserToken.objects.filter(token=self.kwargs['token']).exists():
             self.dados['token_usuario'] = self.kwargs['token']
         else:
-            messages.error(request, 'Pré-cadastro não encontrado')
+            messages.error(request, 'Pré-cadastro não encontrado ou expirado')
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):

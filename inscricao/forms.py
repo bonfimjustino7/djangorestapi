@@ -3,15 +3,15 @@ from django import forms
 from inscricao.models import *
 from util.fields import BRPhoneNumberField
 from localflavor.br.forms import BRCNPJField
-from base.forms import CAMPO_TEXTO_PADRAO, CAMPO_EMAIL_PADRAO, CAMPO_SENHA_PADRAO
+from base.forms import CAMPO_TEXTO_PADRAO
 
 
 class RegistroEmpresaForm(forms.ModelForm):
-    telefone = BRPhoneNumberField(required = False)
-    celular = BRPhoneNumberField(required = False)
-    VP_Telefone = BRPhoneNumberField(required = False)
-    C1_Telefone = BRPhoneNumberField(required = False)
-    C2_Telefone = BRPhoneNumberField(required = False)
+    telefone = BRPhoneNumberField(required=False)
+    celular = BRPhoneNumberField(required=False)
+    VP_Telefone = BRPhoneNumberField(required=False)
+    C1_Telefone = BRPhoneNumberField(required=False)
+    C2_Telefone = BRPhoneNumberField(required=False)
 
     class Meta:
         model = Empresa
@@ -25,6 +25,7 @@ class RegistroEmpresaForm(forms.ModelForm):
             'C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',
         ]
 
+
 class RegistroEmpresaAgenciaForm(forms.ModelForm):
     class Meta:
         model = EmpresaAgencia
@@ -32,12 +33,14 @@ class RegistroEmpresaAgenciaForm(forms.ModelForm):
             'agencia', 'uf'
         ]
 
+
 class RegistroRegionalForm(forms.ModelForm):
     class Meta:
         model = Regional
         fields = [
             'nome', 'estados',
         ]
+
 
 class DadosFiscaisEmpresaForm(forms.Form):
     cnpj = BRCNPJField(label = 'CNPJ', widget = CAMPO_TEXTO_PADRAO)

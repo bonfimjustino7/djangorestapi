@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from poweradmin.admin import PowerModelAdmin
 
 from base.models import *
@@ -20,10 +21,32 @@ class PremiacaoAdmin(admin.ModelAdmin):
 
 @admin.register(Categoria)
 class CategoriaAdmin(PowerModelAdmin):
+    search_fields = ['codigo', 'nome']
     list_display = ['codigo', 'nome', 'descricao', 'grupo']
     ordering = ['codigo']
 
 
-admin.site.register(Regional)
-admin.site.register(Atividade)
+# TODO: Fazer funcionar
+class PremioInlineFormSet(forms.models.BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super(PremioInlineFormSet, self).__init__(*args, **kwargs)
+        self.initial_extra = [{'ano': '2019'}, {'status': 'A'}]
+
+
+class PremioRegionalInline(admin.TabularInline):
+    model = Premio
+    fields = ['ano', 'premiacao', 'status']
+    ordering = ['-ano']
+    extra = 0
+    formset = PremioInlineFormSet
+
+
+@admin.register(Regional)
+class RegionalAdmin(PowerModelAdmin):
+    inlines = [PremioRegionalInline]
+
+
 admin.site.register(UF)
+admin.site.register(TipoMaterial)
+admin.site.register(Formato)
+admin.site.register(Area)

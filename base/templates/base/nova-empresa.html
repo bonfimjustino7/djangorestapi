@@ -2,22 +2,19 @@
 
 {% block conteudo %}
     <div class="row my-2">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-14">
 
             <div class="card">
                 <div class="card-body formulario-empresa">
-                    <div class="row">
-                        <div class="col-md-6 text-center">
-                            <p class="card-title">
-                                <h1 class="text-center">Nova Empresa</h1>
-                            </p>
-                        </div>
-                    </div>
 
                     {% include "base/includes/messages.html" with messages=messages %}
 
                     <form action="{% url 'nova-empresa' %}" method="post">
                         {% csrf_token %}
+
+                        <div class="row my-1">
+                            <div class="col-12 text-center font-weight-bold"><h1 class="title">Digite os dados da empresa</h1></div>
+                        </div>
 
                         <div class="row my-2">
                             <div class="col-md-12">
@@ -44,13 +41,13 @@
                         </div>
 
                         <div class="row my-2">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {{formulario_cadastro.cep.label_tag}}
                                 {{formulario_cadastro.cep}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.cep.help_text}}</span>
                                 {{formulario_cadastro.cep.errors}}
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 {{formulario_cadastro.endereco.label_tag}}
                                 {{formulario_cadastro.endereco}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.endereco.help_text}}</span>
@@ -65,7 +62,7 @@
                         </div>
 
                         <div class="row my-2">
-                            <div class="col-md-2">
+                            <div class="col-md-1" style="width: 50px;">
                                 {{formulario_cadastro.uf.label_tag}}
                                 {{formulario_cadastro.uf}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.uf.help_text}}</span>
@@ -77,19 +74,19 @@
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.municipio.help_text}}</span>
                                 {{formulario_cadastro.municipio.errors}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 {{formulario_cadastro.ddd.label_tag}}
                                 {{formulario_cadastro.ddd}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.ddd.help_text}}</span>
                                 {{formulario_cadastro.ddd.errors}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 {{formulario_cadastro.telefone.label_tag}}
                                 {{formulario_cadastro.telefone}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.telefone.help_text}}</span>
                                 {{formulario_cadastro.telefone.errors}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 {{formulario_cadastro.celular.label_tag}}
                                 {{formulario_cadastro.celular}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.celular.help_text}}</span>
@@ -133,13 +130,13 @@
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_Cargo.help_text}}</span>
                                 {{formulario_cadastro.VP_Cargo.errors}}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 {{formulario_cadastro.VP_Email.label_tag}}
                                 {{formulario_cadastro.VP_Email}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_Email.help_text}}</span>
                                 {{formulario_cadastro.VP_Email.errors}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 {{formulario_cadastro.VP_DDD.label_tag}}
                                 {{formulario_cadastro.VP_DDD}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.VP_DDD.help_text}}</span>
@@ -174,13 +171,13 @@
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_Cargo.help_text}}</span>
                                 {{formulario_cadastro.C1_Cargo.errors}}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 {{formulario_cadastro.C1_Email.label_tag}}
                                 {{formulario_cadastro.C1_Email}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_Email.help_text}}</span>
                                 {{formulario_cadastro.C1_Email.errors}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 {{formulario_cadastro.C1_DDD.label_tag}}
                                 {{formulario_cadastro.C1_DDD}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C1_DDD.help_text}}</span>
@@ -209,13 +206,13 @@
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_Cargo.help_text}}</span>
                                 {{formulario_cadastro.C2_Cargo.errors}}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 {{formulario_cadastro.C2_Email.label_tag}}
                                 {{formulario_cadastro.C2_Email}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_Email.help_text}}</span>
                                 {{formulario_cadastro.C2_Email.errors}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 {{formulario_cadastro.C2_DDD.label_tag}}
                                 {{formulario_cadastro.C2_DDD}}
                                 <span class="text-muted" style="font-size: 12px;">{{formulario_cadastro.C2_DDD.help_text}}</span>
@@ -229,31 +226,30 @@
                             </div>
                         </div>
 
+                        <hr class="my-4">
+
                         <div id="formset_agencias">
 
                             {{formset_agencias.management_form}}
 
                             <div class="row my-2">
-                                <div class="col-md-11 text-center font-weight-bold">Agências:</div>
-                                <div class="col-md-1"><a href="javascript:adiciona_agencia()" class="btn btn-primary"><i class="fas fa-plus"></i></a></div>
+                                <div class="col-md-11 text-center"><h1 class="title">Agências:</h1></div>
+                                <div><a href="javascript:adiciona_agencia()" class="btn btn-primary"><i class="fas fa-plus"></i></a></div>
                             </div>
                         </div>
 
-                        <div class="row my-2 botoes-adicionais d-none">
-                            <div class="col-md-4 text-center">
-                                <a href="#" id="btn_agencias" class="btn btn-outline-primary">Agências</a>
-                            </div>
-                            <div class="col-md-4 text-center">
+                        <div class="row my-2">
+                            <div class="col-md-6 text-center botoes-adicionais d-none">
                                 <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary">Dados Fiscais</a>
                             </div>
-                            <div class="col-md-4 text-center">
+                            <div class="col-md-6 text-center botoes-adicionais d-none">
                                 <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary">Iniciar Inscrições</a>
+                            </div>
+                            <div class="col-md-6 text-center botao-enviar">
+                                <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary disabled" disabled>Enviar</button>
                             </div>
                         </div>
 
-                        <p class="text-center">
-                            <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary disabled" disabled>Enviar</button>
-                        </p>
                     </form>
                 </div>
             </div>
@@ -265,8 +261,8 @@
 {% block js %}
     <script>
         // Variáveis globais:
-        var estados_agencias = ''
-        dados = {}
+        var estados_agencias = '';
+        dados = {};
 
         function carrega_dados_formulario() {
             dados.csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val()
@@ -314,10 +310,13 @@
             var url = '/estados-regional/?regional=' + $('#id_regional').val()
             $.get(url)
             .done(function(resposta) {
-                estados_agencias = ''
+                estados_agencias = '';
                 $.each(resposta.estados, function(i, estado) {
                     estados_agencias += `<option value="${estado}">${estado}</option>`
-                })
+                });
+                if ($('#id_form-TOTAL_FORMS').val() == 0) {
+                    adiciona_agencia();
+                }
             })
         }
 
@@ -328,11 +327,12 @@
             $.post(url, dados)
             .done(resposta => {
                 if (resposta.status == 200) {
-                    $('.botoes-adicionais').removeClass('d-none')
+                    $('.botoes-adicionais').removeClass('d-none');
                     Swal.fire({
                         type: 'success',
                         text: 'Empresa cadastrada com sucesso',
                     })
+                    $('.botao-enviar').addClass('d-none');
                 } else {
                     Swal.fire({
                         type: 'error',

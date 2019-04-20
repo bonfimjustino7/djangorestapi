@@ -4,10 +4,33 @@ from fabric.api import *
 
 @with_settings(warn_only=True)
 @hosts("webapp@107.170.161.189")
-def deploy_test():
-    with cd('/var/webapp/colunistas/colunistas/'):
+def deploy():
+    with cd('/var/webapp/ongportal/ongportal/'):
         run('git pull')
-        run('../bin/python manage.py migrate --settings=colunistas.settings.test')
-        run('../bin/python manage.py collectstatic --noinput --settings=colunistas.settings.test')
-        run('supervisorctl restart colunistas')
+        run('../bin/python manage.py migrate --settings=ongportal.settings.test')
+        run('../bin/python manage.py collectstatic --noinput --settings=ongportal.settings.test')
+        run('supervisorctl restart ongportal')
 
+
+@with_settings(warn_only=True)
+@hosts("webapp@107.170.161.189")
+def deploy_test():
+    with cd('/var/webapp/ongportal_test/ongportal/'):
+        run('git pull')
+        run('../bin/python manage.py migrate --settings=ongportal.settings.test')
+        run('../bin/python manage.py collectstatic --noinput --settings=ongportal.settings.test')
+        run('supervisorctl restart ongportal_test')
+
+
+@with_settings(warn_only=True)
+@hosts("desenv1@35.184.116.225:2222")
+def deploy_alumni():
+    with cd('/var/webapp/ongportal/ongportal/'):
+        run('git pull')
+        # if console.confirm("Install requirements.txt?", default=False):
+        #    run('../bin/pip install -r requirements.txt')
+        if console.confirm("Run migrations?", default=False):
+            run('../bin/python manage.py migrate')
+        if console.confirm("Run collectstatic?", default=False):
+            run('../bin/python manage.py collectstatic --noinput')
+        run('supervisorctl restart ongportal')
