@@ -23,7 +23,7 @@ class LoginView(View):
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated:
-            return redirect('start')
+            return redirect('/admin')
 
         self.dados['formulario_login'] = LoginForm()
         if 'next' in request.GET:
@@ -48,7 +48,7 @@ class LoginView(View):
                         del request.session['next']
                         return redirect(retorno)
                     else:
-                        return redirect('start')
+                        return redirect('/admin')
                 else:
                     messages.warning(request, 'Conta desabilitada. :(')
             else:

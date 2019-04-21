@@ -10,11 +10,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for registro in Categoria.objects.all():
-            codigo = registro.codigo[0:2]
-            registro.premiacao = Premiacao.objects.get(codigo=codigo)
-            registro.save()
+            codigo = registro.codigo[0:3]
+            if not registro.premiacao:
+                print(codigo)
+                registro.premiacao = Premiacao.objects.get(codigo=codigo)
+                registro.save()
 
         for registro in Formato.objects.all():
-            registro.premiacao = Premiacao.objects.get(codigo=registro.codigo)
+            registro.premiacao = Premiacao.objects.get(codigo=registro.cod_premiacao)
             registro.save()
 

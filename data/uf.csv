@@ -1,0 +1,28 @@
+Nome;Uf;Regiao;Id ibge
+Acre;AC;Norte;12
+Alagoas;AL;Nordeste;27
+Amapá;AP;Norte;16
+Amazonas;AM;Norte;13
+Bahia;BA;Nordeste;29
+Ceará;CE;Nordeste;23
+Distrito Federal;DF;Centro-Oeste;53
+Espírito Santo;ES;Sudeste;32
+Goiás;GO;Centro-Oeste;52
+Maranhão;MA;Nordeste;21
+Mato Grosso;MT;Centro-Oeste;51
+Mato Grosso do Sul;MS;Centro-Oeste;50
+Minas Gerais;MG;Sudeste;31
+Pará;PA;Norte;15
+Paraíba;PB;Nordeste;25
+Paraná;PR;Sul;41
+Pernambuco;PE;Nordeste;26
+Piauí;PI;Nordeste;22
+Rio de Janeiro;RJ;Sudeste;33
+Rio Grande do Norte;RN;Nordeste;24
+Rio Grande do Sul;RS;Sul;43
+Rondônia;RO;Norte;11
+Roraima;RR;Norte;14
+Santa Catarina;SC;Sul;42
+São Paulo;SP;Sudeste;35
+Sergipe;SE;Nordeste;28
+Tocantins;TO;Norte;17

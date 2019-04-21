@@ -23,6 +23,7 @@ class CustomIndexDashboard(Dashboard):
     Custom index dashboard for radix.
     """
     columns = 2
+    title = ''
 
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
@@ -42,6 +43,19 @@ class CustomIndexDashboard(Dashboard):
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',
                         'util.models.EmailAgendado', 'util.models.UserToken', ),
             ),
+
+            modules.LinkList(
+                'Links Rápidos',
+                layout='inline',
+                draggable=True,
+                deletable=True,
+                collapsible=True,
+                children=[
+                    [_('Alterar password'), reverse('%s:password_change' % site_name)],
+                    [_('Ajuda'), '/ajuda/'],
+                    [_('Sair'), '/logout/'],
+                ])
+
         ]
 
 

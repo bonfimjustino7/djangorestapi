@@ -12,6 +12,9 @@ class Usuario(models.Model):
         verbose_name = u'Usuário'
         verbose_name_plural = u'Usuários'
 
+    def __str__(self):
+        return u'%s (%s)' % (self.nome_completo, self.user)
+
 
 class Empresa(models.Model):
     nome = models.CharField(max_length=60)

@@ -13,6 +13,10 @@ class AgenciaInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(EmpresaUsuario)
+class EmpresaUsuarioAdmin(admin.ModelAdmin):
+    list_display = ('empresa', 'usuario')
+
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_filter = ('regional',)
@@ -48,7 +52,6 @@ class EmpresaAdmin(admin.ModelAdmin):
         return qs
 
 
-
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url', )
@@ -58,6 +61,7 @@ class MaterialInline(admin.TabularInline):
         if request.user.groups.filter(name=u'Funcionário IES').count():
             return qs.filter(coordenador=False)
         return qs
+
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):

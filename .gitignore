@@ -1,12 +1,9 @@
 .DS_Store
 .idea
-*.csv
 *.pyc
 *.swp
 *.sqlite3
 *.fuse_hidden*
-data/*
-manage.py
 colunistas/local.py
 colunistas/test.py
 colunistas/media/*

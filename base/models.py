@@ -27,20 +27,6 @@ class UF(models.Model):
         return self.sigla
 
 
-# Categorias da Inscrição
-class Categoria(models.Model):
-    codigo = models.CharField('Código', max_length=6)
-    nome = models.CharField(max_length=40)
-    descricao = models.TextField('Texto explicativo')
-    grupo = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ('codigo', )
-
-    def __str__(self):
-        return u'%s' % self.nome
-
-
 # Tipos de Materiais que serão julgados
 class TipoMaterial(models.Model):
     descricao = models.CharField(max_length=40)
@@ -99,6 +85,21 @@ class Area(models.Model):
         return self.descricao
 
 
+# Categorias da Inscrição
+class Categoria(models.Model):
+    codigo = models.CharField('Código', max_length=6)
+    nome = models.CharField(max_length=40)
+    descricao = models.TextField('Texto explicativo')
+    grupo = models.BooleanField(default=False)
+    premiacao = models.ForeignKey(Premiacao)
+
+    class Meta:
+        ordering = ('codigo', )
+
+    def __str__(self):
+        return u'%s' % self.nome
+
+
 PREMIO_STATUS = (
         ('A', 'Aberto para Inscrições'),
         ('F', 'Inscrições encerradas'),
@@ -113,7 +114,13 @@ class Premio(models.Model):
     status = models.CharField(max_length=1, choices=PREMIO_STATUS, default='A')
 
     def __str__(self):
-        return '{} {} ({})'.format(
+        return '{} ({})'.format(
+            self.premiacao,
+            self.ano
+        )
+
+    def descricao_completa(self):
+        return '{} ({} - {})'.format(
             self.premiacao,
             self.regional,
             self.ano
