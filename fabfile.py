@@ -22,5 +22,5 @@ def deploy_alumni():
         if console.confirm("Run migrations?", default=False):
             run('../bin/python manage.py migrate')
         if console.confirm("Run collectstatic?", default=False):
-            run('../bin/python manage.py collectstatic --noinput')
+            run('../bin/python manage.py collectstatic --no-input')
         run('supervisorctl restart ongportal')

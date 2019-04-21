@@ -53,7 +53,7 @@ class GroupAdminCustom(GroupAdmin, PowerModelAdmin):
         if request.method == 'POST':
             form = form_class(request.POST, request.FILES)
             if form.is_valid():
-                json = simplejson.loads(form.cleaned_data['json'].read())
+                json = simplejson.loads(form.cleaned_data['json'].read().decode('utf-8'))
 
                 for group_json in json:
                     group = Group.objects.get_or_create(name=group_json['name'])[0]
