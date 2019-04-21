@@ -1,417 +1,417 @@
 CodCategoria;Categoria;Descricao;NomeDeGrupo
-"BRC000";"Branded Content";;True
-"BRC101";"Ficção para TV ou Cinema";;False
-"BRC102";"Ficção Online";;False
-"BRC103";"Não Ficção para TV ou Cinema";;False
-"BRC104";"Não Ficção Online";;False
-"BRC105";"Publicação Impressa";;False
-"BRC106";"Presença de Marca em Conteúdo Cultural";;False
-"BRC107";"Conteúdo Gerado por Usuários";;False
-"DES000";"Design";;True
-"DES100";"Cases de Design";;True
-"DES101";"Case de Design Ambiental";;False
-"DES102";"Case de Branding ou Design Corporativo";;False
-"DES103";"Case de Design de Embalagem";;False
-"DES104";"Case de Responsabilidade Social em Design";;False
-"DES200";"Design Ambiental";;True
-"DES201";"Peça ou Conjunto de Peças de Sinalização";;False
-"DES202";"Peça ou Conjunto de Peças de Merchandising de Produto";;False
-"DES203";"Peça ou Conjunto de Materiais de Merchandising de Serviço";;False
-"DES204";"Banner, Faixa ou Estandarte";;False
-"DES205";"Cartaz de Produto de Consumo";;False
-"DES206";"Cartaz de Serviço";;False
-"DES207";"Cartaz de Produto Cultural ou de Lazer";;False
-"DES208";"Cartaz Social ou Comunitário";;False
-"DES209";"Decoração de Loja ou Vitrine";;False
-"DES210";"Display de Solo";;False
-"DES211";"Display de Balcão ou de Vitrine";;False
-"DES212";"Display Expositor ou Dispenser";;False
-"DES213";"Balcão ou Quiosque";;False
-"DES214";"Estande para Feira ou Exposição";;False
-"DES215";"Cenografia para Evento Promocional";;False
-"DES300";"Branding e Design Corporativo";;True
-"DES301";"Papelaria";;False
-"DES302";"Identidade Visual para Frota de Veículos";;False
-"DES303";"Assinatura, Selo ou Vinheta";;False
-"DES304";"Marca, Símbolo Gráfico ou Logotipo";;False
-"DES305";"Design em Material Promocional";;False
-"DES306";"Capa de Disco, CD ou DVD";;False
-"DES307";"Capa de Livro ou Caderno";;False
-"DES308";"Programa, Convite ou Comunicado";;False
-"DES309";"Broadside";;False
-"DES310";"Folheto Promocional";;False
-"DES311";"Material Técnico ou Informativo";;False
-"DES312";"Publicação Promocional Periódica";;False
-"DES313";"Calendário";;False
-"DES314";"Relatório de Diretoria";;False
-"DES315";"Troféu ou Símbolo Tridimensional";;False
-"DES400";"Design de Embalagem";;True
-"DES401";"Design de Embalagem em Madeira";;False
-"DES402";"Design de Embalagem em Metal";;False
-"DES403";"Design de Embalagem em Papel, Papelão ou Similar";;False
-"DES404";"Design de Embalagem em Plástico, Sintético ou Similar";;False
-"DES405";"Design de Embalagem em Vidro";;False
-"DES406";"Embalagem Display";;False
-"DES407";"Embalagem Multipack";;False
-"DES408";"Embalagem ou Rótulo de Alimento ou Bebida";;False
-"DES409";"Embalagem ou Rótulo de Produto de Uso Pessoal";;False
-"DES410";"Embalagem ou Rótulo de Produto para o Lar";;False
-"DES411";"Embalagem ou Rótulo de Produto Técnico ou Profissional";;False
-"DES412";"Embalagem Promocional";;False
-"DES413";"Saco, Sacola ou Papel para Embrulho";;False
-"DIG000";"Digital";;True
-"DIG100";"Mercado";;True
-"DIG101";"Alimentos";;False
-"DIG102";"Bebidas Alcoólicas";;False
-"DIG103";"Bebidas Não-Alcoólicas";;False
-"DIG104";"Cigarros e Tabaco";;False
-"DIG105";"Cosméticos e Produtos De Toalete";;False
-"DIG106";"Cultura e Educação";;False
-"DIG107";"Eletrodomésticos";;False
-"DIG108";"Imobiliário";;False
-"DIG109";"Institucional Ou Corporativo";;False
-"DIG110";"Meios De Comunicação";;False
-"DIG111";"Mercado Publicitário";;False
-"DIG112";"Móveis, Decoração e Utensílios Domésticos";;False
-"DIG113";"Política e Eleições";;False
-"DIG114";"Produtos e Serviços Para Agropecuária";;False
-"DIG115";"Produtos e Serviços Automotivos";;False
-"DIG116";"Produtos e Serviços Para Comércio e Escritório";;False
-"DIG117";"Produtos e Serviços Comunitários";;False
-"DIG118";"Produtos e Serviços Para A Indústria";;False
-"DIG119";"Produtos e Serviços De Lazer e Recreação";;False
-"DIG120";"Produtos e Serviços De Limpeza e Manutenção Do Lar";;False
-"DIG121";"Produtos e Serviços Médicos, Farmacêuticos e De Saúde";;False
-"DIG122";"Produtos e Serviços Públicos";;False
-"DIG123";"Produtos e Serviços de Telecomunicações";;False
-"DIG124";"Serviços Financeiros e De Seguros";;False
-"DIG125";"Turismo, Transportes e Diversões Públicas";;False
-"DIG126";"Varejo De Grande Porte";;False
-"DIG127";"Varejo De Pequeno e Médio Porte";;False
-"DIG128";"Veículos Pessoais e Profissionais";;False
-"DIG129";"Vestuário e Acessórios Pessoais";;False
-"DIG130";"Websites, Portais e Serviços Online";;False
-"DIG131";"Produtos e Serviços Diversos";;False
-"DIG200";"Apresentações Especiais";;True
-"DIG201";"Oportunidade";;False
-"DIG202";"Datas Promocionais";;False
-"DIG203";"Datas Institucionais";;False
-"DIG204";"Ação de Comunicação em Rede Social";;False
-"DIG205";"Peça Interativa";;False
-"DIG206";"Fanpage em Mídia Social";;False
-"DIG207";"Jogo Online";;False
-"DIG300";"Websites";;True
-"DIG301";"Website de Produto de Consumo";;False
-"DIG302";"Website de Bens Duráveis";;False
-"DIG303";"Website de Serviço";;False
-"DIG304";"Website de Produto ou Serviço Técnico ou Profissional";;False
-"DIG305";"Website de Produto ou Serviço Business-to-Business";;False
-"DIG306";"Website de Varejo";;False
-"DIG307";"Website de Produto Cultural ou de Lazer";;False
-"DIG308";"Website Social ou Comunitário";;False
-"DIG309";"Website de Endomarketing e Incentivo";;False
-"DIG310";"Website de Produtos e Serviços Diversos";;False
-"DIR000";"Marketing Direto";;True
-"DIR100";"Campanhas ou Programas";;True
-"DIR101";"Campanha ou Programa de Produto ou Serviço Business-to-Business";;False
-"DIR102";"Campanha ou Programa de Venda de Produto";;False
-"DIR103";"Campanha ou Programa de Venda de Serviço";;False
-"DIR104";"Campanha ou Programa de Fidelização";;False
-"DIR105";"Campanha ou Programa Social ou Comunitário";;False
-"DIR106";"Programa de Database Marketing";;False
-"DIR200";"Peças de Marketing Direto";;True
-"DIR201";"Peça de Mídia Eletrônica";;False
-"DIR202";"Peça de Mídia Impressa";;False
-"DIR203";"Peça de Mídia Digital";;False
-"DIR204";"Peça de Distribuição Domiciliar";;False
-"DIR205";"Peça Tridimensional";;False
-"DIR206";"Peça Interativa";;False
-"DIR207";"Uso Criativo de Base de Dados";;False
-"EXT000";"Mídia Exterior";;True
-"EXT100";"Mercado";;True
-"EXT101";"Alimentos";;False
-"EXT102";"Bebidas Alcoólicas";;False
-"EXT103";"Bebidas Não-Alcoólicas";;False
-"EXT104";"Cigarros e Tabaco";;False
-"EXT105";"Cosméticos e Produtos De Toalete";;False
-"EXT106";"Cultura e Educação";;False
-"EXT107";"Eletrodomésticos";;False
-"EXT108";"Imobiliário";;False
-"EXT109";"Institucional Ou Corporativo";;False
-"EXT110";"Meios De Comunicação";;False
-"EXT111";"Mercado Publicitário";;False
-"EXT112";"Móveis, Decoração e Utensílios Domésticos";;False
-"EXT113";"Política e Eleições";;False
-"EXT114";"Produtos e Serviços Para Agropecuária";;False
-"EXT115";"Produtos e Serviços Automotivos";;False
-"EXT116";"Produtos e Serviços Para Comércio e Escritório";;False
-"EXT117";"Produtos e Serviços Comunitários";;False
-"EXT118";"Produtos e Serviços Para A Indústria";;False
-"EXT119";"Produtos e Serviços De Lazer e Recreação";;False
-"EXT120";"Produtos e Serviços De Limpeza e Manutenção Do Lar";;False
-"EXT121";"Produtos e Serviços Médicos, Farmacêuticos e De Saúde";;False
-"EXT122";"Produtos e Serviços Públicos";;False
-"EXT123";"Produtos e Serviços de Telecomunicações";;False
-"EXT124";"Serviços Financeiros e De Seguros";;False
-"EXT125";"Turismo, Transportes e Diversões Públicas";;False
-"EXT126";"Varejo De Grande Porte";;False
-"EXT127";"Varejo De Pequeno e Médio Porte";;False
-"EXT128";"Veículos Pessoais e Profissionais";;False
-"EXT129";"Vestuário e Acessórios Pessoais";;False
-"EXT130";"Websites, Portais e Serviços Online";;False
-"EXT131";"Produtos e Serviços Diversos";;False
-"EXT200";"Apresentações Especiais";;True
-"EXT201";"Datas Promocionais";;False
-"EXT202";"Datas Institucionais";;False
-"EXT203";"Aproveitamento de Patrocínio";;False
-"FIL000";"Filme";;True
-"FIL100";"Mercado";;True
-"FIL101";"Alimentos";;False
-"FIL102";"Bebidas Alcoólicas";;False
-"FIL103";"Bebidas Não-Alcoólicas";;False
-"FIL104";"Cigarros e Tabaco";;False
-"FIL105";"Cosméticos e Produtos De Toalete";;False
-"FIL106";"Cultura e Educação";;False
-"FIL107";"Eletrodomésticos";;False
-"FIL108";"Imobiliário";;False
-"FIL109";"Institucional Ou Corporativo";;False
-"FIL110";"Meios De Comunicação";;False
-"FIL111";"Mercado Publicitário";;False
-"FIL112";"Móveis, Decoração e Utensílios Domésticos";;False
-"FIL113";"Política e Eleições";;False
-"FIL114";"Produtos e Serviços Para Agropecuária";;False
-"FIL115";"Produtos e Serviços Automotivos";;False
-"FIL116";"Produtos e Serviços Para Comércio e Escritório";;False
-"FIL117";"Produtos e Serviços Comunitários";;False
-"FIL118";"Produtos e Serviços Para A Indústria";;False
-"FIL119";"Produtos e Serviços De Lazer e Recreação";;False
-"FIL120";"Produtos e Serviços De Limpeza e Manutenção Do Lar";;False
-"FIL121";"Produtos e Serviços Médicos, Farmacêuticos e De Saúde";;False
-"FIL122";"Produtos e Serviços Públicos";;False
-"FIL123";"Produtos e Serviços de Telecomunicações";;False
-"FIL124";"Serviços Financeiros e De Seguros";;False
-"FIL125";"Turismo, Transportes e Diversões Públicas";;False
-"FIL126";"Varejo De Grande Porte";;False
-"FIL127";"Varejo De Pequeno e Médio Porte";;False
-"FIL128";"Veículos Pessoais e Profissionais";;False
-"FIL129";"Vestuário e Acessórios Pessoais";;False
-"FIL130";"Websites, Portais e Serviços Online";;False
-"FIL131";"Produtos e Serviços Diversos";;False
-"FIL200";"Apresentações Especiais";;True
-"FIL201";"Baixo Custo de Produção";;False
-"FIL202";"Oportunidade";;False
-"FIL203";"Datas Promocionais";;False
-"FIL204";"Datas Institucionais";;False
-"FIL205";"Aproveitamento de Patrocínio";;False
-"FIL206";"Apoio a Promoção de Produto";;False
-"FIL207";"Apoio a Promoção de Serviço";;False
-"IMP000";"Mídia Impressa";;True
-"IMP100";"Mercado";;True
-"IMP101";"Alimentos";;False
-"IMP102";"Bebidas Alcoólicas";;False
-"IMP103";"Bebidas Não-Alcoólicas";;False
-"IMP104";"Cigarros e Tabaco";;False
-"IMP105";"Cosméticos e Produtos De Toalete";;False
-"IMP106";"Cultura e Educação";;False
-"IMP107";"Eletrodomésticos";;False
-"IMP108";"Imobiliário";;False
-"IMP109";"Institucional Ou Corporativo";;False
-"IMP110";"Meios De Comunicação";;False
-"IMP111";"Mercado Publicitário";;False
-"IMP112";"Móveis, Decoração e Utensílios Domésticos";;False
-"IMP113";"Política e Eleições";;False
-"IMP114";"Produtos e Serviços Para Agropecuária";;False
-"IMP115";"Produtos e Serviços Automotivos";;False
-"IMP116";"Produtos e Serviços Para Comércio e Escritório";;False
-"IMP117";"Produtos e Serviços Comunitários";;False
-"IMP118";"Produtos e Serviços Para A Indústria";;False
-"IMP119";"Produtos e Serviços De Lazer e Recreação";;False
-"IMP120";"Produtos e Serviços De Limpeza e Manutenção Do Lar";;False
-"IMP121";"Produtos e Serviços Médicos, Farmacêuticos e De Saúde";;False
-"IMP122";"Produtos e Serviços Públicos";;False
-"IMP123";"Produtos e Serviços de Telecomunicações";;False
-"IMP124";"Serviços Financeiros e De Seguros";;False
-"IMP125";"Turismo, Transportes e Diversões Públicas";;False
-"IMP126";"Varejo De Grande Porte";;False
-"IMP127";"Varejo De Pequeno e Médio Porte";;False
-"IMP128";"Veículos Pessoais e Profissionais";;False
-"IMP129";"Vestuário e Acessórios Pessoais";;False
-"IMP130";"Websites, Portais e Serviços Online";;False
-"IMP131";"Produtos e Serviços Diversos";;False
-"IMP200";"Apresentações Especiais";;True
-"IMP201";"Anúncio De Até 45 Cm/Col Ou 1/2 Página De Revista";;False
-"IMP202";"Trade";;False
-"IMP203";"Oportunidade";;False
-"IMP204";"Datas Promocionais";;False
-"IMP205";"Datas Institucionais";;False
-"IMP206";"Aproveitamento de Patrocínio";;False
-"INO000";"Inovação";;True
-"INO100";"Cases";;True
-"INO101";"Case de Inovação";;False
-"INT000";"Mídias Integradas";;True
-"INT100";"Mercado";;True
-"INT101";"Alimentos";;False
-"INT102";"Bebidas Alcoólicas";;False
-"INT103";"Bebidas Não-Alcoólicas";;False
-"INT104";"Cigarros e Tabaco";;False
-"INT105";"Cosméticos e Produtos De Toalete";;False
-"INT106";"Cultura e Educação";;False
-"INT107";"Eletrodomésticos";;False
-"INT108";"Imobiliário";;False
-"INT109";"Institucional Ou Corporativo";;False
-"INT110";"Meios De Comunicação";;False
-"INT111";"Mercado Publicitário";;False
-"INT112";"Móveis, Decoração e Utensílios Domésticos";;False
-"INT113";"Política e Eleições";;False
-"INT114";"Produtos e Serviços Para Agropecuária";;False
-"INT115";"Produtos e Serviços Automotivos";;False
-"INT116";"Produtos e Serviços Para Comércio e Escritório";;False
-"INT117";"Produtos e Serviços Comunitários";;False
-"INT118";"Produtos e Serviços Para A Indústria";;False
-"INT119";"Produtos e Serviços De Lazer e Recreação";;False
-"INT120";"Produtos e Serviços De Limpeza e Manutenção Do Lar";;False
-"INT121";"Produtos e Serviços Médicos, Farmacêuticos e De Saúde";;False
-"INT122";"Produtos e Serviços Públicos";;False
-"INT123";"Produtos e Serviços de Telecomunicações";;False
-"INT124";"Serviços Financeiros e De Seguros";;False
-"INT125";"Turismo, Transportes e Diversões Públicas";;False
-"INT126";"Varejo De Grande Porte";;False
-"INT127";"Varejo De Pequeno e Médio Porte";;False
-"INT128";"Veículos Pessoais e Profissionais";;False
-"INT129";"Vestuário e Acessórios Pessoais";;False
-"INT130";"Websites, Portais e Serviços Online";;False
-"INT131";"Produtos e Serviços Diversos";;False
-"MID000";"Mídia";;True
-"MID100";"Aproveitamento de Mídia";;True
-"MID101";"Aproveitamento do Meio Televisão";;False
-"MID102";"Aproveitamento do Meio Cinema";;False
-"MID103";"Aproveitamento do Meio Rádio";;False
-"MID104";"Aproveitamento do Meio Jornal";;False
-"MID105";"Aproveitamento do Meio Revista";;False
-"MID106";"Aproveitamento da Mídia Exterior";;False
-"MID107";"Aproveitamento da Mídia Digital";;False
-"MID108";"Aproveitamento da Mídia Mobile";;False
-"PRM000";"Promo e Live";;True
-"PRM100";"Cases Promocionais e de Live Marketing";;True
-"PRM101";"Case de Produto de Consumo";;False
-"PRM102";"Case de Bens Duráveis";;False
-"PRM103";"Case de Serviço";;False
-"PRM104";"Case de Produto ou Serviço Técnico ou Profissional";;False
-"PRM105";"Case de Produto ou Serviço Business-to-Business";;False
-"PRM106";"Case de Varejo";;False
-"PRM107";"Case de Produto Cultural ou de Lazer";;False
-"PRM108";"Case Institucional";;False
-"PRM109";"Case Social ou Comunitário";;False
-"PRM110";"Case de Endomarketing e Incentivo";;False
-"PRM111";"Case de Fidelização e Pós-Venda";;False
-"PRM112";"Organização de Congressos, Seminários e Afins";;False
-"PRM113";"Organização de Feiras e Exposições";;False
-"PRM200";"Eventos Promocionais e de Live Marketing";;True
-"PRM201";"Evento Comercial";;False
-"PRM202";"Evento Comunitário";;False
-"PRM203";"Evento Cultural ou de Lazer";;False
-"PRM204";"Evento de Endomarketing ou Incentivo";;False
-"PRM205";"Evento de Inauguração";;False
-"PRM206";"Evento de Lançamento de Produto ou Serviço";;False
-"PRM207";"Evento Esportivo";;False
-"PRM208";"Evento Institucional";;False
-"PRM209";"Evento Relacionado a Data Comemorativa";;False
-"PRM210";"Evento Social";;False
-"PRM211";"Evento Técnico";;False
-"PRM212";"Participação em Feira ou Exposição";;False
-"PRM300";"Ações Promocionais e de Live Marketing";;True
-"PRM301";"Ação de Demonstração ou Amostragem em Ponto-de-Venda";;False
-"PRM302";"Ação de Demonstração ou Amostragem Externa";;False
-"PRM303";"Ação para Bens Duráveis";;False
-"PRM304";"Ação de Endomarketing ou Incentivo";;False
-"PRM305";"Ação Institucional";;False
-"PRM306";"Ação para Produto ou Serviço Business-to-Business";;False
-"PRM307";"Ação para Produto de Consumo";;False
-"PRM308";"Ação para Produto Cultural ou de Lazer";;False
-"PRM309";"Ação para Serviço";;False
-"PRM310";"Ação para Produto ou Serviço Técnico ou Profissional";;False
-"PRM311";"Ação Social ou Comunitária";;False
-"PRM312";"Ação para Varejo";;False
-"PRM313";"Ação em Rede Social";;False
-"PRM400";"Materiais Promocionais";;True
-"PRM401";"Brinde ou Peça Promocional dirigida a Públicos Internos ou Intermediários";;False
-"PRM402";"Brinde ou Peça Promocional dirigida ao Público Final";;False
-"PRM403";"Brinde ou Peça Promocional relativa a Data Comemorativa";;False
-"PRM404";"Peça Promocional Interativa";;False
-"PRM405";"Brinde ou Peça Promocional de Empresa de Comunicação";;False
-"PRM406";"Personagem Promocional";;False
-"PRM407";"Figurino Promocional";;False
-"RAD000";"Rádio";;True
-"RAD100";"Mercado";;True
-"RAD101";"Alimentos";;False
-"RAD102";"Bebidas Alcoólicas";;False
-"RAD103";"Bebidas Não-Alcoólicas";;False
-"RAD104";"Cigarros e Tabaco";;False
-"RAD105";"Cosméticos e Produtos De Toalete";;False
-"RAD106";"Cultura e Educação";;False
-"RAD107";"Eletrodomésticos";;False
-"RAD108";"Imobiliário";;False
-"RAD109";"Institucional Ou Corporativo";;False
-"RAD110";"Meios De Comunicação";;False
-"RAD111";"Mercado Publicitário";;False
-"RAD112";"Móveis, Decoração e Utensílios Domésticos";;False
-"RAD113";"Política e Eleições";;False
-"RAD114";"Produtos e Serviços Para Agropecuária";;False
-"RAD115";"Produtos e Serviços Automotivos";;False
-"RAD116";"Produtos e Serviços Para Comércio e Escritório";;False
-"RAD117";"Produtos e Serviços Comunitários";;False
-"RAD118";"Produtos e Serviços Para A Indústria";;False
-"RAD119";"Produtos e Serviços De Lazer e Recreação";;False
-"RAD120";"Produtos e Serviços De Limpeza e Manutenção Do Lar";;False
-"RAD121";"Produtos e Serviços Médicos, Farmacêuticos e De Saúde";;False
-"RAD122";"Produtos e Serviços Públicos";;False
-"RAD123";"Produtos e Serviços de Telecomunicações";;False
-"RAD124";"Serviços Financeiros e De Seguros";;False
-"RAD125";"Turismo, Transportes e Diversões Públicas";;False
-"RAD126";"Varejo De Grande Porte";;False
-"RAD127";"Varejo De Pequeno e Médio Porte";;False
-"RAD128";"Veículos Pessoais e Profissionais";;False
-"RAD129";"Vestuário e Acessórios Pessoais";;False
-"RAD130";"Websites, Portais e Serviços Online";;False
-"RAD131";"Produtos e Serviços Diversos";;False
-"RAD200";"Apresentações Especiais";;True
-"RAD201";"Oportunidade";;False
-"RAD202";"Datas Promocionais";;False
-"RAD203";"Datas Institucionais";;False
-"RAD204";"Aproveitamento de Patrocínio";;False
-"RAD205";"Apoio a Promoção de Produto";;False
-"RAD206";"Apoio a Promoção de Serviço";;False
-"RPB000";"RP";;True
-"RPB101";"Ações Comunitárias e Não Lucrativas";;False
-"RPB102";"Arte e Entretenimento";;False
-"RPB103";"Gerenciamento de Crise";;False
-"RPB104";"Marketing - Business to Business";;False
-"RPB105";"Público Interno";;False
-"RPB106";"Relacionamento com Comunidade";;False
-"RPB107";"Relacionamento com Investidores";;False
-"RPB108";"Reputação";;False
-"RPB109";"Políticas Públicas";;False
-"RPB110";"Serviço Público";;False
-"RPB111";"Sustentabilidade e Ambiente";;False
-"TEC000";"Técnica";;True
-"TEC100";"Filmes";;True
-"TEC101";"Roteiro de Filme";;False
-"TEC102";"Direção de Arte de Filme";;False
-"TEC103";"Direção de Filme";;False
-"TEC104";"Produção de Filme";;False
-"TEC105";"Fotografia de Filme";;False
-"TEC106";"Edição de Filme";;False
-"TEC107";"Trilha de Filme";;False
-"TEC108";"Texto ou Letra de Jingle de Fime";;False
-"TEC109";"Efeitos Visuais de Filme";;False
-"TEC110";"Animação em Filme";;False
-"TEC200";"Fonogramas";;True
-"TEC201";"Roteiro de Fonograma";;False
-"TEC202";"Música ou Trilha de Fonograma";;False
-"TEC203";"Texto ou Letra de Fonograma";;False
-"TEC204";"Produção de Fonograma";;False
-"TEC300";"Peças Gráficas";;True
-"TEC301";"Texto em Peça Gráfica";;False
-"TEC302";"Direção de Arte em Peça Gráfica";;False
-"TEC303";"Ilustração em Peça Gráfica";;False
-"TEC304";"Fotografia em Peça Gráfica";;False
+"BRC000";"Branded Content";1;True
+"BRC101";"Ficï¿½ï¿½o para TV ou Cinema";1;False
+"BRC102";"Ficï¿½ï¿½o Online";1;False
+"BRC103";"Nï¿½o Ficï¿½ï¿½o para TV ou Cinema";1;False
+"BRC104";"Nï¿½o Ficï¿½ï¿½o Online";1;False
+"BRC105";"Publicaï¿½ï¿½o Impressa";1;False
+"BRC106";"Presenï¿½a de Marca em Conteï¿½do Cultural";1;False
+"BRC107";"Conteï¿½do Gerado por Usuï¿½rios";1;False
+"DES000";"Design";1;True
+"DES100";"Cases de Design";1;True
+"DES101";"Case de Design Ambiental";1;False
+"DES102";"Case de Branding ou Design Corporativo";1;False
+"DES103";"Case de Design de Embalagem";1;False
+"DES104";"Case de Responsabilidade Social em Design";1;False
+"DES200";"Design Ambiental";1;True
+"DES201";"Peï¿½a ou Conjunto de Peï¿½as de Sinalizaï¿½ï¿½o";1;False
+"DES202";"Peï¿½a ou Conjunto de Peï¿½as de Merchandising de Produto";1;False
+"DES203";"Peï¿½a ou Conjunto de Materiais de Merchandising de Serviï¿½o";1;False
+"DES204";"Banner, Faixa ou Estandarte";1;False
+"DES205";"Cartaz de Produto de Consumo";1;False
+"DES206";"Cartaz de Serviï¿½o";1;False
+"DES207";"Cartaz de Produto Cultural ou de Lazer";1;False
+"DES208";"Cartaz Social ou Comunitï¿½rio";1;False
+"DES209";"Decoraï¿½ï¿½o de Loja ou Vitrine";1;False
+"DES210";"Display de Solo";1;False
+"DES211";"Display de Balcï¿½o ou de Vitrine";1;False
+"DES212";"Display Expositor ou Dispenser";1;False
+"DES213";"Balcï¿½o ou Quiosque";1;False
+"DES214";"Estande para Feira ou Exposiï¿½ï¿½o";1;False
+"DES215";"Cenografia para Evento Promocional";1;False
+"DES300";"Branding e Design Corporativo";1;True
+"DES301";"Papelaria";1;False
+"DES302";"Identidade Visual para Frota de Veï¿½culos";1;False
+"DES303";"Assinatura, Selo ou Vinheta";1;False
+"DES304";"Marca, Sï¿½mbolo Grï¿½fico ou Logotipo";1;False
+"DES305";"Design em Material Promocional";1;False
+"DES306";"Capa de Disco, CD ou DVD";1;False
+"DES307";"Capa de Livro ou Caderno";1;False
+"DES308";"Programa, Convite ou Comunicado";1;False
+"DES309";"Broadside";1;False
+"DES310";"Folheto Promocional";1;False
+"DES311";"Material Tï¿½cnico ou Informativo";1;False
+"DES312";"Publicaï¿½ï¿½o Promocional Periï¿½dica";1;False
+"DES313";"Calendï¿½rio";1;False
+"DES314";"Relatï¿½rio de Diretoria";1;False
+"DES315";"Trofï¿½u ou Sï¿½mbolo Tridimensional";1;False
+"DES400";"Design de Embalagem";1;True
+"DES401";"Design de Embalagem em Madeira";1;False
+"DES402";"Design de Embalagem em Metal";1;False
+"DES403";"Design de Embalagem em Papel, Papelï¿½o ou Similar";1;False
+"DES404";"Design de Embalagem em Plï¿½stico, Sintï¿½tico ou Similar";1;False
+"DES405";"Design de Embalagem em Vidro";1;False
+"DES406";"Embalagem Display";1;False
+"DES407";"Embalagem Multipack";1;False
+"DES408";"Embalagem ou Rï¿½tulo de Alimento ou Bebida";1;False
+"DES409";"Embalagem ou Rï¿½tulo de Produto de Uso Pessoal";1;False
+"DES410";"Embalagem ou Rï¿½tulo de Produto para o Lar";1;False
+"DES411";"Embalagem ou Rï¿½tulo de Produto Tï¿½cnico ou Profissional";1;False
+"DES412";"Embalagem Promocional";1;False
+"DES413";"Saco, Sacola ou Papel para Embrulho";1;False
+"DIG000";"Digital";1;True
+"DIG100";"Mercado";1;True
+"DIG101";"Alimentos";1;False
+"DIG102";"Bebidas Alcoï¿½licas";1;False
+"DIG103";"Bebidas Nï¿½o-Alcoï¿½licas";1;False
+"DIG104";"Cigarros e Tabaco";1;False
+"DIG105";"Cosmï¿½ticos e Produtos De Toalete";1;False
+"DIG106";"Cultura e Educaï¿½ï¿½o";1;False
+"DIG107";"Eletrodomï¿½sticos";1;False
+"DIG108";"Imobiliï¿½rio";1;False
+"DIG109";"Institucional Ou Corporativo";1;False
+"DIG110";"Meios De Comunicaï¿½ï¿½o";1;False
+"DIG111";"Mercado Publicitï¿½rio";1;False
+"DIG112";"Mï¿½veis, Decoraï¿½ï¿½o e Utensï¿½lios Domï¿½sticos";1;False
+"DIG113";"Polï¿½tica e Eleiï¿½ï¿½es";1;False
+"DIG114";"Produtos e Serviï¿½os Para Agropecuï¿½ria";1;False
+"DIG115";"Produtos e Serviï¿½os Automotivos";1;False
+"DIG116";"Produtos e Serviï¿½os Para Comï¿½rcio e Escritï¿½rio";1;False
+"DIG117";"Produtos e Serviï¿½os Comunitï¿½rios";1;False
+"DIG118";"Produtos e Serviï¿½os Para A Indï¿½stria";1;False
+"DIG119";"Produtos e Serviï¿½os De Lazer e Recreaï¿½ï¿½o";1;False
+"DIG120";"Produtos e Serviï¿½os De Limpeza e Manutenï¿½ï¿½o Do Lar";1;False
+"DIG121";"Produtos e Serviï¿½os Mï¿½dicos, Farmacï¿½uticos e De Saï¿½de";1;False
+"DIG122";"Produtos e Serviï¿½os Pï¿½blicos";1;False
+"DIG123";"Produtos e Serviï¿½os de Telecomunicaï¿½ï¿½es";1;False
+"DIG124";"Serviï¿½os Financeiros e De Seguros";1;False
+"DIG125";"Turismo, Transportes e Diversï¿½es Pï¿½blicas";1;False
+"DIG126";"Varejo De Grande Porte";1;False
+"DIG127";"Varejo De Pequeno e Mï¿½dio Porte";1;False
+"DIG128";"Veï¿½culos Pessoais e Profissionais";1;False
+"DIG129";"Vestuï¿½rio e Acessï¿½rios Pessoais";1;False
+"DIG130";"Websites, Portais e Serviï¿½os Online";1;False
+"DIG131";"Produtos e Serviï¿½os Diversos";1;False
+"DIG200";"Apresentaï¿½ï¿½es Especiais";1;True
+"DIG201";"Oportunidade";1;False
+"DIG202";"Datas Promocionais";1;False
+"DIG203";"Datas Institucionais";1;False
+"DIG204";"Aï¿½ï¿½o de Comunicaï¿½ï¿½o em Rede Social";1;False
+"DIG205";"Peï¿½a Interativa";1;False
+"DIG206";"Fanpage em Mï¿½dia Social";1;False
+"DIG207";"Jogo Online";1;False
+"DIG300";"Websites";1;True
+"DIG301";"Website de Produto de Consumo";1;False
+"DIG302";"Website de Bens Durï¿½veis";1;False
+"DIG303";"Website de Serviï¿½o";1;False
+"DIG304";"Website de Produto ou Serviï¿½o Tï¿½cnico ou Profissional";1;False
+"DIG305";"Website de Produto ou Serviï¿½o Business-to-Business";1;False
+"DIG306";"Website de Varejo";1;False
+"DIG307";"Website de Produto Cultural ou de Lazer";1;False
+"DIG308";"Website Social ou Comunitï¿½rio";1;False
+"DIG309";"Website de Endomarketing e Incentivo";1;False
+"DIG310";"Website de Produtos e Serviï¿½os Diversos";1;False
+"DIR000";"Marketing Direto";1;True
+"DIR100";"Campanhas ou Programas";1;True
+"DIR101";"Campanha ou Programa de Produto ou Serviï¿½o Business-to-Business";1;False
+"DIR102";"Campanha ou Programa de Venda de Produto";1;False
+"DIR103";"Campanha ou Programa de Venda de Serviï¿½o";1;False
+"DIR104";"Campanha ou Programa de Fidelizaï¿½ï¿½o";1;False
+"DIR105";"Campanha ou Programa Social ou Comunitï¿½rio";1;False
+"DIR106";"Programa de Database Marketing";1;False
+"DIR200";"Peï¿½as de Marketing Direto";1;True
+"DIR201";"Peï¿½a de Mï¿½dia Eletrï¿½nica";1;False
+"DIR202";"Peï¿½a de Mï¿½dia Impressa";1;False
+"DIR203";"Peï¿½a de Mï¿½dia Digital";1;False
+"DIR204";"Peï¿½a de Distribuiï¿½ï¿½o Domiciliar";1;False
+"DIR205";"Peï¿½a Tridimensional";1;False
+"DIR206";"Peï¿½a Interativa";1;False
+"DIR207";"Uso Criativo de Base de Dados";1;False
+"EXT000";"Mï¿½dia Exterior";1;True
+"EXT100";"Mercado";1;True
+"EXT101";"Alimentos";1;False
+"EXT102";"Bebidas Alcoï¿½licas";1;False
+"EXT103";"Bebidas Nï¿½o-Alcoï¿½licas";1;False
+"EXT104";"Cigarros e Tabaco";1;False
+"EXT105";"Cosmï¿½ticos e Produtos De Toalete";1;False
+"EXT106";"Cultura e Educaï¿½ï¿½o";1;False
+"EXT107";"Eletrodomï¿½sticos";1;False
+"EXT108";"Imobiliï¿½rio";1;False
+"EXT109";"Institucional Ou Corporativo";1;False
+"EXT110";"Meios De Comunicaï¿½ï¿½o";1;False
+"EXT111";"Mercado Publicitï¿½rio";1;False
+"EXT112";"Mï¿½veis, Decoraï¿½ï¿½o e Utensï¿½lios Domï¿½sticos";1;False
+"EXT113";"Polï¿½tica e Eleiï¿½ï¿½es";1;False
+"EXT114";"Produtos e Serviï¿½os Para Agropecuï¿½ria";1;False
+"EXT115";"Produtos e Serviï¿½os Automotivos";1;False
+"EXT116";"Produtos e Serviï¿½os Para Comï¿½rcio e Escritï¿½rio";1;False
+"EXT117";"Produtos e Serviï¿½os Comunitï¿½rios";1;False
+"EXT118";"Produtos e Serviï¿½os Para A Indï¿½stria";1;False
+"EXT119";"Produtos e Serviï¿½os De Lazer e Recreaï¿½ï¿½o";1;False
+"EXT120";"Produtos e Serviï¿½os De Limpeza e Manutenï¿½ï¿½o Do Lar";1;False
+"EXT121";"Produtos e Serviï¿½os Mï¿½dicos, Farmacï¿½uticos e De Saï¿½de";1;False
+"EXT122";"Produtos e Serviï¿½os Pï¿½blicos";1;False
+"EXT123";"Produtos e Serviï¿½os de Telecomunicaï¿½ï¿½es";1;False
+"EXT124";"Serviï¿½os Financeiros e De Seguros";1;False
+"EXT125";"Turismo, Transportes e Diversï¿½es Pï¿½blicas";1;False
+"EXT126";"Varejo De Grande Porte";1;False
+"EXT127";"Varejo De Pequeno e Mï¿½dio Porte";1;False
+"EXT128";"Veï¿½culos Pessoais e Profissionais";1;False
+"EXT129";"Vestuï¿½rio e Acessï¿½rios Pessoais";1;False
+"EXT130";"Websites, Portais e Serviï¿½os Online";1;False
+"EXT131";"Produtos e Serviï¿½os Diversos";1;False
+"EXT200";"Apresentaï¿½ï¿½es Especiais";1;True
+"EXT201";"Datas Promocionais";1;False
+"EXT202";"Datas Institucionais";1;False
+"EXT203";"Aproveitamento de Patrocï¿½nio";1;False
+"FIL000";"Filme";1;True
+"FIL100";"Mercado";1;True
+"FIL101";"Alimentos";1;False
+"FIL102";"Bebidas Alcoï¿½licas";1;False
+"FIL103";"Bebidas Nï¿½o-Alcoï¿½licas";1;False
+"FIL104";"Cigarros e Tabaco";1;False
+"FIL105";"Cosmï¿½ticos e Produtos De Toalete";1;False
+"FIL106";"Cultura e Educaï¿½ï¿½o";1;False
+"FIL107";"Eletrodomï¿½sticos";1;False
+"FIL108";"Imobiliï¿½rio";1;False
+"FIL109";"Institucional Ou Corporativo";1;False
+"FIL110";"Meios De Comunicaï¿½ï¿½o";1;False
+"FIL111";"Mercado Publicitï¿½rio";1;False
+"FIL112";"Mï¿½veis, Decoraï¿½ï¿½o e Utensï¿½lios Domï¿½sticos";1;False
+"FIL113";"Polï¿½tica e Eleiï¿½ï¿½es";1;False
+"FIL114";"Produtos e Serviï¿½os Para Agropecuï¿½ria";1;False
+"FIL115";"Produtos e Serviï¿½os Automotivos";1;False
+"FIL116";"Produtos e Serviï¿½os Para Comï¿½rcio e Escritï¿½rio";1;False
+"FIL117";"Produtos e Serviï¿½os Comunitï¿½rios";1;False
+"FIL118";"Produtos e Serviï¿½os Para A Indï¿½stria";1;False
+"FIL119";"Produtos e Serviï¿½os De Lazer e Recreaï¿½ï¿½o";1;False
+"FIL120";"Produtos e Serviï¿½os De Limpeza e Manutenï¿½ï¿½o Do Lar";1;False
+"FIL121";"Produtos e Serviï¿½os Mï¿½dicos, Farmacï¿½uticos e De Saï¿½de";1;False
+"FIL122";"Produtos e Serviï¿½os Pï¿½blicos";1;False
+"FIL123";"Produtos e Serviï¿½os de Telecomunicaï¿½ï¿½es";1;False
+"FIL124";"Serviï¿½os Financeiros e De Seguros";1;False
+"FIL125";"Turismo, Transportes e Diversï¿½es Pï¿½blicas";1;False
+"FIL126";"Varejo De Grande Porte";1;False
+"FIL127";"Varejo De Pequeno e Mï¿½dio Porte";1;False
+"FIL128";"Veï¿½culos Pessoais e Profissionais";1;False
+"FIL129";"Vestuï¿½rio e Acessï¿½rios Pessoais";1;False
+"FIL130";"Websites, Portais e Serviï¿½os Online";1;False
+"FIL131";"Produtos e Serviï¿½os Diversos";1;False
+"FIL200";"Apresentaï¿½ï¿½es Especiais";1;True
+"FIL201";"Baixo Custo de Produï¿½ï¿½o";1;False
+"FIL202";"Oportunidade";1;False
+"FIL203";"Datas Promocionais";1;False
+"FIL204";"Datas Institucionais";1;False
+"FIL205";"Aproveitamento de Patrocï¿½nio";1;False
+"FIL206";"Apoio a Promoï¿½ï¿½o de Produto";1;False
+"FIL207";"Apoio a Promoï¿½ï¿½o de Serviï¿½o";1;False
+"IMP000";"Mï¿½dia Impressa";1;True
+"IMP100";"Mercado";1;True
+"IMP101";"Alimentos";1;False
+"IMP102";"Bebidas Alcoï¿½licas";1;False
+"IMP103";"Bebidas Nï¿½o-Alcoï¿½licas";1;False
+"IMP104";"Cigarros e Tabaco";1;False
+"IMP105";"Cosmï¿½ticos e Produtos De Toalete";1;False
+"IMP106";"Cultura e Educaï¿½ï¿½o";1;False
+"IMP107";"Eletrodomï¿½sticos";1;False
+"IMP108";"Imobiliï¿½rio";1;False
+"IMP109";"Institucional Ou Corporativo";1;False
+"IMP110";"Meios De Comunicaï¿½ï¿½o";1;False
+"IMP111";"Mercado Publicitï¿½rio";1;False
+"IMP112";"Mï¿½veis, Decoraï¿½ï¿½o e Utensï¿½lios Domï¿½sticos";1;False
+"IMP113";"Polï¿½tica e Eleiï¿½ï¿½es";1;False
+"IMP114";"Produtos e Serviï¿½os Para Agropecuï¿½ria";1;False
+"IMP115";"Produtos e Serviï¿½os Automotivos";1;False
+"IMP116";"Produtos e Serviï¿½os Para Comï¿½rcio e Escritï¿½rio";1;False
+"IMP117";"Produtos e Serviï¿½os Comunitï¿½rios";1;False
+"IMP118";"Produtos e Serviï¿½os Para A Indï¿½stria";1;False
+"IMP119";"Produtos e Serviï¿½os De Lazer e Recreaï¿½ï¿½o";1;False
+"IMP120";"Produtos e Serviï¿½os De Limpeza e Manutenï¿½ï¿½o Do Lar";1;False
+"IMP121";"Produtos e Serviï¿½os Mï¿½dicos, Farmacï¿½uticos e De Saï¿½de";1;False
+"IMP122";"Produtos e Serviï¿½os Pï¿½blicos";1;False
+"IMP123";"Produtos e Serviï¿½os de Telecomunicaï¿½ï¿½es";1;False
+"IMP124";"Serviï¿½os Financeiros e De Seguros";1;False
+"IMP125";"Turismo, Transportes e Diversï¿½es Pï¿½blicas";1;False
+"IMP126";"Varejo De Grande Porte";1;False
+"IMP127";"Varejo De Pequeno e Mï¿½dio Porte";1;False
+"IMP128";"Veï¿½culos Pessoais e Profissionais";1;False
+"IMP129";"Vestuï¿½rio e Acessï¿½rios Pessoais";1;False
+"IMP130";"Websites, Portais e Serviï¿½os Online";1;False
+"IMP131";"Produtos e Serviï¿½os Diversos";1;False
+"IMP200";"Apresentaï¿½ï¿½es Especiais";1;True
+"IMP201";"Anï¿½ncio De Atï¿½ 45 Cm/Col Ou 1/2 Pï¿½gina De Revista";1;False
+"IMP202";"Trade";1;False
+"IMP203";"Oportunidade";1;False
+"IMP204";"Datas Promocionais";1;False
+"IMP205";"Datas Institucionais";1;False
+"IMP206";"Aproveitamento de Patrocï¿½nio";1;False
+"INO000";"Inovaï¿½ï¿½o";1;True
+"INO100";"Cases";1;True
+"INO101";"Case de Inovaï¿½ï¿½o";1;False
+"INT000";"Mï¿½dias Integradas";1;True
+"INT100";"Mercado";1;True
+"INT101";"Alimentos";1;False
+"INT102";"Bebidas Alcoï¿½licas";1;False
+"INT103";"Bebidas Nï¿½o-Alcoï¿½licas";1;False
+"INT104";"Cigarros e Tabaco";1;False
+"INT105";"Cosmï¿½ticos e Produtos De Toalete";1;False
+"INT106";"Cultura e Educaï¿½ï¿½o";1;False
+"INT107";"Eletrodomï¿½sticos";1;False
+"INT108";"Imobiliï¿½rio";1;False
+"INT109";"Institucional Ou Corporativo";1;False
+"INT110";"Meios De Comunicaï¿½ï¿½o";1;False
+"INT111";"Mercado Publicitï¿½rio";1;False
+"INT112";"Mï¿½veis, Decoraï¿½ï¿½o e Utensï¿½lios Domï¿½sticos";1;False
+"INT113";"Polï¿½tica e Eleiï¿½ï¿½es";1;False
+"INT114";"Produtos e Serviï¿½os Para Agropecuï¿½ria";1;False
+"INT115";"Produtos e Serviï¿½os Automotivos";1;False
+"INT116";"Produtos e Serviï¿½os Para Comï¿½rcio e Escritï¿½rio";1;False
+"INT117";"Produtos e Serviï¿½os Comunitï¿½rios";1;False
+"INT118";"Produtos e Serviï¿½os Para A Indï¿½stria";1;False
+"INT119";"Produtos e Serviï¿½os De Lazer e Recreaï¿½ï¿½o";1;False
+"INT120";"Produtos e Serviï¿½os De Limpeza e Manutenï¿½ï¿½o Do Lar";1;False
+"INT121";"Produtos e Serviï¿½os Mï¿½dicos, Farmacï¿½uticos e De Saï¿½de";1;False
+"INT122";"Produtos e Serviï¿½os Pï¿½blicos";1;False
+"INT123";"Produtos e Serviï¿½os de Telecomunicaï¿½ï¿½es";1;False
+"INT124";"Serviï¿½os Financeiros e De Seguros";1;False
+"INT125";"Turismo, Transportes e Diversï¿½es Pï¿½blicas";1;False
+"INT126";"Varejo De Grande Porte";1;False
+"INT127";"Varejo De Pequeno e Mï¿½dio Porte";1;False
+"INT128";"Veï¿½culos Pessoais e Profissionais";1;False
+"INT129";"Vestuï¿½rio e Acessï¿½rios Pessoais";1;False
+"INT130";"Websites, Portais e Serviï¿½os Online";1;False
+"INT131";"Produtos e Serviï¿½os Diversos";1;False
+"MID000";"Mï¿½dia";1;True
+"MID100";"Aproveitamento de Mï¿½dia";1;True
+"MID101";"Aproveitamento do Meio Televisï¿½o";1;False
+"MID102";"Aproveitamento do Meio Cinema";1;False
+"MID103";"Aproveitamento do Meio Rï¿½dio";1;False
+"MID104";"Aproveitamento do Meio Jornal";1;False
+"MID105";"Aproveitamento do Meio Revista";1;False
+"MID106";"Aproveitamento da Mï¿½dia Exterior";1;False
+"MID107";"Aproveitamento da Mï¿½dia Digital";1;False
+"MID108";"Aproveitamento da Mï¿½dia Mobile";1;False
+"PRM000";"Promo e Live";1;True
+"PRM100";"Cases Promocionais e de Live Marketing";1;True
+"PRM101";"Case de Produto de Consumo";1;False
+"PRM102";"Case de Bens Durï¿½veis";1;False
+"PRM103";"Case de Serviï¿½o";1;False
+"PRM104";"Case de Produto ou Serviï¿½o Tï¿½cnico ou Profissional";1;False
+"PRM105";"Case de Produto ou Serviï¿½o Business-to-Business";1;False
+"PRM106";"Case de Varejo";1;False
+"PRM107";"Case de Produto Cultural ou de Lazer";1;False
+"PRM108";"Case Institucional";1;False
+"PRM109";"Case Social ou Comunitï¿½rio";1;False
+"PRM110";"Case de Endomarketing e Incentivo";1;False
+"PRM111";"Case de Fidelizaï¿½ï¿½o e Pï¿½s-Venda";1;False
+"PRM112";"Organizaï¿½ï¿½o de Congressos, Seminï¿½rios e Afins";1;False
+"PRM113";"Organizaï¿½ï¿½o de Feiras e Exposiï¿½ï¿½es";1;False
+"PRM200";"Eventos Promocionais e de Live Marketing";1;True
+"PRM201";"Evento Comercial";1;False
+"PRM202";"Evento Comunitï¿½rio";1;False
+"PRM203";"Evento Cultural ou de Lazer";1;False
+"PRM204";"Evento de Endomarketing ou Incentivo";1;False
+"PRM205";"Evento de Inauguraï¿½ï¿½o";1;False
+"PRM206";"Evento de Lanï¿½amento de Produto ou Serviï¿½o";1;False
+"PRM207";"Evento Esportivo";1;False
+"PRM208";"Evento Institucional";1;False
+"PRM209";"Evento Relacionado a Data Comemorativa";1;False
+"PRM210";"Evento Social";1;False
+"PRM211";"Evento Tï¿½cnico";1;False
+"PRM212";"Participaï¿½ï¿½o em Feira ou Exposiï¿½ï¿½o";1;False
+"PRM300";"Aï¿½ï¿½es Promocionais e de Live Marketing";1;True
+"PRM301";"Aï¿½ï¿½o de Demonstraï¿½ï¿½o ou Amostragem em Ponto-de-Venda";1;False
+"PRM302";"Aï¿½ï¿½o de Demonstraï¿½ï¿½o ou Amostragem Externa";1;False
+"PRM303";"Aï¿½ï¿½o para Bens Durï¿½veis";1;False
+"PRM304";"Aï¿½ï¿½o de Endomarketing ou Incentivo";1;False
+"PRM305";"Aï¿½ï¿½o Institucional";1;False
+"PRM306";"Aï¿½ï¿½o para Produto ou Serviï¿½o Business-to-Business";1;False
+"PRM307";"Aï¿½ï¿½o para Produto de Consumo";1;False
+"PRM308";"Aï¿½ï¿½o para Produto Cultural ou de Lazer";1;False
+"PRM309";"Aï¿½ï¿½o para Serviï¿½o";1;False
+"PRM310";"Aï¿½ï¿½o para Produto ou Serviï¿½o Tï¿½cnico ou Profissional";1;False
+"PRM311";"Aï¿½ï¿½o Social ou Comunitï¿½ria";1;False
+"PRM312";"Aï¿½ï¿½o para Varejo";1;False
+"PRM313";"Aï¿½ï¿½o em Rede Social";1;False
+"PRM400";"Materiais Promocionais";1;True
+"PRM401";"Brinde ou Peï¿½a Promocional dirigida a Pï¿½blicos Internos ou Intermediï¿½rios";1;False
+"PRM402";"Brinde ou Peï¿½a Promocional dirigida ao Pï¿½blico Final";1;False
+"PRM403";"Brinde ou Peï¿½a Promocional relativa a Data Comemorativa";1;False
+"PRM404";"Peï¿½a Promocional Interativa";1;False
+"PRM405";"Brinde ou Peï¿½a Promocional de Empresa de Comunicaï¿½ï¿½o";1;False
+"PRM406";"Personagem Promocional";1;False
+"PRM407";"Figurino Promocional";1;False
+"RAD000";"Rï¿½dio";1;True
+"RAD100";"Mercado";1;True
+"RAD101";"Alimentos";1;False
+"RAD102";"Bebidas Alcoï¿½licas";1;False
+"RAD103";"Bebidas Nï¿½o-Alcoï¿½licas";1;False
+"RAD104";"Cigarros e Tabaco";1;False
+"RAD105";"Cosmï¿½ticos e Produtos De Toalete";1;False
+"RAD106";"Cultura e Educaï¿½ï¿½o";1;False
+"RAD107";"Eletrodomï¿½sticos";1;False
+"RAD108";"Imobiliï¿½rio";1;False
+"RAD109";"Institucional Ou Corporativo";1;False
+"RAD110";"Meios De Comunicaï¿½ï¿½o";1;False
+"RAD111";"Mercado Publicitï¿½rio";1;False
+"RAD112";"Mï¿½veis, Decoraï¿½ï¿½o e Utensï¿½lios Domï¿½sticos";1;False
+"RAD113";"Polï¿½tica e Eleiï¿½ï¿½es";1;False
+"RAD114";"Produtos e Serviï¿½os Para Agropecuï¿½ria";1;False
+"RAD115";"Produtos e Serviï¿½os Automotivos";1;False
+"RAD116";"Produtos e Serviï¿½os Para Comï¿½rcio e Escritï¿½rio";1;False
+"RAD117";"Produtos e Serviï¿½os Comunitï¿½rios";1;False
+"RAD118";"Produtos e Serviï¿½os Para A Indï¿½stria";1;False
+"RAD119";"Produtos e Serviï¿½os De Lazer e Recreaï¿½ï¿½o";1;False
+"RAD120";"Produtos e Serviï¿½os De Limpeza e Manutenï¿½ï¿½o Do Lar";1;False
+"RAD121";"Produtos e Serviï¿½os Mï¿½dicos, Farmacï¿½uticos e De Saï¿½de";1;False
+"RAD122";"Produtos e Serviï¿½os Pï¿½blicos";1;False
+"RAD123";"Produtos e Serviï¿½os de Telecomunicaï¿½ï¿½es";1;False
+"RAD124";"Serviï¿½os Financeiros e De Seguros";1;False
+"RAD125";"Turismo, Transportes e Diversï¿½es Pï¿½blicas";1;False
+"RAD126";"Varejo De Grande Porte";1;False
+"RAD127";"Varejo De Pequeno e Mï¿½dio Porte";1;False
+"RAD128";"Veï¿½culos Pessoais e Profissionais";1;False
+"RAD129";"Vestuï¿½rio e Acessï¿½rios Pessoais";1;False
+"RAD130";"Websites, Portais e Serviï¿½os Online";1;False
+"RAD131";"Produtos e Serviï¿½os Diversos";1;False
+"RAD200";"Apresentaï¿½ï¿½es Especiais";1;True
+"RAD201";"Oportunidade";1;False
+"RAD202";"Datas Promocionais";1;False
+"RAD203";"Datas Institucionais";1;False
+"RAD204";"Aproveitamento de Patrocï¿½nio";1;False
+"RAD205";"Apoio a Promoï¿½ï¿½o de Produto";1;False
+"RAD206";"Apoio a Promoï¿½ï¿½o de Serviï¿½o";1;False
+"RPB000";"RP";1;True
+"RPB101";"Aï¿½ï¿½es Comunitï¿½rias e Nï¿½o Lucrativas";1;False
+"RPB102";"Arte e Entretenimento";1;False
+"RPB103";"Gerenciamento de Crise";1;False
+"RPB104";"Marketing - Business to Business";1;False
+"RPB105";"Pï¿½blico Interno";1;False
+"RPB106";"Relacionamento com Comunidade";1;False
+"RPB107";"Relacionamento com Investidores";1;False
+"RPB108";"Reputaï¿½ï¿½o";1;False
+"RPB109";"Polï¿½ticas Pï¿½blicas";1;False
+"RPB110";"Serviï¿½o Pï¿½blico";1;False
+"RPB111";"Sustentabilidade e Ambiente";1;False
+"TEC000";"Tï¿½cnica";1;True
+"TEC100";"Filmes";1;True
+"TEC101";"Roteiro de Filme";1;False
+"TEC102";"Direï¿½ï¿½o de Arte de Filme";1;False
+"TEC103";"Direï¿½ï¿½o de Filme";1;False
+"TEC104";"Produï¿½ï¿½o de Filme";1;False
+"TEC105";"Fotografia de Filme";1;False
+"TEC106";"Ediï¿½ï¿½o de Filme";1;False
+"TEC107";"Trilha de Filme";1;False
+"TEC108";"Texto ou Letra de Jingle de Fime";1;False
+"TEC109";"Efeitos Visuais de Filme";1;False
+"TEC110";"Animaï¿½ï¿½o em Filme";1;False
+"TEC200";"Fonogramas";1;True
+"TEC201";"Roteiro de Fonograma";1;False
+"TEC202";"Mï¿½sica ou Trilha de Fonograma";1;False
+"TEC203";"Texto ou Letra de Fonograma";1;False
+"TEC204";"Produï¿½ï¿½o de Fonograma";1;False
+"TEC300";"Peï¿½as Grï¿½ficas";1;True
+"TEC301";"Texto em Peï¿½a Grï¿½fica";1;False
+"TEC302";"Direï¿½ï¿½o de Arte em Peï¿½a Grï¿½fica";1;False
+"TEC303";"Ilustraï¿½ï¿½o em Peï¿½a Grï¿½fica";1;False
+"TEC304";"Fotografia em Peï¿½a Grï¿½fica";1;False

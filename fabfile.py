@@ -3,23 +3,13 @@ from fabric.contrib import console
 from fabric.api import *
 
 @with_settings(warn_only=True)
-@hosts("webapp@107.170.161.189")
-def deploy():
-    with cd('/var/webapp/ongportal/ongportal/'):
-        run('git pull')
-        run('../bin/python manage.py migrate --settings=ongportal.settings.test')
-        run('../bin/python manage.py collectstatic --noinput --settings=ongportal.settings.test')
-        run('supervisorctl restart ongportal')
-
-
-@with_settings(warn_only=True)
-@hosts("webapp@107.170.161.189")
+@hosts("webapp@colunistas.irdx.com.br:2222")
 def deploy_test():
-    with cd('/var/webapp/ongportal_test/ongportal/'):
+    with cd('/var/webapp/colunistas/colunistas/'):
         run('git pull')
-        run('../bin/python manage.py migrate --settings=ongportal.settings.test')
-        run('../bin/python manage.py collectstatic --noinput --settings=ongportal.settings.test')
-        run('supervisorctl restart ongportal_test')
+        run('../bin/python manage.py migrate')
+        run('../bin/python manage.py collectstatic')
+        run('supervisorctl restart colunistas')
 
 
 @with_settings(warn_only=True)
