@@ -35,8 +35,8 @@ class LoginView(View):
         if self.dados['formulario_login'].is_valid():
 
             usuario = authenticate(
-                username = self.dados['formulario_login'].cleaned_data['usuario'],
-                password = self.dados['formulario_login'].cleaned_data['senha']
+                username=self.dados['formulario_login'].cleaned_data['usuario'],
+                password=self.dados['formulario_login'].cleaned_data['senha']
             )
 
             if usuario:

@@ -8,7 +8,7 @@ def deploy_test():
     with cd('/var/webapp/colunistas/colunistas/'):
         run('git pull')
         run('../bin/python manage.py migrate')
-        run('../bin/python manage.py collectstatic')
+        run('../bin/python manage.py collectstatic --no-input')
         run('supervisorctl restart colunistas')
 
 

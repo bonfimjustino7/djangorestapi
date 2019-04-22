@@ -16,7 +16,7 @@
                     <div class="field campo">
                         {{formulario_login.usuario.label_tag}}
                         {% if formulario_login.usuario.field.required %}
-                            <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                            <span class="required"> <i class="fas fa-circle fa-xs"></i>Obrigatório</span>
                         {% endif %}
                         {{formulario_login.usuario}}
                         {{formulario_login.usuario.errors}}
@@ -26,7 +26,7 @@
                     <div class="field campo">
                         {{formulario_login.senha.label_tag}}
                         {% if formulario_login.senha.field.required %}
-                            <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                            <span class="required"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
                         {% endif %}
                         {{formulario_login.senha}}
                         {{formulario_login.senha.errors}}

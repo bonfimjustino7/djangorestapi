@@ -9,14 +9,18 @@ CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'input'})
 
 
 class LoginForm(forms.Form):
-    usuario = forms.CharField(required=True, label = 'Usuário', widget = CAMPO_TEXTO_PADRAO)
-    senha = forms.CharField(required=True, widget = CAMPO_SENHA_PADRAO)
+    usuario = forms.CharField(required=True, label='Usuário', widget=CAMPO_TEXTO_PADRAO,
+                              help_text='Entre com o nome do usuário (obrigatório)')
+    senha = forms.CharField(required=True, widget=CAMPO_SENHA_PADRAO, help_text='Digite a senha')
 
 
 class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
-    nome = forms.CharField(required=True, widget = CAMPO_TEXTO_PADRAO)
-    sobrenome = forms.CharField(required=True, widget = CAMPO_TEXTO_PADRAO)
-    email = forms.EmailField(required=True, label = 'E-mail', widget = CAMPO_EMAIL_PADRAO)
+    nome = forms.CharField(required=True, widget=CAMPO_TEXTO_PADRAO,
+                           help_text='Digite o seu primeiro nome (obrigatório)')
+    sobrenome = forms.CharField(required=True, widget = CAMPO_TEXTO_PADRAO,
+                                help_text='Digite o seu sobrenome (obrigatório)')
+    email = forms.EmailField(required=True, label = 'E-mail', widget=CAMPO_EMAIL_PADRAO,
+                             help_text='Digite o seu email (obrigatório)')
 
     def clean_email(self):
         email = self.cleaned_data['email']
