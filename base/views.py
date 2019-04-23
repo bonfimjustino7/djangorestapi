@@ -17,6 +17,9 @@ from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
 
+class HomeView(View):
+    def get(self, request, **kwargs):
+        return redirect('/login/')
 
 class LoginView(View):
     template = 'base/login.html'
