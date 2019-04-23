@@ -9,9 +9,17 @@ CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'input'})
 
 
 class LoginForm(forms.Form):
-    usuario = forms.CharField(required=True, label='Usuário', widget=CAMPO_TEXTO_PADRAO,
-                              help_text='Entre com o nome do usuário (obrigatório)')
-    senha = forms.CharField(required=True, widget=CAMPO_SENHA_PADRAO, help_text='Digite a senha')
+    usuario = forms.CharField(
+        required=True,
+        label='Usuário',
+        widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Usuário'}),
+        help_text='Entre com o nome do usuário (obrigatório)'
+    )
+    senha = forms.CharField(
+        required=True,
+        widget=forms.widgets.PasswordInput(attrs = {'class': 'input', 'placeholder': 'Senha'}),
+        help_text='Digite a senha'
+    )
 
 
 class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google

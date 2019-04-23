@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User, Group
 
 from django.contrib import messages
+from django.utils.safestring import mark_safe
 
 from django.forms import formset_factory
 
@@ -97,12 +98,13 @@ class Registro2View(View):
     dados = {}
 
     def get(self, request, **kwargs):
-        self.dados['formulario_registro'] = Registro2Form()
-        self.dados['formulario_registro'].fields['usuario'].required = True
-        if UserToken.objects.filter(token=self.kwargs['token']).exists():
+        if UserToken.objects.filter(token = self.kwargs['token']).exists():
+            self.dados['formulario_registro'] = Registro2Form()
+            self.dados['formulario_registro'].fields['usuario'].required = True
             self.dados['token_usuario'] = self.kwargs['token']
         else:
-            messages.error(request, 'Pré-cadastro não encontrado ou expirado')
+            self.dados['token_usuario'] = 'aaaa'
+            messages.error(request, mark_safe('Pré-cadastro não encontrado ou expirado. Clique <a href="/registro/">aqui</a> para solicitar o seu pré-cadastro.'))
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):

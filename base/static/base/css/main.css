@@ -11,13 +11,13 @@ body {
 }
 
 .campo {
-    border: 1px solid #efefef;
     padding: 10px;
 }
 
 .campo input, .campo input:focus {
-    border: 0;
-    box-shadow: none
+    margin-top: 5px;
+    border: 1px solid #dedede;
+    box-shadow: none;
 }
 
 .campo .required {
@@ -25,6 +25,7 @@ body {
     margin-left: 15px;
     font-size: 12px;
 }
+
 
 label {font-weight: bold; margin-bottom: .1rem; margin-top: .4rem;}
 
