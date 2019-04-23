@@ -11,64 +11,64 @@
                 </div>
 
                 <form action="{% url 'novo-usuario' token_usuario %}" method="post">
-                {% csrf_token %}
+                    {% csrf_token %}
 
-                {% if messages %}
-                <div class="columns">
-                    <div class="column is-12 has-text-centered" style="font-weight: bold;">Aviso:</div>
-                </div>
-                <div class="columns">
-                    <div class="column is-12">
-                        <ul>
-                            {% for mensagem in messages %}
-                            <li class="is-{{mensagem.tags}}">{{mensagem}}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% endif %}
-                <div class="columns">
-                    <div class="column is-12">
-                        <div class="field campo">
+                    {% if messages %}
+                        <div class="columns">
+                            <div class="column is-12 has-text-centered" style="font-weight: bold;">Aviso:</div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-12">
+                                <ul>
+                                    {% for mensagem in messages %}
+                                    <li class="is-{{mensagem.tags}}">{{mensagem}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="columns">
+                        <div class="column is-12">
+                            <div class="field campo">
                                 {{formulario_registro.usuario.label_tag}}
                                 {% if formulario_registro.usuario.field.required %}
-                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                    <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
                                 {% endif %}
                                 {{formulario_registro.usuario}}
                                 {{formulario_registro.usuario.errors}}
                                 {{formulario_registro.usuario.help_text}}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-6">
-                        <div class="field campo">
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="field campo">
                                 {{formulario_registro.senha.label_tag}}
                                 {% if formulario_registro.senha.field.required %}
-                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                    <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
                                 {% endif %}
                                 {{formulario_registro.senha}}
                                 {{formulario_registro.senha.errors}}
                                 {{formulario_registro.senha.help_text}}
+                            </div>
                         </div>
-                    </div>
-                    <div class="column is-6">
-                        <div class="field campo">
+                        <div class="column is-6">
+                            <div class="field campo">
                                 {{formulario_registro.senha2.label_tag}}
                                 {% if formulario_registro.senha2.field.required %}
-                                <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
+                                    <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
                                 {% endif %}
                                 {{formulario_registro.senha2}}
                                 {{formulario_registro.senha2.errors}}
                                 {{formulario_registro.senha2.help_text}}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="field has-text-centered">
-                    <input type="submit" class="button is-link bt1 is-radiusless" value="Enviar">
-                </div>
-            </form>
+                    <div class="field has-text-centered">
+                        <input type="submit" class="button is-link bt1 is-radiusless" value="Enviar">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
