@@ -111,13 +111,15 @@ class EmailAgendado(models.Model):
 
     def send(self):
         try:
-            headers.update({'Reply-To': settings.REPLY_TO_EMAIL, })
+            headers = {'Reply-To': settings.REPLY_TO_EMAIL, }
             msg = EmailMultiAlternatives(self.subject, self.html, settings.DEFAULT_FROM_EMAIL,
-                                         to=self.to.split(','))
+                                         to=self.to.split(','),
+                                         headers=headers)
             msg.attach_alternative(self.html, 'text/html; charset=UTF-8')
             msg.send()
             self.status = 'K'
-        except:
+        except Exception as e:
+            print(e)
             self.status = 'E'
         self.save()
 
