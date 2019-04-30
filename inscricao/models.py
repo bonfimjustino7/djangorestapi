@@ -70,6 +70,10 @@ class EmpresaUsuario(models.Model):
     dtinclusao = models.DateTimeField(auto_now_add=True)
 
 
+texto_outros_autores = 'Utilize o formato: "Função, Fulano, Beltrano e Sicrano'
+texto_outros_creditos = 'Outros Créditos de Fornecedores'
+
+
 class Inscricao(models.Model):
     premio = models.ForeignKey(Premio,on_delete=models.PROTECT)
     usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
@@ -84,30 +88,35 @@ class Inscricao(models.Model):
     produto = models.CharField(max_length=30, null=True, blank=True)
     dtinicio = models.DateField('Veiculação ou Início')
     isolada = models.BooleanField(default=False)
-    DiretorCriacao = models.CharField(max_length=100, null=True, blank=True)
-    Planejamento = models.CharField(max_length=100, null=True, blank=True)
-    Redacao = models.CharField('Redação',max_length=140, null=True, blank=True)
+    DiretorCriacao = models.CharField('Diretor de Criação', max_length=100,
+                                      help_text=texto_outros_autores, null=True, blank=True)
+    Planejamento = models.CharField('Planejamento', max_length=100, null=True, blank=True)
+    Redacao = models.CharField('Redação', max_length=140, null=True, blank=True)
     DiretorArte = models.CharField('Diretor de Arte', max_length=140, null=True, blank=True)
     ProducaoGrafica = models.CharField('Produção Gráfica', max_length=80, null=True, blank=True)
     ProducaoRTVC = models.CharField('Produção RTVC', max_length=80, null=True, blank=True)
-    TecnologiaDigital = models.CharField(max_length=80, null=True, blank=True)
-    OutrosAgencia1 = models.CharField(max_length=80, null=True, blank=True)
-    OutrosAgencia2 = models.CharField(max_length=80, null=True, blank=True)
-    Midia = models.CharField(max_length=60, null=True, blank=True)
-    Atendimento = models.CharField(max_length=80, null=True, blank=True)
-    Aprovacao = models.CharField(max_length=100, null=True, blank=True)
-    ProdutoraFilme = models.CharField(max_length=50, null=True, blank=True)
-    DiretorFilme = models.CharField(max_length=50, null=True, blank=True)
-    ProdutoraAudio = models.CharField(max_length=50, null=True, blank=True)
-    DiretorAudio = models.CharField(max_length=50, null=True, blank=True)
-    EstudioFotografia = models.CharField(max_length=40, null=True, blank=True)
-    Fotografo = models.CharField(max_length=50, null=True, blank=True)
-    EstudioIlustracao = models.CharField(max_length=40, null=True, blank=True)
+    TecnologiaDigital = models.CharField('Tecnologia Digital', max_length=80, null=True, blank=True)
+    OutrosAgencia1 = models.CharField('Outros Créditos', max_length=80,
+                                      null=True, blank=True, help_text=texto_outros_autores)
+    OutrosAgencia2 = models.CharField('Outros Créditos', max_length=80,
+                                      null=True, blank=True, help_text=texto_outros_autores)
+    Midia = models.CharField('Mídia', max_length=60, null=True, blank=True)
+    Atendimento = models.CharField('Atendimento', max_length=80, null=True, blank=True)
+    Aprovacao = models.CharField('Aprovação', max_length=100, null=True, blank=True)
+    ProdutoraFilme = models.CharField('Produtora do Filme', max_length=50, null=True, blank=True)
+    DiretorFilme = models.CharField('Diretor do Filme', max_length=50, null=True, blank=True)
+    ProdutoraAudio = models.CharField('Produtora de Áudio', max_length=50, null=True, blank=True)
+    DiretorAudio = models.CharField('Diretor de Áudio', max_length=50, null=True, blank=True)
+    EstudioFotografia = models.CharField('Estúdio de Fotografia', max_length=40, null=True, blank=True)
+    Fotografo = models.CharField('Fotógrafo', max_length=50, null=True, blank=True)
+    EstudioIlustracao = models.CharField('Estúdio de Ilustração', max_length=40, null=True, blank=True)
     Ilustrador = models.CharField(max_length=50, null=True, blank=True)
-    ManipulacaoDigital = models.CharField(max_length=40, null=True, blank=True)
-    Finalizacao = models.CharField(max_length=40, null=True, blank=True)
-    OutrosFornecedor1 = models.CharField(max_length=80, null=True, blank=True)
-    OutrosFornecedor2 = models.CharField(max_length=80, null=True, blank=True)
+    ManipulacaoDigital = models.CharField('Manipulação Digital', max_length=40, null=True, blank=True)
+    Finalizacao = models.CharField('Finalização', max_length=40, null=True, blank=True)
+    OutrosFornecedor1 = models.CharField(texto_outros_creditos, max_length=80,
+                                         help_text=texto_outros_autores, null=True, blank=True)
+    OutrosFornecedor2 = models.CharField(texto_outros_creditos, max_length=80,
+                                         help_text=texto_outros_autores, null=True, blank=True)
     roteiro = models.TextField('Roteiro de Rádio', null=True, blank=True)
 
     def __str__(self):

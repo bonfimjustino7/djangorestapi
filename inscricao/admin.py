@@ -17,6 +17,7 @@ class AgenciaInline(admin.TabularInline):
 class EmpresaUsuarioAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'usuario')
 
+
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_filter = ('regional',)
@@ -55,12 +56,6 @@ class EmpresaAdmin(admin.ModelAdmin):
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url', )
-
-    def get_queryset(self, request):
-        qs = super(self.__class__, self).get_queryset(request)
-        if request.user.groups.filter(name=u'Funcionário IES').count():
-            return qs.filter(coordenador=False)
-        return qs
 
 
 @admin.register(Inscricao)
@@ -112,3 +107,4 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+admin.site.register(Usuario)

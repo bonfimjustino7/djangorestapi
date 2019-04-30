@@ -13,10 +13,12 @@
                         <h1 class="title">Login</h1>
                     </div>
 
+                    {% include "base/includes/messages.html" with messages=messages %}
+
                     <div class="field campo">
                         {{formulario_login.usuario.label_tag}}
                         {% if formulario_login.usuario.field.required %}
-                            <span class="required"> <i class="fas fa-circle fa-xs"></i>Obrigatório</span>
+                            <span class="required"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
                         {% endif %}
                         {{formulario_login.usuario}}
                         {{formulario_login.usuario.errors}}
@@ -47,6 +49,4 @@
         </div>
 
     </form>
-
-    {% include "base/includes/messages.html" with messages=messages %}
 {% endblock conteudo %}

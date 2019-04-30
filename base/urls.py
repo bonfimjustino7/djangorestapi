@@ -3,6 +3,7 @@ from django.conf.urls import url, include
 from base.views import *
 
 urlpatterns = [
+    url(r'^$', HomeView.as_view(), name = 'home'),
     url('instrucoes-login/$', InstrucoesLoginView.as_view(), name = 'instrucoes-login'),
     url('registro/$', Registro1View.as_view(), name = 'registro'),
     url('novo-usuario/(?P<token>[a-zA-Z0-9_.-]+)/$', Registro2View.as_view(), name = 'novo-usuario'),

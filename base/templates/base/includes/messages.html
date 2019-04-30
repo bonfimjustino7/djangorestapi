@@ -1,16 +1,11 @@
 {% load staticfiles %}
 
 {% if messages %}
-	<script src="{% static 'base/js/bulma-toast.min.js' %}"></script>
-	{% for mensagem in messages %}
-		<script>
-			bulmaToast.toast({
-				message: "{{mensagem}}",
-				type: "is-{{mensagem.tags}}",
-				dismissible: true,
-				pauseOnHover: true,
-				animate: {in: "fadeIn", out: "fadeOut"}
-			});
-		</script>
-	{% endfor %}
+    {% for mensagem in messages %}
+        <div class="message is-{{mensagem.tags}}">
+            <div class="message-body">
+                {{mensagem}}
+            </div>
+        </div>
+    {% endfor %}
 {% endif %}

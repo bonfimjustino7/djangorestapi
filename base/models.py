@@ -22,6 +22,8 @@ class UF(models.Model):
 
     class Meta:
         ordering = ('sigla', )
+        verbose_name = u'UF'
+        verbose_name_plural = u'Unidades da Federação'
 
     def __str__(self):
         return self.sigla
