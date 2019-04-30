@@ -33,7 +33,7 @@ label {font-weight: bold; margin-bottom: .1rem; margin-top: .4rem;}
 
 .formulario-empresa {font-size: 14px;}
 
-.login {
+.login, .registro {
     margin-top: 200px;
 }
 
