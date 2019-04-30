@@ -3,7 +3,7 @@
 
 {% block conteudo %}
     <div class="columns">
-        <div class="column is-8 is-offset-2">
+        <div class="column is-6 is-offset-3">
             <div class="box is-radiusless">
                 <div class="has-text-centered">
                     <img src="{% static "base/img/logo.png" %}" width="150" alt="">
@@ -18,20 +18,23 @@
                         <div class="column is-6">
                             <div class="field campo">
                                 {{formulario_registro.nome.label_tag}}
-                                {% if formulario_registro.nome.field.required %}
+                                <!-- {% if formulario_registro.nome.field.required %}
                                     <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
-                                {% endif %}
+                                {% endif %} -->
                                 {{formulario_registro.nome}}
                                 {{formulario_registro.nome.errors}}
                                 {{formulario_registro.nome.help_text}}
                             </div>
                         </div>
+                    </div>
+
+                    <div class="columns">
                         <div class="column is-6">
                             <div class="field campo">
                                 {{formulario_registro.sobrenome.label_tag}}
-                                {% if formulario_registro.sobrenome.field.required %}
+                                <!-- {% if formulario_registro.sobrenome.field.required %}
                                     <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
-                                {% endif %}
+                                {% endif %} -->
                                 {{formulario_registro.sobrenome}}
                                 {{formulario_registro.sobrenome.errors}}
                                 {{formulario_registro.sobrenome.help_text}}
@@ -43,9 +46,9 @@
                         <div class="column is-12">
                             <div class="field campo">
                                 {{formulario_registro.email.label_tag}}
-                                {% if formulario_registro.email.field.required %}
+                                <!-- {% if formulario_registro.email.field.required %}
                                     <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
-                                {% endif %}
+                                {% endif %} -->
                                 {{formulario_registro.email}}
                                 {{formulario_registro.email.errors}}
                                 {{formulario_registro.email.help_text}}

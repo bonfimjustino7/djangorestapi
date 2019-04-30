@@ -1,5 +1,4 @@
 body {
-    background: url(../img/back.jpg) no-repeat;
     background-position: center top;
     background-size: 100% auto;
 }
@@ -11,13 +10,16 @@ body {
 }
 
 .campo {
-    padding: 10px;
+    padding:0 10px ;
 }
 
-.campo input, .campo input:focus {
+.campo input{
     margin-top: 5px;
     border: 1px solid #dedede;
     box-shadow: none;
+}
+.campo input:focus {
+    border: 1px solid #7394cb;
 }
 
 .campo .required {
