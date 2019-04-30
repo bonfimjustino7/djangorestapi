@@ -12,7 +12,6 @@ from util.models import EmailAgendado
 def sendmail(subject='', to=[], params={}, template='', mimetype='text/html; charset=UTF-8', headers={}):
     # from .models import Recurso
     # ativo = Recurso.objects.get_or_create(recurso='EMAIL')[0].ativo
-    ativo = False
     headers.update({'Reply-To': settings.REPLY_TO_EMAIL, })
     '''
     Método para envio de e-mail:
@@ -22,14 +21,14 @@ def sendmail(subject='', to=[], params={}, template='', mimetype='text/html; cha
     - template: string para o caminho do template do e-mail
     - mimetype: string de tipo e charset do arquivo de e-mail, padrão 'text/html; charset=UTF-8'
     '''
-    def send_thread_email(subject='', to=[], params={}, template='', mimetype='', headers={}):
+    def send_thread_email(assunto='', to=[], params={}, template='', mimetype='', headers={}):
 
         email = EmailAgendado.objects.create(
-            subject=subject,
+            subject=assunto,
             to=','.join(to)
         )
 
-        text_content = subject
+        text_content = assunto
         try:
             template_content = get_template(template)
             html_content = template_content.render(params)
@@ -42,8 +41,8 @@ def sendmail(subject='', to=[], params={}, template='', mimetype='text/html; cha
 
         while tentativas < 3:
             try:
-                if ativo:
-                    msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, bcc=to, headers=headers)
+                if settings.SEND_EMAIL:
+                    msg = EmailMultiAlternatives(assunto, text_content, settings.DEFAULT_FROM_EMAIL, bcc=to, headers=headers)
                     msg.attach_alternative(email.html, mimetype)
                     msg.send()
                     email.status = 'K'
@@ -62,5 +61,5 @@ def sendmail(subject='', to=[], params={}, template='', mimetype='text/html; cha
                 email.save()
                 sleep(60)
 
-    th=Thread(target=send_thread_email, args=(subject, to, params, template, mimetype, headers))
+    th = Thread(target=send_thread_email, args=(subject, to, params, template, mimetype, headers))
     th.start()

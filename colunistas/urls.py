@@ -36,12 +36,11 @@ urlpatterns = [
 	url(r'^admin_tools/', include('admin_tools.urls')),
 	url(r'^ckeditor/', include('ckeditor.urls')),
 	url(r'^chaining/', include('smart_selects.urls')),
-
 	url(r'^', include('base.urls')),
 ]
 
 if 'theme' in settings.INSTALLED_APPS:
-	urlpatterns += [ url(r'^/', include('theme.urls')), ]
+	urlpatterns += [url(r'^/', include('theme.urls')), ]
 
 # urlpatterns += [
 # CMS
@@ -52,3 +51,4 @@ if 'theme' in settings.INSTALLED_APPS:
 if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
