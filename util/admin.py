@@ -115,7 +115,7 @@ class EmailAgendadoAdmin(admin.ModelAdmin):
 
     def renviar(self, request, queryset):
         for q in queryset:
-            q.send_email()
+            q.send()
 
 
 admin.site.register(EmailAgendado, EmailAgendadoAdmin)
