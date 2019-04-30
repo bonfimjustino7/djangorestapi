@@ -13,22 +13,27 @@ class LoginForm(forms.Form):
         required=True,
         label='Usuário',
         widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Usuário'}),
-        help_text='Entre com o nome do usuário (obrigatório)'
     )
     senha = forms.CharField(
         required=True,
         widget=forms.widgets.PasswordInput(attrs = {'class': 'input', 'placeholder': 'Senha'}),
-        help_text='Digite a senha'
     )
 
 
 class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
-    nome = forms.CharField(required=True, widget=CAMPO_TEXTO_PADRAO,
-                           help_text='Digite o seu primeiro nome (obrigatório)')
-    sobrenome = forms.CharField(required=True, widget = CAMPO_TEXTO_PADRAO,
-                                help_text='Digite o seu sobrenome (obrigatório)')
-    email = forms.EmailField(required=True, label = 'E-mail', widget=CAMPO_EMAIL_PADRAO,
-                             help_text='Digite o seu email (obrigatório)')
+    nome = forms.CharField(
+        required=True,
+        widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome'}),
+    )
+    sobrenome = forms.CharField(
+        required=True,
+        widget = forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Sobrenome'}),
+    )
+    email = forms.EmailField(
+        required=True,
+        label = 'E-mail',
+        widget = forms.widgets.EmailInput(attrs = {'class': 'input', 'placeholder': 'E-mail'}),
+    )
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -38,9 +43,19 @@ class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
 
 
 class Registro2Form(forms.Form):
-    usuario = forms.CharField(label='Digite um login', widget=CAMPO_TEXTO_PADRAO)
-    senha = forms.CharField(required=True, widget=CAMPO_SENHA_PADRAO)
-    senha2 = forms.CharField(required=True, label='Repita a senha', widget=CAMPO_SENHA_PADRAO)
+    usuario = forms.CharField(
+        label = 'Digite um login',
+        widget = forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome de Usuário'})
+    )
+    senha = forms.CharField(
+        required = True,
+        widget = forms.widgets.PasswordInput(attrs = {'class': 'input', 'placeholder': 'Nova Senha'})
+    )
+    senha2 = forms.CharField(
+        required=True,
+        label='Repita a senha',
+        widget=forms.widgets.PasswordInput(attrs = {'class': 'input', 'placeholder': 'Repita a Senha'})
+    )
 
     def clean(self):
         dados = super().clean()
@@ -51,4 +66,8 @@ class Registro2Form(forms.Form):
 
 
 class ResetSenhaForm(forms.Form):
-    email = forms.EmailField(required = True, label = 'E-mail', widget = CAMPO_EMAIL_PADRAO)
+    email = forms.EmailField(
+        required = True,
+        label = 'E-mail',
+        widget = forms.widgets.EmailInput(attrs = {'class': 'input', 'placeholder': 'E-mail'})
+    )

@@ -38,10 +38,17 @@ class LoginView(View):
         self.dados['formulario_login'] = LoginForm(request.POST)
         if self.dados['formulario_login'].is_valid():
 
-            usuario = authenticate(
-                username=self.dados['formulario_login'].cleaned_data['usuario'],
-                password=self.dados['formulario_login'].cleaned_data['senha']
-            )
+            if '@' in self.dados['formulario_login'].cleaned_data['usuario']:
+                if User.objects.filter(email = self.dados['formulario_login'].cleaned_data['usuario']).exists():
+                    usuario = authenticate(
+                        username = User.objects.get(email = self.dados['formulario_login'].cleaned_data['usuario']).username,
+                        password = self.dados['formulario_login'].cleaned_data['senha']
+                    )
+            else:
+                usuario = authenticate(
+                    username=self.dados['formulario_login'].cleaned_data['usuario'],
+                    password=self.dados['formulario_login'].cleaned_data['senha']
+                )
 
             if usuario:
                 if usuario.is_active:
