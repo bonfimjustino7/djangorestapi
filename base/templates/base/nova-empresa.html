@@ -2,7 +2,7 @@
 
 {% block conteudo %}
     <div class="row my-2">
-        <div class="col-md-14">
+        <div class="col-md-12">
 
             <div class="card">
                 <div class="card-body formulario-empresa">
@@ -13,10 +13,13 @@
                         {% csrf_token %}
 
                         <div class="row my-1">
-                            <div class="col-12 text-center font-weight-bold"><h1 class="title">Digite os dados da empresa</h1></div>
+                            <div class="col-12 text-center font-weight-bold">
+                                <img src="{% static "base/img/logo.png" %}" class="logo" alt="Logomarca Colunistas">
+                                <h1 class="title">Digite os dados da empresa</h1>
+                            </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-12">
                                 {{formulario_cadastro.nome.label_tag}}
                                 {{formulario_cadastro.nome}}
@@ -25,7 +28,7 @@
                             </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-6">
                                 {{formulario_cadastro.regional.label_tag}}
                                 {{formulario_cadastro.regional}}
@@ -40,7 +43,7 @@
                             </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-2">
                                 {{formulario_cadastro.cep.label_tag}}
                                 {{formulario_cadastro.cep}}
@@ -61,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-1" style="width: 50px;">
                                 {{formulario_cadastro.uf.label_tag}}
                                 {{formulario_cadastro.uf}}
@@ -94,7 +97,7 @@
                             </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-6">
                                 {{formulario_cadastro.homepage.label_tag}}
                                 {{formulario_cadastro.homepage}}
@@ -115,7 +118,7 @@
                             <div class="col-12 text-center font-weight-bold">VP ou Diretor responsável pelas inscrições</div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-12">
                                 {{formulario_cadastro.VP_Nome.label_tag}}
                                 {{formulario_cadastro.VP_Nome}}
@@ -123,7 +126,7 @@
                                 {{formulario_cadastro.VP_Nome.errors}}
                             </div>
                         </div>
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 {{formulario_cadastro.VP_Cargo.label_tag}}
                                 {{formulario_cadastro.VP_Cargo}}
@@ -156,7 +159,7 @@
                             <div class="col-12 text-center font-weight-bold">Outros Contatos na Empresa (Nomes que também receberão as comunicações da Abracomp sobre a premiação.)</div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-12">
                                 {{formulario_cadastro.C1_Nome.label_tag}}
                                 {{formulario_cadastro.C1_Nome}}
@@ -164,7 +167,7 @@
                                 {{formulario_cadastro.C1_Nome.errors}}
                             </div>
                         </div>
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 {{formulario_cadastro.C1_Cargo.label_tag}}
                                 {{formulario_cadastro.C1_Cargo}}
@@ -191,7 +194,7 @@
                             </div>
                         </div>
 
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-12">
                                 {{formulario_cadastro.C2_Nome.label_tag}}
                                 {{formulario_cadastro.C2_Nome}}
@@ -199,7 +202,7 @@
                                 {{formulario_cadastro.C2_Nome.errors}}
                             </div>
                         </div>
-                        <div class="row my-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 {{formulario_cadastro.C2_Cargo.label_tag}}
                                 {{formulario_cadastro.C2_Cargo}}
@@ -232,21 +235,25 @@
 
                             {{formset_agencias.management_form}}
 
-                            <div class="row my-2">
-                                <div class="col-md-11 text-center"><h1 class="title">Agências:</h1></div>
-                                <div><a href="javascript:adiciona_agencia()" class="btn btn-primary"><i class="fas fa-plus"></i></a></div>
+                            <div class="row">
+                                <div class="col-md-11 text-center">
+                                    <h1 class="title">Agências:</h1>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="row my-2">
-                            <div class="col-md-6 text-center botoes-adicionais d-none">
+                        <div class="row">
+                            <div class="col-md-12 text-center botoes-adicionais d-none">
                                 <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary">Dados Fiscais</a>
+                                <a href="javascript:adiciona_agencia()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>                            
                             </div>
-                            <div class="col-md-6 text-center botoes-adicionais d-none">
+                            <div class="col-md-12 text-center botoes-adicionais d-none">
                                 <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary">Iniciar Inscrições</a>
+                                <a href="javascript:adiciona_agencia()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>
                             </div>
-                            <div class="col-md-6 text-center botao-enviar">
+                            <div class="col-md-12 text-center botao-enviar">
                                 <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary disabled" disabled>Enviar</button>
+                                <a href="javascript:adiciona_agencia()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>
                             </div>
                         </div>
 
@@ -461,11 +468,13 @@
         }
 
         $(document).ready(function(){
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
             $('input[type="text"], input[type="email"], input[type="url"], select').addClass('form-control');
 
             $('#id_regional').blur(carrega_estados_agencias);
             $('#id_nome').blur(verificar_nome_empresa);
             $('#id_cep').blur(pesquisaCep);
+
         })
     </script>
 {% endblock %}
