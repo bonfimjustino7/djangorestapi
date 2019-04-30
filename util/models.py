@@ -109,12 +109,11 @@ class EmailAgendado(models.Model):
     to = models.TextField()
     html = models.TextField()
 
-    def send(self, headers):
+    def send(self):
         try:
             headers.update({'Reply-To': settings.REPLY_TO_EMAIL, })
             msg = EmailMultiAlternatives(self.subject, self.html, settings.DEFAULT_FROM_EMAIL,
-                                         to=self.to.split(','),
-                                         headers=headers)
+                                         to=self.to.split(','))
             msg.attach_alternative(self.html, 'text/html; charset=UTF-8')
             msg.send()
             self.status = 'K'
