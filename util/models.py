@@ -90,6 +90,25 @@ def LogError(rotina, exception):
     )
 
 
+RECURSOS = (
+    (u'EMAIL', u'Envio de email automático'),
+    (u'SITE_NAME', u'Nome do Site'),
+)
+
+
+class Recurso(models.Model):
+    recurso = models.CharField(u"Parâmetro", max_length=10, choices=RECURSOS, unique=True)
+    valor = models.TextField(u"Valor", blank=True, null=True)
+    ativo = models.BooleanField(u"Ativo?", default=True)
+
+    class Meta:
+        verbose_name = u'Parâmetro do Sistema'
+        verbose_name_plural = u'Parâmetros do Sistema'
+
+    def __unicode__(self):
+        return u"%s" % self.get_recurso_display()
+
+
 STATUS_EMAIL = (
     ("A", u"Aguardando envio manual..."),
     ("S", u"Enviando..."),

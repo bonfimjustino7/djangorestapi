@@ -27,7 +27,7 @@ from poweradmin.admin import PowerModelAdmin, PowerButton
 from .forms import ThemeForm, CustomGroupForm, PowerArticleForm
 
 from .models import Menu, Section, Article, SectionItem, URLMigrate, \
-    FileDownload, ArticleArchive, ArticleComment, EmailAgendado, Recurso, \
+    FileDownload, ArticleArchive, ArticleComment, \
     Theme, Permissao, GroupType, GroupItem, ArticleAttribute
 
 
@@ -367,37 +367,6 @@ class MenuAdmin(DraggableMPTTAdmin):
 
 
 admin.site.register(Menu, MenuAdmin)
-
-
-class EmailAgendadoAdmin(PowerModelAdmin):
-    list_display = ('subject', 'to', 'status', 'date')
-    readonly_fields = ('subject', 'to', 'status', 'date')
-    fields = ('subject', 'to', 'status', 'date', 'html')
-    actions = ('renviar', )
-    multi_search = (
-        ('q1', 'Para', ['to']),
-        ('q2', 'Assunto', ['subject']),
-    )
-
-    class Media:
-        js = [
-            'tiny_mce/tiny_mce.js',
-            'tiny_mce/tiny_mce_settings.js',
-        ]
-
-    def renviar(self, request, queryset):
-        for q in queryset:
-            q.send_email()
-
-
-admin.site.register(EmailAgendado, EmailAgendadoAdmin)
-
-
-class RecursoAdmin(PowerModelAdmin):
-    list_display = ('recurso', 'ativo',)
-
-
-admin.site.register(Recurso, RecursoAdmin)
 
 
 class ThemeAdmin(PowerModelAdmin):

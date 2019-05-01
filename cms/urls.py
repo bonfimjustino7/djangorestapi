@@ -1,6 +1,5 @@
 # coding: utf-8
 from django.conf.urls import url
-from django.urls import path
 from django.views.generic.base import RedirectView
 
 from django.contrib.sitemaps.views import sitemap as sitemap_view
@@ -21,10 +20,10 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap_view, {'sitemaps': sitemaps}),
     url(r'^robots\.txt$', RobotsView.as_view(), name="robots"),
 
-    path('login/', LoginView.as_view(template_name='auth/login.html'), name="cms_login"),
-    path('logout/', LogoutView.as_view(template_name='auth/logout.html'), name='cms_logout'),
-    path('password_change/', PasswordChangeView.as_view(template_name='auth/password_change_form.html'), name='cms_password_change'),
-    path('password_change/done/', PasswordChangeDoneView.as_view(template_name='auth/password_change_done.html'),
+    url('login/', LoginView.as_view(template_name='auth/login.html'), name="cms_login"),
+    url('logout/', LogoutView.as_view(template_name='auth/logout.html'), name='cms_logout'),
+    url('password_change/', PasswordChangeView.as_view(template_name='auth/password_change_form.html'), name='cms_password_change'),
+    url('password_change/done/', PasswordChangeDoneView.as_view(template_name='auth/password_change_done.html'),
          name='cms_password_change'),
 
     url(r'^signup/$', SignupView.as_view(), name='cms_signup'),

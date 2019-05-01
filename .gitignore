@@ -8,4 +8,5 @@ colunistas/local.py
 colunistas/test.py
 colunistas/media/*
 colunistas/static/*
+static/*
 theme

@@ -397,24 +397,7 @@ RECURSOS = (
     (u'COMMENT', u'Texto para comentários'),
     (u'SIGNUP', u'Permite cadastro de usuários'),
     (u'EMAILADMIN', u'Quem recebe avisos de novos usuários'),
-    (u'CP_ANUAL', u'Plano Anual'),
-    (u'CP_PLUS', u'Plano Plus'),
-    (u'CP_ANUALSB', u'Plano Anual (SB)'),
-    (u'CP_PLUSSB', u'Plano Plus (SB)'),
 )
-
-class Recurso(models.Model):
-
-    recurso = models.CharField(u"Parâmetro", max_length=10, choices=RECURSOS, unique=True)
-    valor = models.TextField(u"Valor", blank=True, null=True)
-    ativo = models.BooleanField(u"Ativo?", default=True)
-
-    class Meta:
-        verbose_name = u'Parâmetro do Site'
-        verbose_name_plural = u'Parâmetros do Site'
-
-    def __unicode__(self):
-        return u"%s" % self.get_recurso_display()
 
 
 class Theme(models.Model):

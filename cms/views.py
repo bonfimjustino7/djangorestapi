@@ -24,11 +24,10 @@ from django.utils.http import base36_to_int
 from django.contrib.auth import login as auth_login, authenticate
 
 from .models import Article, Section, URLMigrate, FileDownload, Recurso, Permissao, \
-    GroupType, GroupItem, EmailAgendado
+    GroupType, GroupItem
 from .forms import ArticleCommentForm, UpdateForm, CMSUserCreationForm
 
 import mimetypes, os
-from util.stdlib import server_status
 
 
 class LoginRequiredMixin(object):
@@ -50,13 +49,13 @@ class UpdateView(LoginRequiredMixin, View):
             os.system('git pull')
             if version:
                 os.system('git checkout %s' % version)
-            os.system("%(PROJECT_DIR)s/../../bin/python %(PROJECT_DIR)s/../manage.py syncdb --settings=powercms.settings.production" % {
+            os.system("%(PROJECT_DIR)s/../../bin/python %(PROJECT_DIR)s/../manage.py syncdb" % {
                 'PROJECT_DIR': settings.PROJECT_DIR,
             })
-            os.system("%(PROJECT_DIR)s/../../bin/python %(PROJECT_DIR)s/../manage.py migrate --settings=powercms.settings.production" % {
+            os.system("%(PROJECT_DIR)s/../../bin/python %(PROJECT_DIR)s/../manage.py migrate" % {
                 'PROJECT_DIR': settings.PROJECT_DIR,
             })
-            os.system("%(PROJECT_DIR)s/../../bin/python %(PROJECT_DIR)s/../manage.py syncdb --all --settings=powercms.settings.production" % {
+            os.system("%(PROJECT_DIR)s/../../bin/python %(PROJECT_DIR)s/../manage.py syncdb --all" % {
                 'PROJECT_DIR': settings.PROJECT_DIR,
             })
             os.popen('supervisorctl restart %s' % settings.PROJECT_DIR.split('/')[-2])
@@ -330,15 +329,3 @@ def signup_filter(request, grouptype_id, groupitem_id):
         result.append({'pk': item.pk, 'display': item})
     json = simplejson.dumps(result)
     return HttpResponse(json, mimetype='application/json')
-
-def status(request):
-    json = server_status()
-    status_email = 0  # Enabled
-    if EmailAgendado.objects.latest('pk').status == 'E':
-        status_email = 1  # Com erro
-    elif not Recurso.objects.get_or_create(recurso='EMAIL')[0].ativo:
-        status_email = 2  # Disable
-    json['mail'] = {
-        'Available': status_email
-    }
-    return HttpResponse(simplejson.dumps(json), content_type="application/json")

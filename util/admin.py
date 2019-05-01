@@ -118,7 +118,12 @@ class EmailAgendadoAdmin(admin.ModelAdmin):
             q.send()
 
 
+class RecursoAdmin(PowerModelAdmin):
+    list_display = ('recurso', 'ativo',)
+
+
 admin.site.register(EmailAgendado, EmailAgendadoAdmin)
+admin.site.register(Recurso, RecursoAdmin)
 admin.site.register(UserToken)
 
 admin.site.unregister(Group)

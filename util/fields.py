@@ -48,6 +48,7 @@ class BRPhoneNumberField(CharField):
             return '{}{}'.format(m.group(1), m.group(2))
         raise ValidationError(self.error_messages['invalid'])
 
+
 class JSONFormField(Field):
     def clean(self, value):
 
