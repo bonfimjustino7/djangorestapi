@@ -250,6 +250,28 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         resposta = {}
         formulario = RegistroEmpresaForm(request.POST)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
+        email = request.POST.get('email')
+        vp_email = request.POST.get('vp_email')
+        c1_email = request.POST.get('c1_email')
+        c2_email = request.POST.get('c2_email')
+
+        if (email == vp_email and email != '' and vp_email != ''):
+            formulario.add_error('email', 'E-mails devem ser diferentes')
+
+        if (email == c1_email and email != '' and c1_email != ''):
+            formulario.add_error('email', 'E-mails devem ser diferentes')
+
+        if (email == c2_email and email != '' and c2_email != ''):
+            formulario.add_error('email', 'E-mails devem ser diferentes')
+
+        if (vp_email == c1_email and vp_email != '' and c1_email != ''):
+            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
+
+        if (vp_email == c2_email and vp_email != '' and c2_email != ''):
+            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
+
+        if (c1_email == c2_email and c1_email != '' and c2_email != ''):
+            formulario.add_error('C1_Email', 'E-mails devem ser diferentes')
 
         if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')

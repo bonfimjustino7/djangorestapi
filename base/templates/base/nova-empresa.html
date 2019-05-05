@@ -467,5 +467,82 @@
             $('#id_nome').blur(verificar_nome_empresa);
             $('#id_cep').blur(pesquisaCep);
         })
+
+        $('#id_nome').attr('style', "text-transform: uppercase;")
+
+        $('#id_descricao').attr("style", "width: 500px;");
+        $( "#id_email, #id_VP_Email, #id_C1_Email, #id_C2_Email ").on("change", function () {
+            valor = $(this).val()
+            valEmail1= $('#id_email').val()
+            valEmail2 = $('#id_VP_Email').val()
+            valEmail3 = $('#id_C1_Email').val()
+            valEmail4 = $('#id_C2_Email').val()
+
+
+            if (valor != '') {
+                if (valEmail1 == valEmail2 && valEmail1 != '' && valEmail2 != '') {
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Atenção! E-mails devem ser diferentes!',
+                    }).then(function() {
+
+                        $(this).focus();
+
+                    });
+                }
+                if (valEmail1 == valEmail3 && valEmail1 != '' && valEmail3 != '') {
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Atenção! E-mails devem ser diferentes!',
+                    }).then(function() {
+
+                        $(this).focus();
+                    });
+                }
+                if (valEmail1 == valEmail4 && valEmail1 != '' && valEmail4 != '') {
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Atenção! E-mails devem ser diferentes!',
+                    }).then(function() {
+
+                        $(this).focus();
+                    });
+                }
+                if (valEmail2 == valEmail3 && valEmail2 != '' && valEmail3 != '') {
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Atenção! E-mails devem ser diferentes!',
+                    }).then(function() {
+
+                        $(this).focus();
+                    });
+                }
+                if (valEmail2 == valEmail4 && valEmail2 != '' && valEmail4 != '') {
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Atenção! E-mails devem ser diferentes!',
+                    }).then(function() {
+
+                        $(this).focus();
+                    });
+                }
+                if (valEmail3 == valEmail4 && valEmail3 != '' && valEmail4 != '') {
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Atenção! E-mails devem ser diferentes!',
+
+
+                    }).then(function() {
+
+                        $(this).focus();
+
+
+                    });
+
+                }
+
+            }
+
+        });
     </script>
 {% endblock %}
