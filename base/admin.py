@@ -46,7 +46,11 @@ class RegionalAdmin(PowerModelAdmin):
     inlines = [PremioRegionalInline]
 
 
+@admin.register(TipoMaterial)
+class TipoMaterialAdmin(PowerModelAdmin):
+    fields = ('descricao', ('arquivo', 'url', 'roteiro'),)
+
+
 admin.site.register(UF)
-admin.site.register(TipoMaterial)
 admin.site.register(Formato)
 admin.site.register(Area)

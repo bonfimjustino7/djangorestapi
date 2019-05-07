@@ -20,27 +20,31 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
-    list_filter = ('regional',)
-    list_display = ('nome', 'uf', 'municipio')
-    fields = (('nome', ),('cep', 'uf', 'municipio'),
-              ('endereco', 'bairro'),
-              ('ddd', 'telefone', 'celular'),
+    list_filter = ('regional','area')
+    list_display = ('nome', 'uf', 'municipio','area')
+    fields = (('nome', 'regional', 'area',), ('cep', 'uf', 'municipio'),
+              ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),
               ('homepage', 'email'),
-              ('VP_Nome', 'VP_Cargo', 'VP_Email', 'VP_DDD', 'VP_Telefone',),
-              ('C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone',),
-              ('C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',),
+              ('VP_Nome', 'VP_Cargo', 'VP_Email'), ('VP_DDD', 'VP_Telefone',),
+              ('C1_Nome', 'C1_Cargo', 'C1_Email'), ('C1_DDD', 'C1_Telefone',),
+              ('C2_Nome', 'C2_Cargo', 'C2_Email'), ('C2_DDD', 'C2_Telefone',),
               )
     inlines = [AgenciaInline]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmpresaAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['cep'].widget.attrs['style'] = 'width: 5em;'
-        form.base_fields['ddd'].widget.attrs['style'] = 'width: 2em;'
-        form.base_fields['C1_DDD'].widget.attrs['style'] = 'width: 2em;'
-        form.base_fields['C2_DDD'].widget.attrs['style'] = 'width: 2em;'
         form.base_fields['nome'].widget.attrs['style'] = 'width: 30em;'
         form.base_fields['endereco'].widget.attrs['style'] = 'width: 30em;'
-        form.base_fields['bairro'].widget.attrs['style'] = 'width: 30em;'
+        form.base_fields['bairro'].widget.attrs['style'] = 'width: 20em;'
+        form.base_fields['ddd'].widget.attrs['style'] = 'width: 2em;'
+        form.base_fields['VP_DDD'].widget.attrs['style'] = 'width: 2em;'
+        form.base_fields['C1_DDD'].widget.attrs['style'] = 'width: 2em;'
+        form.base_fields['C2_DDD'].widget.attrs['style'] = 'width: 2em;'
+        form.base_fields['telefone'].widget.attrs['style'] = 'width: 10em;'
+        form.base_fields['VP_Telefone'].widget.attrs['style'] = 'width: 10em;'
+        form.base_fields['C1_Telefone'].widget.attrs['style'] = 'width: 10em;'
+        form.base_fields['C2_Telefone'].widget.attrs['style'] = 'width: 10em;'
         return form
 
     def get_queryset(self, request):

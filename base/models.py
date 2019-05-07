@@ -31,10 +31,10 @@ class UF(models.Model):
 
 # Tipos de Materiais que serão julgados
 class TipoMaterial(models.Model):
-    descricao = models.CharField(max_length=40)
-    arquivo = models.BooleanField(default=False)
-    url = models.BooleanField(default=False)
-    roteiro = models.BooleanField(default=False)
+    descricao = models.CharField('Descrição', max_length=40)
+    arquivo = models.BooleanField('Permite anexar arquivo', default=False)
+    url = models.BooleanField('Permite URL', default=False)
+    roteiro = models.BooleanField('Permite registro de roteiros', default=False)
 
     def __str__(self):
         return u'%s' % self.descricao

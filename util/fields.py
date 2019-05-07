@@ -1,6 +1,6 @@
 # coding:utf-8
 from django.db import models
-from django.forms.fields import Field, CharField
+from django.forms.fields import Field, CharField, RegexField, Select
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.exceptions import ValidationError
 
@@ -37,7 +37,6 @@ class BRPhoneNumberField(CharField):
     def __init__(self, *args, **kwargs):
         super(BRPhoneNumberField, self).__init__(max_length=10, *args, **kwargs)
 
-
     def clean(self, value):
         super(BRPhoneNumberField, self).clean(value)
         if value in EMPTY_VALUES:
@@ -47,6 +46,17 @@ class BRPhoneNumberField(CharField):
         if m:
             return '{}{}'.format(m.group(1), m.group(2))
         raise ValidationError(self.error_messages['invalid'])
+
+
+class BRZipCodeField(RegexField):
+    """A form field that validates input as a Brazilian zip code, with the format XXXXX-XXX."""
+
+    default_error_messages = {
+        'invalid': _('Enter a zip code in the format XXXXX-XXX.'),
+    }
+
+    def __init__(self, *args, **kwargs):
+        super(BRZipCodeField, self).__init__(r'^\d{5}-\d{3}$', *args, **kwargs)
 
 
 class JSONFormField(Field):
