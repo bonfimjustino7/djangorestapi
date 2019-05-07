@@ -52,7 +52,7 @@ class BRZipCodeField(RegexField):
     """A form field that validates input as a Brazilian zip code, with the format XXXXX-XXX."""
 
     default_error_messages = {
-        'invalid': _('Enter a zip code in the format XXXXX-XXX.'),
+        'invalid': 'Enter a zip code in the format XXXXX-XXX.',
     }
 
     def __init__(self, *args, **kwargs):
