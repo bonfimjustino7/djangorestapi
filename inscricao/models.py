@@ -17,7 +17,7 @@ class Usuario(models.Model):
 
 
 class Empresa(models.Model):
-    nome = models.CharField(max_length=60)
+    nome = models.CharField('Nome da Empresa',max_length=60)
     cnpj = BRCNPJField()
     area = models.ForeignKey(Area, verbose_name = 'Área', on_delete=models.PROTECT)
     regional = models.ForeignKey(Regional, on_delete=models.PROTECT)
