@@ -16,6 +16,18 @@ class Usuario(models.Model):
         return u'%s (%s)' % (self.nome_completo, self.user)
 
 
+def letra_maiuscula(name):
+    items = []
+    print(name)
+    for item in name.lower().split():
+        if len(item)>2:
+            item = item.capitalize()
+
+        items.append(item)
+    return ' '.join(items)
+
+
+
 class Empresa(models.Model):
     nome = models.CharField('Nome da Empresa',max_length=60)
     cnpj = BRCNPJField()
@@ -49,6 +61,15 @@ class Empresa(models.Model):
 
     def __str__(self):
         return u'%s' % self.nome
+
+    def save(self, request=False, *args, **kwargs):
+        self.VP_Nome = letra_maiuscula(self.VP_Nome)
+        self.VP_Cargo = letra_maiuscula(self.VP_Cargo)
+        self.C1_Nome = letra_maiuscula(self.C1_Nome)
+        self.C1_Cargo = letra_maiuscula(self.C1_Cargo)
+        self.C2_Nome = letra_maiuscula(self.C2_Nome)
+        self.C2_Cargo = letra_maiuscula(self.C2_Cargo)
+        super(Empresa, self).save(*args, **kwargs)
 
 
 class EmpresaAgencia(models.Model):

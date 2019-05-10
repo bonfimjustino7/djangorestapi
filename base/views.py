@@ -251,27 +251,27 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         formulario = RegistroEmpresaForm(request.POST)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
         email = request.POST.get('email')
-        vp_email = request.POST.get('vp_email')
-        c1_email = request.POST.get('c1_email')
-        c2_email = request.POST.get('c2_email')
+        vp_email = request.POST.get('VP_Email')
+        c1_email = request.POST.get('C1_Email')
+        c2_email = request.POST.get('C2_Email')
 
         if email == vp_email and email != '' and vp_email != '':
-            formulario.add_error('email', 'E-mails devem ser diferentes')
+            formulario.add_error('email', 'E-mails devem ser diferentes1')
 
         if email == c1_email and email != '' and c1_email != '':
-            formulario.add_error('email', 'E-mails devem ser diferentes')
+            formulario.add_error('email', 'E-mails devem ser diferentes2')
 
         if email == c2_email and email != '' and c2_email != '':
-            formulario.add_error('email', 'E-mails devem ser diferentes')
+            formulario.add_error('email', 'E-mails devem ser diferentes3')
 
         if vp_email == c1_email and vp_email != '' and c1_email != '':
-            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
+            formulario.add_error('VP_Email', 'E-mails devem ser diferentes4')
 
         if vp_email == c2_email and vp_email != '' and c2_email != '':
-            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
+            formulario.add_error('VP_Email', 'E-mails devem ser diferentes5')
 
         if c1_email == c2_email and c1_email != '' and c2_email != '':
-            formulario.add_error('C1_Email', 'E-mails devem ser diferentes')
+            formulario.add_error('C1_Email', 'E-mails devem ser diferentes6')
 
         if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
@@ -281,6 +281,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         if formulario.is_valid():
             try:
                 # Salvando Empresa
+
                 empresa = formulario.save()
 
                 # Salvando EmpresaUsuario
