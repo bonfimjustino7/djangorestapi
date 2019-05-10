@@ -321,7 +321,13 @@
                 if ($('#id_form-TOTAL_FORMS').val() == 0) {
                     adiciona_agencia();
                     $('.header-agencia').removeClass('d-none');
+                }else{
+                    $( ".select-uf" ).each(function() {
+                        var option = "<option value='' selected disabled>Selecione...</option>";
+                        $(this).empty().append(option).append(estados_agencias);
+                    });
                 }
+
             })
         }
 
@@ -369,7 +375,7 @@
                         <label for="id_form-${n_forms}-uf">Estado:</label>
                     </div>
                     <div class="col-md-4">
-                        <select name="uf" id="id_form-${n_forms}-uf" class="form-control">
+                        <select name="uf" id="id_form-${n_forms}-uf" class="form-control select-uf">
                             <option value="" selected disabled>Selecione...</option>
                             ${estados_agencias}
                         </select>
@@ -469,7 +475,7 @@
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
             $('input[type="text"], input[type="email"], input[type="url"], select').addClass('form-control');
 
-            $('#id_regional').blur(carrega_estados_agencias);
+            $('#id_regional').change(carrega_estados_agencias);
             $('#id_nome').blur(verificar_nome_empresa);
             $('#id_cep').blur(pesquisaCep);
 
