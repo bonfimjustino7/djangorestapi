@@ -312,6 +312,15 @@
 
         function carrega_estados_agencias() {
             var url = '/estados-regional/?regional=' + $('#id_regional').val()
+            var area = $('#id_area option:selected' ).text();
+
+
+
+            if (area.substring(0,9)  == 'Produtora' ) {
+                url = '/estados-regional/?regional=-1'
+            }
+
+
             $.get(url)
             .done(function(resposta) {
                 estados_agencias = '';
@@ -476,6 +485,7 @@
             $('input[type="text"], input[type="email"], input[type="url"], select').addClass('form-control');
 
             $('#id_regional').change(carrega_estados_agencias);
+            $('#id_area').change(carrega_estados_agencias);
             $('#id_nome').blur(verificar_nome_empresa);
             $('#id_cep').blur(pesquisaCep);
 

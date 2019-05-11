@@ -330,9 +330,21 @@ def consulta_empresa(request, nome):
 
 
 def estados_regional(request):
-    resposta = {
-        'estados': Regional.objects.get(id = request.GET.get('regional')).estados.split(','),
-    }
+    id_regional = request.GET.get('regional')
+    if int(id_regional) > 0:
+        resposta = {
+            'estados': Regional.objects.get(id = id_regional).estados.split(','),
+        }
+    else:
+        lista = []
+        regionais = Regional.objects.all()
+        for r in regionais:
+            estados = r.estados.split(',')
+            for e in estados:
+                lista.append(e)
+        resposta = {
+                'estados': lista,
+        }
     return JsonResponse(resposta)
 
 
