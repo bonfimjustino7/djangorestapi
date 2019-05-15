@@ -18,13 +18,13 @@ class Usuario(models.Model):
 
 def letra_maiuscula(name):
     items = []
-    print(name)
-    for item in name.lower().split():
-        if len(item)>2:
-            item = item.capitalize()
+    if name != None:
+        for item in name.lower().split():
+            if len(item)>2:
+                item = item.capitalize()
 
-        items.append(item)
-    return ' '.join(items)
+            items.append(item)
+        return ' '.join(items)
 
 
 
