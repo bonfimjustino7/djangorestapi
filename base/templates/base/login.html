@@ -15,7 +15,7 @@
 
                     {% include "base/includes/messages.html" with messages=messages %}
 
-                    <div class="field campo">
+                    <div class="field campo" title="Não utilize espaço em branco ou caracteres acentuados">
                         {{formulario_login.usuario.label_tag}}
                         <!-- {% if formulario_login.usuario.field.required %}
                             <span class="required"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
@@ -25,7 +25,7 @@
                         {{formulario_login.usuario.help_text}}
                     </div>
 
-                    <div class="field campo">
+                    <div class="field campo" title="Não utilize espaço em branco ou caracteres acentuados">
                         {{formulario_login.senha.label_tag}}
                         <!-- {% if formulario_login.senha.field.required %}
                             <span class="required"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
