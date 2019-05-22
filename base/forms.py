@@ -3,6 +3,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from util.models import EmailAgendado
+
 CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {'class': 'input'})
 CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {'class': 'input'})
 CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'input'})
@@ -37,7 +39,7 @@ class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if User.objects.filter(email = email, is_active = True).exists():
+        if EmailAgendado.objects.filter(to = email).exists():
             raise ValidationError('Já existe um usuário utilizando este email')
         return email
 
