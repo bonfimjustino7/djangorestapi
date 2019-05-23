@@ -309,7 +309,17 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             print(formulario.cleaned_data)
             print(formulario.errors)
             resposta['status'] = 500
-            resposta['texto'] = formulario.errors.as_text()
+            erros = formulario.errors.items()
+            texto = formulario.errors.as_text()
+            for e in erros:
+                label = Empresa._meta.get_field(e[0]).verbose_name
+                if label != None:
+                    texto = texto.replace(e[0], label)
+                else:
+                    pass
+                print(e[0], e[1], Empresa._meta.get_field(e[0]).verbose_name)
+
+            resposta['texto'] = texto
         return JsonResponse(resposta)
 
 
