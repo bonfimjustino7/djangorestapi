@@ -17,7 +17,7 @@ class RegistroEmpresaForm(forms.ModelForm):
         model = Empresa
         fields = [
             'regional', 'nome', 'area',
-            'cep', 'endereco', 'bairro', 'municipio', 'uf',
+            'cep', 'endereco', 'bairro', 'cidade', 'uf',
             'ddd', 'telefone', 'celular',
             'homepage', 'email',
             'VP_Nome', 'VP_Cargo', 'VP_Email', 'VP_DDD', 'VP_Telefone',

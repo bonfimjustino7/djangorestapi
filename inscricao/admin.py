@@ -35,8 +35,8 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_filter = ('regional','area')
-    list_display = ('nome', 'uf', 'municipio','area')
-    fields = (('nome', 'regional', 'area',), ('cep', 'uf', 'municipio'),
+    list_display = ('nome', 'uf', 'cidade','area')
+    fields = (('nome', 'regional', 'area',), ('cep', 'uf', 'cidade'),
               ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),
               ('homepage', 'email'),
               ('VP_Nome', 'VP_Cargo', 'VP_Email'), ('VP_DDD', 'VP_Telefone',),
