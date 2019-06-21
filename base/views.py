@@ -289,16 +289,19 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
                 # Salvando EmpresaUsuario
                 empresa.empresausuario_set.create(
-                    usuario = request.user.usuario_set.first(),
+                    usuario_id  = request.user.id,
                 )
 
                 # Salvando objetos EmpresaAgencia
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
                     print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
-                    empresa.empresaagencia_set.create(
-                        agencia=request.POST.get('form-{}-nome'.format(i)),
-                        uf=UF.objects.get(sigla = request.POST.get('form-{}-uf'.format(i))),
-                    )
+                    if i==0:
+                        pass
+                    else:
+                        empresa.empresaagencia_set.create(
+                            agencia=request.POST.get('form-{}-nome'.format(i)),
+                            uf=request.POST.get('form-{}-uf'.format(i())),
+                        )
 
                 request.session['empresa'] = empresa.id
 
