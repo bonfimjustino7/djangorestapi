@@ -237,7 +237,7 @@ class InicioView(LoginRequiredMixin, View):
 
 
 class NovaEmpresaView(LoginRequiredMixin, View):
-    template = 'base/nova-empresa.html'
+    template = 'base/nova-empresa-2.html'
     dados = {}
 
     def get(self, request, **kwargs):
