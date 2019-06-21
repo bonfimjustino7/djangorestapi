@@ -46,8 +46,8 @@ class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
 
 class Registro2Form(forms.Form):
     usuario = forms.CharField(
-        label = 'Digite um login',
-        widget = forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome de Usuário'})
+        label='Digite um login',
+        widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome de Usuário'})
     )
     senha = forms.CharField(
         required = True,

@@ -34,7 +34,7 @@ class Empresa(models.Model):
     regional = models.ForeignKey(Regional, on_delete=models.PROTECT)
     cep = models.CharField(u'CEP', max_length=8, blank=True, null=True)
     uf = models.ForeignKey(UF, blank=True, null=True, on_delete=models.PROTECT)
-    municipio = models.CharField(u'Município', max_length=23, blank=True, null=True)
+    cidade = models.CharField(u'Município', max_length=23, blank=True, null=True)
     bairro = models.CharField(max_length=20, blank=True, null=True)
     endereco = models.CharField(u'Endereço', max_length=100, blank=True, null=True)
     ddd = models.CharField('DDD', max_length=2)

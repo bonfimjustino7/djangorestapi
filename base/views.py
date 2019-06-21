@@ -17,9 +17,11 @@ from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
 
+
 class HomeView(View):
     def get(self, request, **kwargs):
         return redirect('/login/')
+
 
 class LoginView(View):
     template = 'base/login.html'
@@ -254,7 +256,6 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         vp_email = request.POST.get('VP_Email')
         c1_email = request.POST.get('C1_Email')
         c2_email = request.POST.get('C2_Email')
-
 
         if email == vp_email and email != '' and vp_email != '':
             formulario.add_error('email', 'E-mails devem ser diferentes1')
