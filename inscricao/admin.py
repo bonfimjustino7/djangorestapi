@@ -13,6 +13,20 @@ class AgenciaInline(admin.TabularInline):
     extra = 0
 
 
+class EmpresaInline(admin.TabularInline):
+    model = EmpresaUsuario
+    fields = ('empresa', )
+    readonly_fields = ('empresa', )
+    extra = 0
+
+
+@admin.register(Usuario)
+class UsuarioAdmin(admin.ModelAdmin):
+    fields = ('nome_completo','user')
+    readonly_fields = ('user',)
+    inlines = [EmpresaInline]
+
+
 @admin.register(EmpresaUsuario)
 class EmpresaUsuarioAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'usuario')
@@ -110,5 +124,3 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-
-admin.site.register(Usuario)

@@ -5,7 +5,7 @@ from base.models import *
 
 
 class Usuario(models.Model):
-    nome_completo = models.CharField(max_length=80)
+    nome_completo = models.CharField('Nome', max_length=80)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
@@ -27,7 +27,6 @@ def letra_maiuscula(name):
         return ' '.join(items)
 
 
-
 class Empresa(models.Model):
     nome = models.CharField('Nome da Empresa',max_length=60)
     cnpj = BRCNPJField()
@@ -35,12 +34,12 @@ class Empresa(models.Model):
     regional = models.ForeignKey(Regional, on_delete=models.PROTECT)
     cep = models.CharField(u'CEP', max_length=8, blank=True, null=True)
     uf = models.ForeignKey(UF, blank=True, null=True, on_delete=models.PROTECT)
-    municipio = models.CharField(u'Município', max_length=150, blank=True, null=True)
-    bairro = models.CharField(max_length=80, blank=True, null=True)
+    municipio = models.CharField(u'Município', max_length=23, blank=True, null=True)
+    bairro = models.CharField(max_length=20, blank=True, null=True)
     endereco = models.CharField(u'Endereço', max_length=100, blank=True, null=True)
     ddd = models.CharField('DDD', max_length=2)
-    telefone = models.CharField(u'Telefone', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
-    celular = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
+    telefone = models.CharField(u'Telefone', max_length=10, blank=True, null=True, help_text=u'XXXXX-XXXX')
+    celular = models.CharField(u'Celular', max_length=10, blank=True, null=True, help_text=u'XXXXX-XXXX')
     homepage = models.URLField(u'Home Page da Empresa', blank=True, null=True)
     email = models.EmailField(u'E-Mail da Empresa', blank=True, null=True, help_text='Apenas se a empresa tiver um email central')
     VP_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100)
@@ -112,7 +111,7 @@ class Inscricao(models.Model):
     isolada = models.BooleanField(default=False)
     DiretorCriacao = models.CharField('Diretor de Criação', max_length=100,
                                       help_text=texto_outros_autores, null=True, blank=True)
-    Planejamento = models.CharField('Planejamento', max_length=100, null=True, blank=True)
+    Planejamento = models.CharField('Planejamento', max_length=80, null=True, blank=True)
     Redacao = models.CharField('Redação', max_length=140, null=True, blank=True)
     DiretorArte = models.CharField('Diretor de Arte', max_length=140, null=True, blank=True)
     ProducaoGrafica = models.CharField('Produção Gráfica', max_length=80, null=True, blank=True)
@@ -122,8 +121,12 @@ class Inscricao(models.Model):
                                       null=True, blank=True, help_text=texto_outros_autores)
     OutrosAgencia2 = models.CharField('Outros Créditos', max_length=80,
                                       null=True, blank=True, help_text=texto_outros_autores)
-    Midia = models.CharField('Mídia', max_length=60, null=True, blank=True)
-    Atendimento = models.CharField('Atendimento', max_length=80, null=True, blank=True)
+    OutrosAgencia3 = models.CharField('Outros Créditos', max_length=80,
+                                      null=True, blank=True, help_text=texto_outros_autores)
+    OutrosAgencia4 = models.CharField('Outros Créditos', max_length=80,
+                                      null=True, blank=True, help_text=texto_outros_autores)
+    Midia = models.CharField('Mídia', max_length=80, null=True, blank=True)
+    Atendimento = models.CharField('Atendimento', max_length=100, null=True, blank=True)
     Aprovacao = models.CharField('Aprovação', max_length=100, null=True, blank=True)
     ProdutoraFilme = models.CharField('Produtora do Filme', max_length=50, null=True, blank=True)
     DiretorFilme = models.CharField('Diretor do Filme', max_length=50, null=True, blank=True)
@@ -138,6 +141,10 @@ class Inscricao(models.Model):
     OutrosFornecedor1 = models.CharField(texto_outros_creditos, max_length=80,
                                          help_text=texto_outros_autores, null=True, blank=True)
     OutrosFornecedor2 = models.CharField(texto_outros_creditos, max_length=80,
+                                         help_text=texto_outros_autores, null=True, blank=True)
+    OutrosFornecedor3 = models.CharField(texto_outros_creditos, max_length=80,
+                                         help_text=texto_outros_autores, null=True, blank=True)
+    OutrosFornecedor4 = models.CharField(texto_outros_creditos, max_length=80,
                                          help_text=texto_outros_autores, null=True, blank=True)
     roteiro = models.TextField('Roteiro de Rádio', null=True, blank=True)
 

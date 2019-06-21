@@ -41,7 +41,7 @@ class LoginView(View):
             if '@' in self.dados['formulario_login'].cleaned_data['usuario']:
                 if User.objects.filter(email = self.dados['formulario_login'].cleaned_data['usuario']).exists():
                     usuario = authenticate(
-                        username = User.objects.get(email = self.dados['formulario_login'].cleaned_data['usuario']).username,
+                        username = User.objects.get(email=self.dados['formulario_login'].cleaned_data['usuario']).username,
                         password = self.dados['formulario_login'].cleaned_data['senha']
                     )
             else:
