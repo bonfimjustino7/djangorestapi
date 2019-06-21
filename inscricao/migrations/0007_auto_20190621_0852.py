@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='empresa',
-            name='municipio',
+            name='cidade',
             field=models.CharField(blank=True, max_length=23, null=True, verbose_name='Município'),
         ),
         migrations.AlterField(
