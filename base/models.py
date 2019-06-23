@@ -116,10 +116,7 @@ class Premio(models.Model):
     status = models.CharField(max_length=1, choices=PREMIO_STATUS, default='A')
 
     def __str__(self):
-        return '{} ({})'.format(
-            self.premiacao,
-            self.ano
-        )
+        return '%s' % self.premiacao
 
     def descricao_completa(self):
         return '{} ({} - {})'.format(
