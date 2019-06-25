@@ -65,7 +65,7 @@
                                 <label for="id_Empresa">Nome da Empresa:</label>
                                  {{formulario_cadastro.nome}}
                                 <span class="text-muted" style="font-size: 12px;">Use o nome de fantasia simplificado da empresa, sem "Ltda", "Propaganda", "Comunicação", "Criação", "Promoções", etc.</span>
-                                
+                                <input type="hidden" id = "id_pk" value = 0>  
                             </div>
                             
                             <div class="col-md-6">
@@ -317,6 +317,9 @@
         dados = {};
 
         function carrega_dados_formulario() {
+            if ($('#id_pk').val() > 0) {
+                dados.pk = $('#id_pk').val()
+            }
             dados.csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val()
             dados.regional = $('#id_regional').val()
             dados.nome = $('#id_nome').val()
@@ -394,8 +397,9 @@
 
             $.post(url, dados)
             .done(resposta => {
-                if (resposta.status == 200) {
-                    $('.botoes-adicionais').removeClass('d-none');
+                if (resposta.status == 200) { 
+                    $('#id_pk').val(resposta.pk)
+                    
                     Swal.fire({
                         type: 'success',
                         text: 'Empresa cadastrada com sucesso',

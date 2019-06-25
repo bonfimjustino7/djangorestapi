@@ -286,6 +286,10 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 # Salvando Empresa
 
                 empresa = formulario.save()
+                
+                #retornando empresa
+                
+                
 
                 # Salvando EmpresaUsuario
                 empresa.empresausuario_set.create(
@@ -306,6 +310,9 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 request.session['empresa'] = empresa.id
 
                 resposta['status'] = 200
+                resposta['pk']= empresa.pk
+            
+                
             except Exception as erro:
                 resposta['status'] = 500
                 resposta['texto'] = 'Erro: {}'.format(erro.__str__())
