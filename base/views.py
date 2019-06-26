@@ -1,21 +1,20 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import View
-from django.http import JsonResponse
-from django.contrib.auth.models import User, Group
+from ntpath import exists
 
 from django.contrib import messages
-from django.utils.safestring import mark_safe
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group, User
 from django.forms import formset_factory
-
-from util.models import create_token, UserToken, valid_token
-from util.email import sendmail
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.utils.safestring import mark_safe
+from django.views import View
 
 from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
+from util.email import sendmail
+from util.models import UserToken, create_token, valid_token
 
 
 class HomeView(View):
@@ -290,27 +289,40 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 # Salvando Empresa
 
                 empresa = formulario.save()
-                resposta['pk']= empresa.pk
-                
-                #retornando empresa
-                
-                
+                resposta['pk']= empresa.pk            
+
 
                 # Salvando EmpresaUsuario
                 empresa.empresausuario_set.create(
                     usuario_id  = request.user.id,
                 )
 
+                #Salvando primeira agencia
+                area = request.POST.get('area')
+                area = Area.objects.get(id=area)
+                descricao = area.descricao
+                descricao.find("agencia")
+                if descricao != 0:   
+                    empresa.empresaagencia_set.create(
+                        agencia=request.POST.get('nome'),
+                        uf= UF.objects.get(sigla=request.POST.get('uf')) 
+                    )    
+
+
                 # Salvando objetos EmpresaAgencia
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
                     print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
-                    if i==0:
+                    if request.POST.get('form-{}-nome'.format(i)) == '':
                         pass
                     else:
-                        empresa.empresaagencia_set.create(
+                        agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
+                        if not agencia: 
+                            uf= UF.objects.get(sigla=request.POST.get('form-{}-uf'.format(i)))
+                            empresa.empresaagencia_set.create(
                             agencia=request.POST.get('form-{}-nome'.format(i)),
-                            uf=request.POST.get('form-{}-uf'.format(i())),
+                            uf=uf
                         )
+
 
                 request.session['empresa'] = empresa.id
 
