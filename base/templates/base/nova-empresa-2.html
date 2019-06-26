@@ -290,7 +290,7 @@
                             </div>
                             <div class="col-md-12 text-center botoes-inciais">
                                 <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary disabled" disabled>Gravar os Dados</button>
-                                <a href="javascript:adiciona_agencia()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>
+                                <a href="javascript:adiciona_agencia()" id="btn_agencias" class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>
                             </div>
                         </div>
 
@@ -365,9 +365,16 @@
             var url = '/estados-regional/?regional=' + $('#id_regional').val()
             var area = $('#id_area option:selected' ).text();
 
+            if (area.substr(0,7) == 'Agência') {
+                $('#btn_agencias').addClass('disabled')
+            }else{
+                 if ($('#id_pk').val() > 0) {    
+                    $('#btn_agencias').removeClass('disabled')
+                }
+            }
 
 
-            if (area.substring(0,9)  == 'Produtora' ) {
+            if (area.substr(0,9)  == 'Produtora' ) {
                 url = '/estados-regional/?regional=-1'
             }
 
@@ -402,6 +409,7 @@
             .done(resposta => {
                 if (resposta.status == 200) { 
                     $('#id_pk').val(resposta.pk)
+                    carrega_estados_agencias();
                     $('#btn_submit').prop('disabled', false)
                     $('#btn_submit').removeClass('disabled')
                     //$('.botoes-adicionais').removeClass('d-none');
