@@ -250,7 +250,11 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
     def post(self, request, **kwargs):
         resposta = {}
-        formulario = RegistroEmpresaForm(request.POST)
+        if request.POST.get('id') == None :
+            formulario = RegistroEmpresaForm(request.POST)
+        else:
+            emp= Empresa.objects.get(pk=int(request.POST.get('id')))
+            formulario = RegistroEmpresaForm(request.POST, instance = emp)        
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
         email = request.POST.get('email')
         vp_email = request.POST.get('VP_Email')
@@ -286,6 +290,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 # Salvando Empresa
 
                 empresa = formulario.save()
+                resposta['pk']= empresa.pk
                 
                 #retornando empresa
                 
@@ -310,7 +315,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 request.session['empresa'] = empresa.id
 
                 resposta['status'] = 200
-                resposta['pk']= empresa.pk
+                
             
                 
             except Exception as erro:

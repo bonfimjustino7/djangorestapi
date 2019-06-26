@@ -394,17 +394,22 @@
         function enviar() {
             var url = '{% url 'nova-empresa' %}'
             carrega_dados_formulario()
+            if ($('#id_pk').val() > 0) {
+                dados.id = $('#id_pk').val()
+            }
 
             $.post(url, dados)
             .done(resposta => {
                 if (resposta.status == 200) { 
                     $('#id_pk').val(resposta.pk)
-                    
+                    $('#btn_submit').prop('disabled', false)
+                    $('#btn_submit').removeClass('disabled')
+                    //$('.botoes-adicionais').removeClass('d-none');
                     Swal.fire({
                         type: 'success',
                         text: 'Empresa cadastrada com sucesso',
                     })
-                    $('.botoes-inciais').addClass('d-none');
+                    //$('.botoes-inciais').addClass('d-none');
                 } else {
                     Swal.fire({
                         type: 'error',
