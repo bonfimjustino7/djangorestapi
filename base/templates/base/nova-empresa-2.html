@@ -277,7 +277,7 @@
                             
 
                             <div class="row header-agencia d-none">
-                                <div class="col-md-11 text-center">
+                                <div class="col-md-11 text-center d-none">
                                     <h1 class="title">Agências:</h1>
                                 </div>
                             </div>
@@ -356,8 +356,8 @@
             dados['form-MAX_NUM_FORMS'] = $('#id_form-MAX_NUM_FORMS').val()
 
             for (i = 0; i < parseInt(dados['form-TOTAL_FORMS']); i++) {
-                dados[`form-${i}-nome`] = $(`#id_form-${i}-nome`).val()
-                dados[`form-${i}-uf`] = $(`#id_form-${i}-uf`).val()
+                dados[`form-${i}-nome`] = $(`#id_form-${i}-nome`).val();
+                dados[`form-${i}-uf`] = $(`#id_form-${i}-uf`).val();
             }
         }
 
@@ -365,11 +365,16 @@
             var url = '/estados-regional/?regional=' + $('#id_regional').val()
             var area = $('#id_area option:selected' ).text();
 
-            if (area.substr(0,26) == 'Empresa de Mkt.Promocional' || area.substr(0,17) == 'Empresa de Design' || area.substr(0,26) == 'Agência de Publicidade')  {
-                $('#btn_agencias').addClass('d-none')
+            if (area.substr(0,26) == 'Empresa de Mkt.Promocional' || area.substr(0,17) == 'Empresa de Design' || area.substr(0,26) == 'Agência de Publicidade' || area == '')  {
+                $('#btn_agencias').addClass('d-none');
+                $('#formset_agencias').addClass('d-none');
             }else{
-                 if ($('#id_pk').val() > 0) {    
-                 $('#btn_agencias').removeClass('d-none')
+                if ($('#id_pk').val() > 0) {    
+                    $('#btn_agencias').removeClass('d-none');
+                    $('#formset_agencias').removeClass('d-none');
+                }else{
+                    $('#btn_agencias').addClass('d-none');
+                    $('#formset_agencias').addClass('d-none');
                 }
             }
 
