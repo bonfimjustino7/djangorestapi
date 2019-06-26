@@ -299,14 +299,13 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
                 #Salvando primeira agencia
                 area = request.POST.get('area')
-                area = Area.objects.get(id=area)
-                descricao = area.descricao
-                descricao.find("agencia")
-                if descricao != 0:   
-                    empresa.empresaagencia_set.create(
-                        agencia=request.POST.get('nome'),
-                        uf= UF.objects.get(sigla=request.POST.get('uf')) 
-                    )    
+                agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk)
+                if not agencia:
+                    if (area == 1) or (area == 3) or (area ==27):   
+                        empresa.empresaagencia_set.create(
+                            agencia=request.POST.get('nome'),
+                            uf= UF.objects.get(sigla=request.POST.get('uf')) 
+                        )    
 
 
                 # Salvando objetos EmpresaAgencia

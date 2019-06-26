@@ -365,11 +365,11 @@
             var url = '/estados-regional/?regional=' + $('#id_regional').val()
             var area = $('#id_area option:selected' ).text();
 
-            if (area.substr(0,7) == 'Agência') {
+            if (area.substr(0,26) == 'Empresa de Mkt.Promocional' || area.substr(0,17) == 'Empresa de Design' || area.substr(0,26) == 'Agência de Publicidade')  {
                 $('#btn_agencias').addClass('disabled')
             }else{
                  if ($('#id_pk').val() > 0) {    
-                    $('#btn_agencias').removeClass('disabled')
+                 $('#btn_agencias').removeClass('disabled')
                 }
             }
 
