@@ -1,41 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    {% include "base/includes/css_padrao.html" %}
 
-<link rel="stylesheet" href="http://app.colunistas.com.br/static/base/css/bulma.min.css">
-<link rel="stylesheet" href="main.css">
+    {% if messages %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    {% endif %}
 
+    {% block css %}{% endblock %}
 
-        
-
-        
-
-        <title>Empresa Responsável pela Inscrição</title>
-    </head>
-    <body>
+    <title>Empresa Responsável pela Inscrição</title>
+</head>
+<body>
 <table width="60%" align="center">
 <tr>
 <td>    
-        <div class="container-fluid">
-
-            
+    <div class="container-fluid">
     <div class="row my-2">
         <div class="col-md-12">
-
             <div class="card">
                 <div class="card-body formulario-empresa">
-
-                    
-
-
-
 
                     <form action="/nova-empresa/" method="post">
                         {% csrf_token %}
@@ -72,15 +60,28 @@
                                 <label for="id_Codarea">Área de Atuação:
                                   {{formulario_cadastro.area}}
                                 </label>
-                                
-                                <span class="text-muted" style="font-size: 12px;">Escolha a que mais se aproxime da sua principal área de atuação.</span>
-                                
-                                
+                                <span class="text-muted" style="font-size: 12px;"><br/>Escolha a que mais se aproxime da sua principal área de atuação.</span>
                             </div>
-                            
-                            
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="id_Cep">CEP:</label>
+                                    {{formulario_cadastro.cep}}
+                                <span class="text-muted" style="font-size: 12px;">Digite no formato 00000-000.</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_Cidade">Cidade:</label>
+                                    {{formulario_cadastro.cidade}}
+                                <span class="text-muted" style="font-size: 12px;"></span>
+                                    {{formulario_cadastro.cidade.errors}}
+                            </div>
+                            <div class="col-md-1" style="width: 50px;">
+                                <label for="id_Estado">Estado:</label>
+                                    {{formulario_cadastro.uf}}
+                                <span class="text-muted" style="font-size: 12px;"></span>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-7">
@@ -94,33 +95,9 @@
                                     {{formulario_cadastro.bairro}}
                                 <span class="text-muted" style="font-size: 12px;"></span>
                             </div>
-                          
                         </div>
                         
-                        <div class="row">
 
-                            <div class="col-md-2">
-                                <label for="id_Cep">CEP:</label>
-                                    {{formulario_cadastro.cep}}
-                                <span class="text-muted" style="font-size: 12px;">Digite no formato 00000-000.</span>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="id_Cidade">Cidade:</label>
-                                    {{formulario_cadastro.cidade}}
-                                <span class="text-muted" style="font-size: 12px;"></span>
-                                    {{formulario_cadastro.cidade.errors}}
-                            </div>
-
-                        
-                            <div class="col-md-1" style="width: 50px;">
-                                <label for="id_Estado">Estado:</label>
-                                    {{formulario_cadastro.uf}}
-                                <span class="text-muted" style="font-size: 12px;"></span>
-                            </div>
-                        
-                        </div>
-                            
                         <div class="row">
                             <div class="col-md-1">
                                 <label for="id_DDD">DDD:</label>
@@ -302,8 +279,6 @@
     </div>
 
         </div>
-
-        
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -545,7 +520,7 @@
                     $('#id_endereco').val(endereco.logradouro)
                     $('#id_bairro').val(endereco.bairro)
                     $('#id_uf').val(endereco.uf)
-                    $('#id_municipio').val(endereco.localidade)
+                    $('#id_cidade').val(endereco.localidade)
                 }
             });
         }
@@ -654,5 +629,5 @@
 </td>
 </tr>
 </table>
-    </body>
+</body>
 </html>

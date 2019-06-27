@@ -30,7 +30,7 @@ def sendmail(subject='', to=[], params={}, template=''):
         except Exception as e:
             email.html = u'%s' % e
 
-        mail_active = getattr(settings,'SEND_MAIL')
+        mail_active = getattr(settings,'SEND_EMAIL')
         if mail_active:
             email.send()
         else:
