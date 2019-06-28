@@ -339,6 +339,7 @@
         function carrega_estados_agencias() {
             var url = '/estados-regional/?regional=' + $('#id_regional').val()
             var area = $('#id_area option:selected' ).text();
+            $('#formset_agencias input[type="text"]').val('');
 
             if (area.substr(0,26) == 'Empresa de Mkt.Promocional' || area.substr(0,17) == 'Empresa de Design' || area.substr(0,26) == 'Agência de Publicidade' || area == '')  {
                 $('#btn_agencias').addClass('d-none');
