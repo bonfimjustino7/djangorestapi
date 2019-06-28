@@ -301,12 +301,11 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 area = request.POST.get('area')
                 agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk)
                 if not agencia:
-                    if (area == 1) or (area == 3) or (area ==27):   
+                    if (area == '1') or (area == '3') or (area =='27'):   
                         empresa.empresaagencia_set.create(
                             agencia=request.POST.get('nome'),
                             uf= UF.objects.get(sigla=request.POST.get('uf')) 
                         )    
-
 
                 # Salvando objetos EmpresaAgencia
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
