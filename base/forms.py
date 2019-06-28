@@ -25,22 +25,22 @@ class LoginForm(forms.Form):
 class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
     nome = forms.CharField(
         required=True,
-        widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome'}),
+        widget=forms.widgets.TextInput(attrs={'class': 'input', 'placeholder': 'Nome'}),
     )
     sobrenome = forms.CharField(
         required=True,
-        widget = forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Sobrenome'}),
+        widget=forms.widgets.TextInput(attrs={'class': 'input', 'placeholder': 'Sobrenome'}),
     )
     email = forms.EmailField(
         required=True,
-        label = 'E-mail',
-        widget = forms.widgets.EmailInput(attrs = {'class': 'input', 'placeholder': 'E-mail'}),
+        label='E-mail',
+        widget=forms.widgets.EmailInput(attrs={'class': 'input', 'placeholder': 'E-mail'}),
     )
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if EmailAgendado.objects.filter(to = email).exists():
-            raise ValidationError('Já existe um usuário utilizando este email')
+        if User.objects.filter(email=email,is_active=True).exists():
+            raise ValidationError('Já existe um usuário utilizando este e-mail')
         return email
 
 

@@ -39,17 +39,15 @@ class LoginView(View):
         self.dados['formulario_login'] = LoginForm(request.POST)
         if self.dados['formulario_login'].is_valid():
 
-            if '@' in self.dados['formulario_login'].cleaned_data['usuario']:
-                if User.objects.filter(email = self.dados['formulario_login'].cleaned_data['usuario']).exists():
-                    usuario = authenticate(
-                        username = User.objects.get(email=self.dados['formulario_login'].cleaned_data['usuario']).username,
-                        password = self.dados['formulario_login'].cleaned_data['senha']
-                    )
-            else:
-                usuario = authenticate(
-                    username=self.dados['formulario_login'].cleaned_data['usuario'],
+            login_str = self.dados['formulario_login'].cleaned_data['usuario']
+            if '@' in login_str:
+                messages.warning(request, 'Entre com o seu login e não com o email')
+                return render(request, self.template, self.dados)
+
+            usuario = authenticate(
+                    username=login_str,
                     password=self.dados['formulario_login'].cleaned_data['senha']
-                )
+            )
 
             if usuario:
                 if usuario.is_active:
@@ -62,7 +60,7 @@ class LoginView(View):
                     else:
                         return redirect('/admin')
                 else:
-                    messages.warning(request, 'Conta desabilitada. :(')
+                    messages.warning(request, 'Conta desabilitada. Entre em contato com a sua regional.')
             else:
                 messages.warning(request, 'Usuário ou senha incorretos. Tente novamente.')
         return render(request, self.template, self.dados)
@@ -114,7 +112,7 @@ class Registro2View(View):
             self.dados['formulario_registro'].fields['usuario'].required = True
             self.dados['token_usuario'] = self.kwargs['token']
         else:
-            self.dados['token_usuario'] = 'aaaa'
+            self.dados['token_usuario'] = 'invalid'
             messages.error(request, mark_safe('Pré-cadastro não encontrado ou expirado. Clique <a href="/registro/">aqui</a> para solicitar o seu pré-cadastro.'))
         return render(request, self.template, self.dados)
 
@@ -130,16 +128,14 @@ class Registro2View(View):
         if self.dados['formulario_registro'].is_valid():
             try:
                 user = User.objects.get(
-                    username=UserToken.objects.get(token = self.kwargs['token']).owner,
+                    username=UserToken.objects.get(token=self.kwargs['token']).owner,
                 )
-                if valid_token(owner = user.username, tk = UserToken.objects.get(owner = user.username).token):
+                if valid_token(owner=user.username, tk=UserToken.objects.get(owner=user.username).token):
                     user.username = self.dados['formulario_registro'].cleaned_data['usuario']
                     user.set_password(self.dados['formulario_registro'].cleaned_data['senha'])
                     user.is_active = True
                     user.is_staff = True
-                    user.groups.add(
-                        Group.objects.get_or_create(name = 'Agência')[0]
-                    )
+                    user.groups.add(Group.objects.get_or_create(name='Agência')[0])
                     user.save()
 
                     #Criando inscricao.Usuario:

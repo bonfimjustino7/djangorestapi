@@ -37,9 +37,9 @@ def valid_token(owner, tk, auto_remove = True):
 
 
 class UserToken(models.Model):
-    token = models.CharField(max_length = 30, primary_key = True, default = create_token)
-    owner = models.CharField(max_length = 30)
-    date_created = models.DateTimeField(auto_now = True)
+    token = models.CharField(max_length=30, primary_key=True, default=create_token)
+    owner = models.CharField(max_length=30)
+    date_created = models.DateTimeField(auto_now=True)
 
     def valid(self):
         if self.date_created+timedelta(minutes=token_age()) < datetime.now():

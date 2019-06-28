@@ -262,12 +262,14 @@
 
                         <div class="row">
                             <div class="col-md-12 text-center botoes-adicionais d-none">
-                                <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary">Dados Fiscais</a>
                                 <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary">Cadastrar Inscrições</a>
                             </div>
                             <div class="col-md-12 text-center botoes-inciais">
                                 <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary">Gravar os Dados</button>
                                 <a href="javascript:adiciona_agencia()" id="btn_agencias" class="btn btn-primary d-none" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>
+                            </div>
+                            <div class="col-md-12 text-center dados-fiscais d-none">
+                                <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary">Dados Fiscais</a>
                             </div>
                         </div>
 
@@ -391,9 +393,10 @@
                 if (resposta.status == 200) { 
                     $('#id_pk').val(resposta.pk)
                     carrega_estados_agencias();
-                    $('#btn_submit').prop('disabled', false)
-                    $('#btn_submit').removeClass('disabled')
-                    //$('.botoes-adicionais').removeClass('d-none');
+                    $('#btn_submit').prop('disabled', false);
+                    $('#btn_submit').removeClass('disabled');
+                    // tem que ter um if aqui para só habilitar se tiver agência já preenchida
+                    $('.botoes-adicionais').removeClass('d-none');
                     Swal.fire({
                         type: 'success',
                         text: 'Empresa cadastrada com sucesso',
