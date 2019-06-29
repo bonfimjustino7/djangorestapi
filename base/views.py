@@ -138,11 +138,9 @@ class Registro2View(View):
                     user.groups.add(Group.objects.get_or_create(name='Agência')[0])
                     user.save()
 
-                    #Criando inscricao.Usuario:
-                    Usuario.objects.create(
-                        nome_completo = user.get_full_name(),
-                        user = user
-                    )
+                    # Criando inscricao.Usuario
+                    user_inscr = Usuario(nome_completo=user.get_full_name(), user=user)
+                    user_inscr.save()
 
                     login(request, user)
 
@@ -150,7 +148,8 @@ class Registro2View(View):
                     return redirect('nova-empresa')
                 else:
                     messages.error(request, 'Token inválido ou desativado. Realize seu pré-cadastro novamente.')
-                return redirect('start')
+                    return redirect('start')
+
             except Exception as erro:
                 messages.error(request, 'Erro: {}'.format(erro.__str__()))
         return render(request, self.template, self.dados)
@@ -245,11 +244,11 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
     def post(self, request, **kwargs):
         resposta = {}
-        if request.POST.get('id') == None :
+        if request.POST.get('id') is None:
             formulario = RegistroEmpresaForm(request.POST)
         else:
-            emp= Empresa.objects.get(pk=int(request.POST.get('id')))
-            formulario = RegistroEmpresaForm(request.POST, instance = emp)        
+            emp = Empresa.objects.get(pk=int(request.POST.get('id')))
+            formulario = RegistroEmpresaForm(request.POST, instance=emp)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
         email = request.POST.get('email')
         vp_email = request.POST.get('VP_Email')
@@ -257,26 +256,25 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         c2_email = request.POST.get('C2_Email')
 
         if email == vp_email and email != '' and vp_email != '':
-            formulario.add_error('email', 'E-mails devem ser diferentes1')
+            formulario.add_error('email', 'E-mail do VP deve ser diferentes')
 
         if email == c1_email and email != '' and c1_email != '':
-            formulario.add_error('email', 'E-mails devem ser diferentes2')
+            formulario.add_error('email', 'E-mail do Contato 1 devem ser diferentes')
 
         if email == c2_email and email != '' and c2_email != '':
-            formulario.add_error('email', 'E-mails devem ser diferentes3')
+            formulario.add_error('email', 'E-mail do Contato 2 devem ser diferentes')
 
         if vp_email == c1_email and vp_email != '' and c1_email != '':
-            formulario.add_error('VP_Email', 'E-mails devem ser diferentes4')
+            formulario.add_error('VP_Email', 'E-mails do VP e do Contato 1 devem ser diferentes')
 
         if vp_email == c2_email and vp_email != '' and c2_email != '':
-            formulario.add_error('VP_Email', 'E-mails devem ser diferentes5')
+            formulario.add_error('VP_Email', 'E-mails do VP e do Contato 2 devem ser diferentes')
 
         if c1_email == c2_email and c1_email != '' and c2_email != '':
-            formulario.add_error('C1_Email', 'E-mails devem ser diferentes6')
+            formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
 
         if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
-
 
         print(formulario.is_valid(), formset_agencias.is_valid())
 
@@ -285,15 +283,12 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 # Salvando Empresa
 
                 empresa = formulario.save()
-                resposta['pk']= empresa.pk            
-
+                resposta['pk'] = empresa.pk
 
                 # Salvando EmpresaUsuario
-                empresa.empresausuario_set.create(
-                    usuario_id  = request.user.id,
-                )
+                EmpresaUsuario.objects.get_or_create(empresa=empresa, usuario=request.user.id)
 
-                #Salvando primeira agencia
+                # Salvando primeira agencia
                 area = request.POST.get('area')
                 agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk)
                 if not agencia:
@@ -319,12 +314,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                        
 
                 request.session['empresa'] = empresa.id
-
                 resposta['status'] = 200
-            
-                
-            
-                
+
             except Exception as erro:
                 resposta['status'] = 500
                 resposta['texto'] = 'Erro: {}'.format(erro.__str__())
@@ -336,7 +327,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             texto = formulario.errors.as_text()
             for e in erros:
                 label = Empresa._meta.get_field(e[0]).verbose_name
-                if label != None:
+                if label is not None:
                     texto = texto.replace(e[0], label)
                 else:
                     pass
