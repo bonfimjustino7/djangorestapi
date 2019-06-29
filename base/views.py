@@ -250,6 +250,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             emp = Empresa.objects.get(pk=int(request.POST.get('id')))
             formulario = RegistroEmpresaForm(request.POST, instance=emp)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
+
+        nome_empresa = request.POST.get('nome').strip()
         email = request.POST.get('email')
         vp_email = request.POST.get('VP_Email')
         c1_email = request.POST.get('C1_Email')
@@ -273,7 +275,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         if c1_email == c2_email and c1_email != '' and c2_email != '':
             formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
 
-        if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
+        if Empresa.objects.filter(nome=nome_empresa).exclude(pk=emp.id).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         print(formulario.is_valid(), formset_agencias.is_valid())
@@ -317,6 +319,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 resposta['status'] = 200
 
             except Exception as erro:
+                if empresa:
+                    request.session['empresa'] = empresa.id
                 resposta['status'] = 500
                 resposta['texto'] = 'Erro: {}'.format(erro.__str__())
         else:

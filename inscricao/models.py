@@ -162,6 +162,10 @@ class Inscricao(models.Model):
     def total_inscricoes(self):
         return u'%d' % self.inscricao_set.count()
 
+    def save(self, *args, **kwargs):
+        self.seq = 1
+        super(Inscricao, self).save(*args, **kwargs)
+
 
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
@@ -177,3 +181,4 @@ class Material(models.Model):
         ordering = ('tipo', )
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
+
