@@ -306,7 +306,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 # Salvando objetos EmpresaAgencia
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
                     print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
-                    if request.POST.get('form-{}-nome'.format(i)) == '':
+                    if request.POST.get('form-{}-nome'.format(i)) == '' or request.POST.get('form-{}-uf'.format(i)) == '':
                         pass
                     else:
                         agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
@@ -316,11 +316,12 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                             agencia=request.POST.get('form-{}-nome'.format(i)),
                             uf=uf
                         )
-
+                       
 
                 request.session['empresa'] = empresa.id
 
                 resposta['status'] = 200
+            
                 
             
                 
