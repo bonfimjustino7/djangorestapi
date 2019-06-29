@@ -79,10 +79,10 @@ class MaterialInline(admin.TabularInline):
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premio', )
-    list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
+    list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente', )
 
     tab_info = (
-        (None, {'fields': ('premio', 'empresa', 'titulo', 'categoria', 'cliente')}),
+        (None, {'fields': (('premio', 'empresa', 'agencia'), 'titulo', 'categoria', 'cliente', 'parcerias', 'dtinicio')}),
     )
 
     tab_materiais = (
@@ -121,6 +121,11 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 kwargs['queryset'] = Empresa.objects.filter(pk__in=empresas)
             else:
                 kwargs['queryset'] = Empresa.objects.all()
+
+        if db_field.name == 'agencia':
+            usuario = Usuario.objects.filter(user=request.user)
+            empresa = EmpresaUsuario.objects.filter(usuario=usuario)[0].empresa
+            kwargs['queryset'] = EmpresaAgencia.objects.filter(empresa=empresa)
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 

@@ -63,7 +63,7 @@ class Premiacao(models.Model):
 class Formato(models.Model):
     nome = models.CharField(max_length=40)
     codigo = models.CharField(max_length=3)
-    premiacao = models.ForeignKey(Premiacao, null=True, on_delete=models.PROTECT)
+    premiacao = models.ForeignKey(Premiacao, null=True, on_delete=models.PROTECT, verbose_name='Premiação')
     cod_premiacao = models.CharField(max_length=3) # Temporário - só para o import
 
     def __str__(self):

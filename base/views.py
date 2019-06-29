@@ -246,6 +246,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         resposta = {}
         if request.POST.get('id') is None:
             formulario = RegistroEmpresaForm(request.POST)
+            emp = None
         else:
             emp = Empresa.objects.get(pk=int(request.POST.get('id')))
             formulario = RegistroEmpresaForm(request.POST, instance=emp)
@@ -275,7 +276,12 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         if c1_email == c2_email and c1_email != '' and c2_email != '':
             formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
 
-        if Empresa.objects.filter(nome=nome_empresa).exclude(pk=emp.id).exists():
+        if emp:
+            emp_id = emp.id
+        else:
+            emp_id = 0
+
+        if Empresa.objects.filter(nome=nome_empresa).exclude(pk=emp_id).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         print(formulario.is_valid(), formset_agencias.is_valid())
@@ -307,13 +313,11 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                     if request.POST.get('form-{}-nome'.format(i)) == '' or request.POST.get('form-{}-uf'.format(i)) == '':
                         pass
                     else:
-                        agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
-                        if not agencia: 
-                            uf= UF.objects.get(sigla=request.POST.get('form-{}-uf'.format(i)))
-                            empresa.empresaagencia_set.create(
-                            agencia=request.POST.get('form-{}-nome'.format(i)),
-                            uf=uf
-                        )
+                        agencia = EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
+                        if not agencia:
+                            uf = request.POST.get('form-{}-uf'.format(i))
+                            uf = UF.objects.get(sigla=uf)
+                            empresa.empresaagencia_set.create(agencia=request.POST.get('form-{}-nome'.format(i)), uf=uf)
                        
                 request.session['empresa'] = empresa.id
                 resposta['status'] = 200
@@ -322,7 +326,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 if empresa:
                     request.session['empresa'] = empresa.id
                 resposta['status'] = 500
-                resposta['texto'] = 'Erro: {}'.format(erro.__str__())
+                resposta['texto'] = erro.__str__()
         else:
             print(formulario.cleaned_data)
             print(formulario.errors)
