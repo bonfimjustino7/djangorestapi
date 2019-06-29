@@ -286,13 +286,14 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 resposta['pk'] = empresa.pk
 
                 # Salvando EmpresaUsuario
-                EmpresaUsuario.objects.get_or_create(empresa=empresa, usuario=request.user.id)
+                usuario = Usuario.objects.get(user=request.user)
+                EmpresaUsuario.objects.get_or_create(empresa=empresa, usuario=usuario)
 
                 # Salvando primeira agencia
                 area = request.POST.get('area')
                 agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk)
                 if not agencia:
-                    if (area == '1') or (area == '3') or (area =='27'):   
+                    if (area == '1') or (area == '3') or (area == '27'):
                         empresa.empresaagencia_set.create(
                             agencia=request.POST.get('nome'),
                             uf= UF.objects.get(sigla=request.POST.get('uf')) 
@@ -312,7 +313,6 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                             uf=uf
                         )
                        
-
                 request.session['empresa'] = empresa.id
                 resposta['status'] = 200
 

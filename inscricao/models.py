@@ -63,6 +63,7 @@ class Empresa(models.Model):
 
     def save(self, request=False, *args, **kwargs):
         self.nome = self.nome.upper()
+        self.cep = self.cep.replace('-','')
         self.VP_Nome = letra_maiuscula(self.VP_Nome)
         self.VP_Cargo = letra_maiuscula(self.VP_Cargo)
         self.C1_Nome = letra_maiuscula(self.C1_Nome)

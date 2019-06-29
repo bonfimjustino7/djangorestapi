@@ -26,6 +26,10 @@ class RegistroEmpresaForm(forms.ModelForm):
             'C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',
         ]
 
+    def clean_cep(self):
+        email = self.cleaned_data['cep'].replace('-','')
+        return email
+
 
 class RegistroEmpresaAgenciaForm(forms.ModelForm):
     class Meta:
