@@ -280,7 +280,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         if c1_email == c2_email and c1_email != '' and c2_email != '':
             formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
 
-        if Empresa.objects.filter(nome=nome_empresa).exists():
+        if Empresa.objects.filter(nome=nome_empresa).exists() and request.POST.get('id') is None:
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         print(formulario.is_valid(), formset_agencias.is_valid())
@@ -302,7 +302,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                     if (area == '1') or (area == '3') or (area == '27'):
                         empresa.empresaagencia_set.create(
                             agencia=request.POST.get('nome'),
-                            uf= UF.objects.get(sigla=request.POST.get('uf')) 
+                            uf=UF.objects.get(sigla=request.POST.get('uf')) 
                         )    
                         agencia_exists = True    
                 # Salvando objetos EmpresaAgencia
