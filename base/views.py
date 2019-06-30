@@ -1,4 +1,7 @@
+from collections import OrderedDict
+from genericpath import exists
 from ntpath import exists
+from os.path import exists
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -244,6 +247,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
 
     def post(self, request, **kwargs):
         resposta = {}
+        agencia_exists = False
         if request.POST.get('id') is None:
             formulario = RegistroEmpresaForm(request.POST)
         else:
@@ -275,7 +279,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         if c1_email == c2_email and c1_email != '' and c2_email != '':
             formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
 
-        if Empresa.objects.filter(nome=nome_empresa).exclude(pk=emp.id).exists():
+        if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         print(formulario.is_valid(), formset_agencias.is_valid())
@@ -288,8 +292,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 resposta['pk'] = empresa.pk
 
                 # Salvando EmpresaUsuario
-                usuario = Usuario.objects.get(user=request.user)
-                EmpresaUsuario.objects.get_or_create(empresa=empresa, usuario=usuario)
+                EmpresaUsuario.objects.get_or_create(empresa=empresa, usuario_id=request.user.id)
 
                 # Salvando primeira agencia
                 area = request.POST.get('area')
@@ -302,21 +305,25 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                         )    
 
                 # Salvando objetos EmpresaAgencia
+               
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
                     print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
                     if request.POST.get('form-{}-nome'.format(i)) == '' or request.POST.get('form-{}-uf'.format(i)) == '':
                         pass
                     else:
-                        agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
-                        if not agencia: 
+                        agencia_full=EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
+                        if not agencia_full.exists() : 
                             uf= UF.objects.get(sigla=request.POST.get('form-{}-uf'.format(i)))
                             empresa.empresaagencia_set.create(
                             agencia=request.POST.get('form-{}-nome'.format(i)),
                             uf=uf
                         )
-                       
+                        agencia_exists = True
+                             
+                resposta['agencia_full'] = agencia_exists          
                 request.session['empresa'] = empresa.id
                 resposta['status'] = 200
+                
 
             except Exception as erro:
                 if empresa:
@@ -356,6 +363,15 @@ def consulta_empresa(request, nome):
         resposta['existe'] = True
     else:
         resposta['existe'] = False
+    return JsonResponse(resposta)
+
+
+def consulta_agencia(request, empresa):
+    resposta = {}
+    if EmpresaAgencia.objects.filter(empresa_id = empresa.pk).exists():
+        resposta['agencia'] = True
+    else:
+        resposta['agencia'] = False
     return JsonResponse(resposta)
 
 

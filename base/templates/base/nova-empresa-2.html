@@ -291,7 +291,7 @@
         // Variáveis globais:
         var estados_agencias = '';
         dados = {};
-
+            
         function carrega_dados_formulario() {
             if ($('#id_pk').val() > 0) {
                 dados.pk = $('#id_pk').val()
@@ -371,9 +371,6 @@
                 if ($('#id_form-TOTAL_FORMS').val() == 0) {
                     adiciona_agencia();
                     $('.header-agencia').removeClass('d-none');
-                    if (resposta.status == 200) {
-                      $('.botoes-adicionais').removeClass('d-none');  
-                    }
                 }else{
                     $( ".select-nome" ).each(function() {
                         //var option = "<option value='' selected disabled>Selecione...</option>";
@@ -399,6 +396,7 @@
                     carrega_estados_agencias();
                     $('#btn_submit').prop('disabled', false);
                     $('#btn_submit').removeClass('disabled');
+                    
                     // tem que ter um if aqui para só habilitar se tiver agência já preenchida
         
                     //$('.botoes-adicionais').removeClass('d-none');
@@ -407,7 +405,10 @@
                         text: 'Empresa cadastrada com sucesso',
                     })
                     //$('.botoes-inciais').addClass('d-none');
-                    
+                    if ( resposta.agencia_full == true ) {
+                      $('.botoes-adicionais').removeClass('d-none');  
+                    }
+
                 } else {
                     Swal.fire({
                         type: 'error',
