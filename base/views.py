@@ -255,11 +255,12 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             formulario = RegistroEmpresaForm(request.POST, instance=emp)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
 
-        nome_empresa = request.POST.get('nome').strip()
+        nome_empresa = request.POST.get('nome').strip().upper()
         email = request.POST.get('email')
         vp_email = request.POST.get('VP_Email')
         c1_email = request.POST.get('C1_Email')
         c2_email = request.POST.get('C2_Email')
+    
 
         if email == vp_email and email != '' and vp_email != '':
             formulario.add_error('email', 'E-mail do VP deve ser diferentes')
@@ -279,7 +280,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         if c1_email == c2_email and c1_email != '' and c2_email != '':
             formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
 
-        if Empresa.objects.filter(nome=request.POST.get('nome')).exists():
+        if Empresa.objects.filter(nome=nome_empresa).exists():
             formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
 
         print(formulario.is_valid(), formset_agencias.is_valid())
@@ -297,13 +298,13 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                 # Salvando primeira agencia
                 area = request.POST.get('area')
                 agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk)
-                if not agencia:
+                if not agencia.exists():
                     if (area == '1') or (area == '3') or (area == '27'):
                         empresa.empresaagencia_set.create(
                             agencia=request.POST.get('nome'),
                             uf= UF.objects.get(sigla=request.POST.get('uf')) 
                         )    
-
+                        agencia_exists = True    
                 # Salvando objetos EmpresaAgencia
                
                 for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
@@ -317,8 +318,8 @@ class NovaEmpresaView(LoginRequiredMixin, View):
                             empresa.empresaagencia_set.create(
                             agencia=request.POST.get('form-{}-nome'.format(i)),
                             uf=uf
-                        )
-                        agencia_exists = True
+                            )
+                            agencia_exists = True
                              
                 resposta['agencia_full'] = agencia_exists          
                 request.session['empresa'] = empresa.id
