@@ -165,7 +165,7 @@
                             </div>
                             
                             <div class="col-md-4">
-                                <label for="id_DirTelefoneDireto" style="font-size: 12px;">Celular (de preferência) ou Tel.Direto:</label>
+                                <label for="id_DirTelefoneDireto">Celular (de preferência) ou Tel.Direto:</label>
                                     {{formulario_cadastro.VP_Telefone}}
                                 <span class="text-muted" style="font-size: 12px;"></span>
                             </div>
@@ -249,23 +249,17 @@
                         <hr class="my-4">
 
                         <div id="formset_agencias">
-                             {{formset_agencias.management_form}}   
-                            
-
-                            <div class="row header-agencia d-none">
-                                <div class="col-md-11 text-center d-none">
-                                    <h1 class="title">Agências:</h1>
-                                </div>
+                            <div class="row my-3">
+                                <div class="col-12 text-center font-weight-bold header-agencia d-none">AGÊNCIAS CADASTRADAS PARA FICHAS TÉCNICAS</div>
                             </div>
+                            {{formset_agencias.management_form}}
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12 text-center botoes-adicionais d-none">
-                                <a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary">Cadastrar Inscrições</a>
-                            </div>
                             <div class="col-md-12 text-center botoes-inciais">
                                 <button type="button" onclick="enviar()" id="btn_submit" class="btn btn-primary">Gravar os Dados</button>
                                 <a href="javascript:adiciona_agencia()" id="btn_agencias" class="btn btn-primary d-none" data-toggle="tooltip" data-placement="top" title="Você pode adicionar mais de uma agência, clicando aqui">Adicionar Agência</a>
+                                <span class="botoes-adicionais d-none"><a href="/admin/inscricao/inscricao/add/" id="btn_inscricoes" class="btn btn-outline-primary">Cadastrar Inscrições</a></span>
                             </div>
                             <div class="col-md-12 text-center dados-fiscais d-none">
                                 <a href="javascript:dados_fiscais()" id="btn_dados_fiscais" class="btn btn-outline-primary">Dados Fiscais</a>
