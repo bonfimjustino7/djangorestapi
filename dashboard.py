@@ -35,7 +35,7 @@ class CustomIndexDashboard(Dashboard):
                 models=('base.*',)
             ),
             modules.ModelList(
-                u'Inscrições',
+                u'Cadastro das Inscrições',
                 models=('inscricao.*',)
             ),
             modules.ModelList(
@@ -51,7 +51,6 @@ class CustomIndexDashboard(Dashboard):
                 deletable=True,
                 collapsible=True,
                 children=[
-                    [_('Alterar password'), reverse('%s:password_change' % site_name)],
                     [_('Ajuda'), '/ajuda/'],
                     [_('Sair'), '/logout/'],
                 ])

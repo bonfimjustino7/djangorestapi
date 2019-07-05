@@ -65,12 +65,6 @@ class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url', )
 
-    def get_queryset(self, request):
-        qs = super(self.__class__, self).get_queryset(request)
-        if request.user.groups.filter(name=u'Funcionário IES').count():
-            return qs.filter(coordenador=False)
-        return qs
-
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
@@ -78,7 +72,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
 
     tab_info = (
-        (None, {'fields': ('premio', 'empresa', 'titulo', 'categoria', 'cliente')}),
+        (None, {'fields': (('premio', 'empresa', 'agencia'), 'titulo', 'categoria', 'cliente', 'parcerias', 'dtinicio')}),
     )
 
     tab_materiais = (
@@ -91,7 +85,14 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     )
 
     tab_ficha_fornec = (
-        (None, {'fields': ('ProdutoraFilme','DiretorFilme','ProdutoraAudio','DiretorAudio')}),
+        (None,
+         {'fields':
+              ('ProdutoraFilme','DiretorFilme','ProdutoraAudio','DiretorAudio',
+               'EstudioFotografia', 'Fotografo', 'EstudioIlustracao', 'Ilustrador', 'ManipulacaoDigital',
+               'Finalizacao',), }),
+        ('Outros Fornecedores',
+         {'fields': ('OutrosFornecedor1', 'OutrosFornecedor2',
+                     'OutrosFornecedor3', 'OutrosFornecedor4',)}),
     )
 
     tabs = [
@@ -119,3 +120,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 kwargs['queryset'] = Empresa.objects.all()
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        obj.usuario = Usuario.objects.get(user=request.user)
+        obj.save()
