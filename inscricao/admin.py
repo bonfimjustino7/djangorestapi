@@ -1,30 +1,17 @@
 from django.contrib import admin
-
-from poweradmin.admin import PowerModelAdmin, PowerButton, PowerStackedInline, PowerTabularInline
+from localflavor.md import forms
 from tabbed_admin import TabbedModelAdmin
 
 from base.models import *
 from inscricao.models import *
+from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
+                              PowerTabularInline)
 
 
 class AgenciaInline(admin.TabularInline):
     model = EmpresaAgencia
     fields = ('agencia', 'uf', )
     extra = 0
-
-
-class EmpresaInline(admin.TabularInline):
-    model = EmpresaUsuario
-    fields = ('empresa', )
-    readonly_fields = ('empresa', )
-    extra = 0
-
-
-@admin.register(Usuario)
-class UsuarioAdmin(admin.ModelAdmin):
-    fields = ('nome_completo','user')
-    readonly_fields = ('user',)
-    inlines = [EmpresaInline]
 
 
 @admin.register(EmpresaUsuario)
@@ -35,7 +22,7 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_filter = ('regional','area')
-    list_display = ('nome', 'uf', 'cidade','area')
+    list_display = ('edit_link', 'uf', 'cidade','area')
     fields = (('nome', 'regional', 'area',), ('cep', 'uf', 'cidade'),
               ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),
               ('homepage', 'email'),
@@ -44,21 +31,24 @@ class EmpresaAdmin(admin.ModelAdmin):
               ('C2_Nome', 'C2_Cargo', 'C2_Email'), ('C2_DDD', 'C2_Telefone',),
               )
     inlines = [AgenciaInline]
+    
+    def edit_link(self,obj):
+        return u'<a href="/nova-empresa/?id=%s">%s</a>' % (
+             obj.id, obj.nome)
+    edit_link.allow_tags = True
+    edit_link.short_description = "Nome"
+
+
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmpresaAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['cep'].widget.attrs['style'] = 'width: 5em;'
-        form.base_fields['nome'].widget.attrs['style'] = 'width: 30em;'
-        form.base_fields['endereco'].widget.attrs['style'] = 'width: 30em;'
-        form.base_fields['bairro'].widget.attrs['style'] = 'width: 20em;'
         form.base_fields['ddd'].widget.attrs['style'] = 'width: 2em;'
-        form.base_fields['VP_DDD'].widget.attrs['style'] = 'width: 2em;'
         form.base_fields['C1_DDD'].widget.attrs['style'] = 'width: 2em;'
         form.base_fields['C2_DDD'].widget.attrs['style'] = 'width: 2em;'
-        form.base_fields['telefone'].widget.attrs['style'] = 'width: 10em;'
-        form.base_fields['VP_Telefone'].widget.attrs['style'] = 'width: 10em;'
-        form.base_fields['C1_Telefone'].widget.attrs['style'] = 'width: 10em;'
-        form.base_fields['C2_Telefone'].widget.attrs['style'] = 'width: 10em;'
+        form.base_fields['nome'].widget.attrs['style'] = 'width: 30em;'
+        form.base_fields['endereco'].widget.attrs['style'] = 'width: 30em;'
+        form.base_fields['bairro'].widget.attrs['style'] = 'width: 30em;'
         return form
 
     def get_queryset(self, request):
@@ -70,19 +60,25 @@ class EmpresaAdmin(admin.ModelAdmin):
 
         return qs
 
-
+    
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url', )
+
+    def get_queryset(self, request):
+        qs = super(self.__class__, self).get_queryset(request)
+        if request.user.groups.filter(name=u'Funcionário IES').count():
+            return qs.filter(coordenador=False)
+        return qs
 
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premio', )
-    list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente', )
+    list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
 
     tab_info = (
-        (None, {'fields': (('premio', 'empresa', 'agencia'), 'titulo', 'categoria', 'cliente', 'parcerias', 'dtinicio')}),
+        (None, {'fields': ('premio', 'empresa', 'titulo', 'categoria', 'cliente')}),
     )
 
     tab_materiais = (
@@ -122,10 +118,4 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             else:
                 kwargs['queryset'] = Empresa.objects.all()
 
-        if db_field.name == 'agencia':
-            usuario = Usuario.objects.filter(user=request.user)
-            empresa = EmpresaUsuario.objects.filter(usuario=usuario)[0].empresa
-            kwargs['queryset'] = EmpresaAgencia.objects.filter(empresa=empresa)
-
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-

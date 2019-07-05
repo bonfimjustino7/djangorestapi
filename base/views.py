@@ -16,6 +16,7 @@ from django.views import View
 from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
+from inscricao.admin import AgenciaInline
 from util.email import sendmail
 from util.models import UserToken, create_token, valid_token
 
@@ -240,9 +241,20 @@ class NovaEmpresaView(LoginRequiredMixin, View):
     dados = {}
 
     def get(self, request, **kwargs):
-        self.dados['formulario_cadastro'] = RegistroEmpresaForm()
-        self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
-        self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm, extra=0)
+        id = request.GET.get('id', None)
+        if id:
+            empresa = Empresa.objects.get(id=id)
+            request.session['empresa'] = empresa.id
+            empresa_agencia = EmpresaAgencia.objects.filter(empresa__id=id)
+            self.dados['id_empresa'] = empresa.id
+            self.dados['formulario_cadastro'] = RegistroEmpresaForm(instance=empresa)
+            self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
+            self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm)
+        else:  
+            self.dados['formulario_cadastro'] = RegistroEmpresaForm()
+            self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
+            self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm, extra=0)
+            self.dados['id_empresa'] = 0
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):

@@ -52,7 +52,7 @@
                                 <label for="id_Empresa">Nome da Empresa:</label>
                                  {{formulario_cadastro.nome}}
                                 <span class="text-muted" style="font-size: 12px;">Use o nome de fantasia simplificado da empresa, sem "Ltda", "Propaganda", "Comunicação", "Criação", "Promoções", etc.</span>
-                                <input type="hidden" id = "id_pk" value = 0>  
+                                <input type="hidden" id = "id_pk" value = {{ id_empresa }}>  
                             </div>
                             
                             <div class="col-md-6">
@@ -542,6 +542,13 @@
             $('#id_area').change(carrega_estados_agencias);
             $('#id_nome').blur(verificar_nome_empresa);
             $('#id_cep').blur(pesquisaCep);
+            if ($('#id_pk').val() > 0) {
+                carrega_estados_agencias();
+                $('#btn_submit').prop('disabled', false);
+                $('#btn_submit').removeClass('disabled');
+            }
+
+                              
 
         })
 
