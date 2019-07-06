@@ -186,7 +186,7 @@ class ReiniciaSenha1View(View):
                     sendmail(
                         to=[ self.dados['formulario'].cleaned_data['email'], ],
                         subject=u'Recuperação de senha do Prêmio Colunistas',
-                        params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link()},
+                        params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link_reset()},
                         template='emails/reseta-password.html', )
 
                     messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
