@@ -32,7 +32,7 @@ class LoginView(View):
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated:
-            return redirect('/admin')
+            return reverse('/admin')
 
         self.dados['formulario_login'] = LoginForm()
         if 'next' in request.GET:
@@ -182,6 +182,12 @@ class ReiniciaSenha1View(View):
                 if User.objects.filter(email = self.dados['formulario'].cleaned_data['email']).exists():
                     user = User.objects.get(email = self.dados['formulario'].cleaned_data['email'])
                     token = UserToken.objects.create(owner = user.username)
+                    
+                    sendmail(
+                        to=[ self.dados['formulario'].cleaned_data['email'], ],
+                        subject=u'Recuperação de senha do Prêmio Colunistas',
+                        params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link()},
+                        template='base/reinicia-senha.html', )
 
                     messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
                 else:
@@ -249,7 +255,7 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             self.dados['id_empresa'] = empresa.id
             self.dados['formulario_cadastro'] = RegistroEmpresaForm(instance=empresa)
             self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
-            self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm)
+            self.dados['formset_agencias'] = RegistroEmpresaAgenciaForm(instance=empresa)
         else:  
             self.dados['formulario_cadastro'] = RegistroEmpresaForm()
             self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
