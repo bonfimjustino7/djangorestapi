@@ -167,6 +167,14 @@ class InstrucoesLoginView(View):
         return render(request, self.template, self.dados)
 
 
+class InstrucoesResetLoginView(View):
+    template = 'base/instrucoes-reset-login.html'
+    dados = {}
+
+    def get(self, request, **kwargs):
+        return render(request, self.template, self.dados)
+
+
 class ReiniciaSenha1View(View):
     template = 'base/reinicia-senha.html'
     dados = {}
@@ -195,7 +203,7 @@ class ReiniciaSenha1View(View):
                     return render(request, self.template, self.dados)
             except Exception as erro:
                 messages.error(request, 'Erro: {}'.format(erro.__str__()))
-        return redirect('instrucoes-login')
+        return redirect('instrucoes-reset-login')
 
 
 class ReiniciaSenha2View(View):

@@ -1,0 +1,17 @@
+{% extends "base/base_bulma.html" %}
+{% load staticfiles %}
+
+{% block conteudo %}
+        <div class="columns">
+            <div class="column is-8 is-offset-2 login">
+                <div class="box is-radiusless">
+                    <div class="has-text-centered">
+                        <img src="{% static "base/img/logo.png" %}" width="150" alt="">
+                        <h1 class="title">Instruções para o Registro</h1>
+                        <br/>
+                        <p>1) Abra a sua caixa de correio e busque pelo email enviado por nós</p>
+                        <p>2) Clique no link para solicitar uma nova senha!</p>
+                </div>
+            </div>
+        </div>
+{% endblock %}
