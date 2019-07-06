@@ -53,7 +53,7 @@ class UserToken(models.Model):
         )
         
     def link_reset(self):
-        return '{}/reset-senha/{}/'.format(
+        return '{}/nova-senha/{}/'.format(
             settings.SITE_HOST,
             self.token,
         )    

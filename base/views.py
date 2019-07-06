@@ -206,7 +206,7 @@ class ReiniciaSenha2View(View):
         if UserToken.objects.filter(token=self.kwargs['token']).exists():
             self.dados['formulario'] = Registro2Form()
             self.dados['formulario'].fields['usuario'].initial = UserToken.objects.get(token = self.kwargs['token']).owner
-            self.dados['formulario'].fields['usuario'].widget.attrs['disabled'] = 'disabled'
+            self.dados['formulario'].fields['usuario'].widget.attrs['readonly'] = True
             self.dados['token'] = self.kwargs['token']
         else:
             messages.error(request, 'Usuário não encontrado.')
@@ -216,8 +216,6 @@ class ReiniciaSenha2View(View):
     def post(self, request, **kwargs):
         if UserToken.objects.filter(token = self.kwargs['token']).exists():
             self.dados['formulario'] = Registro2Form(request.POST)
-            self.dados['formulario'].fields['usuario'].initial = UserToken.objects.get(token = self.kwargs['token']).owner
-            self.dados['formulario'].fields['usuario'].widget.attrs['disabled'] = 'disabled'
 
             if self.dados['formulario'].is_valid():
                 try:
@@ -231,6 +229,8 @@ class ReiniciaSenha2View(View):
                         messages.error(request, 'Token inválido.')
                 except Exception as erro:
                     messages.error(request, 'Erro: {}'.format(erro.__str__()))
+            else:        
+                print('não é válido')    
         return render(request, self.template, self.dados)
 
 

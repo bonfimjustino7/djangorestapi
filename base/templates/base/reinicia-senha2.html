@@ -19,13 +19,12 @@
                         <div class="columns">
                             <div class="column is-12">
                                 <div class="field campo">
-                                    {{formulario.email.label_tag}}
-                                    {% if formulario.email.field.required %}
-                                        <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
-                                    {% endif %}
-                                    {{formulario.email}}
-                                    {{formulario.email.errors}}
-                                    {{formulario.email.help_text}}
+                                    {{formulario.usuario}}
+                                    {{formulario.usuario.errors}}
+                                    {{formulario.senha}}
+                                    {{formulario.senha.errors}}
+                                    {{formulario.senha2}}
+                                    {{formulario.senha2.errors}}
                                 </div>
                             </div>
                         </div>
