@@ -197,7 +197,7 @@ class ReiniciaSenha1View(View):
                         params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link_reset()},
                         template='emails/reseta-password.html', )
 
-                    messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
+                    #messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
                 else:
                     messages.warning(request, 'Usuário não cadastrado.')
                     return render(request, self.template, self.dados)
@@ -217,8 +217,8 @@ class ReiniciaSenha2View(View):
             self.dados['formulario'].fields['usuario'].widget.attrs['readonly'] = True
             self.dados['token'] = self.kwargs['token']
         else:
-            messages.error(request, 'Usuário não encontrado.')
-
+            self.dados['formulario'] =  'readonly'
+            messages.error(request, 'Usuário não encontrado ou token expirado.\n Por favor clique em recuperar senha novamente')
         return render(request, self.template, self.dados)
 
     def post(self, request, **kwargs):
