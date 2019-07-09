@@ -187,17 +187,15 @@ class ReiniciaSenha1View(View):
         self.dados['formulario'] = ResetSenhaForm(request.POST)
         if self.dados['formulario'].is_valid():
             try:
-                if User.objects.filter(email = self.dados['formulario'].cleaned_data['email']).exists():
-                    user = User.objects.get(email = self.dados['formulario'].cleaned_data['email'])
-                    token = UserToken.objects.create(owner = user.username)
+                if User.objects.filter(email=self.dados['formulario'].cleaned_data['email']).exists():
+                    user = User.objects.get(email=self.dados['formulario'].cleaned_data['email'])
+                    token = UserToken.objects.create(owner=user.username)
                     
                     sendmail(
                         to=[ self.dados['formulario'].cleaned_data['email'], ],
                         subject=u'Recuperação de senha do Prêmio Colunistas',
                         params={'site_name': 'Colunistas', 'nome': user.first_name, 'link': token.link_reset()},
                         template='emails/reseta-password.html', )
-
-                    #messages.success(request, 'Verifique seu e-mail para mudar a sua senha.')
                 else:
                     messages.warning(request, 'Usuário não cadastrado.')
                     return render(request, self.template, self.dados)
@@ -216,10 +214,11 @@ class ReiniciaSenha2View(View):
             self.dados['formulario'].fields['usuario'].initial = UserToken.objects.get(token = self.kwargs['token']).owner
             self.dados['formulario'].fields['usuario'].widget.attrs['readonly'] = True
             self.dados['token'] = self.kwargs['token']
+            return render(request, self.template, self.dados)
         else:
             self.dados['formulario'] =  'readonly'
-            messages.error(request, 'Usuário não encontrado ou token expirado.\n Por favor clique em recuperar senha novamente')
-        return render(request, self.template, self.dados)
+            messages.error(request, 'Usuário não encontrado ou link expirado.\n Por favor clique em recuperar senha novamente')
+            return redirect('reset-senha')
 
     def post(self, request, **kwargs):
         if UserToken.objects.filter(token = self.kwargs['token']).exists():
@@ -232,7 +231,8 @@ class ReiniciaSenha2View(View):
                         user.set_password(self.dados['formulario'].cleaned_data['senha'])
                         user.save()
                         messages.success(request, 'Senha alterada com sucesso. Faça o login para continuar.')
-                        return redirect('login')
+                        login(request, user)
+                        return redirect('/admin')
                     else:
                         messages.error(request, 'Token inválido.')
                 except Exception as erro:
@@ -287,7 +287,6 @@ class NovaEmpresaView(LoginRequiredMixin, View):
         vp_email = request.POST.get('VP_Email')
         c1_email = request.POST.get('C1_Email')
         c2_email = request.POST.get('C2_Email')
-    
 
         if email == vp_email and email != '' and vp_email != '':
             formulario.add_error('email', 'E-mail do VP deve ser diferentes')

@@ -75,7 +75,7 @@ class Empresa(models.Model):
 
 class EmpresaAgencia(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    agencia = models.CharField(max_length=40)
+    agencia = models.CharField('Nome da Agência', max_length=40)
     uf = models.ForeignKey(UF, on_delete=models.PROTECT)
 
     class Meta:

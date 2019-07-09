@@ -14,6 +14,27 @@ class AgenciaInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(EmpresaAgencia)
+class EmpresaAgenciaAdmin(admin.ModelAdmin):
+    list_display = ('agencia', 'empresa', 'uf')
+
+    def get_queryset(self, request):
+        qs = super(EmpresaAgenciaAdmin, self).get_queryset(request)
+        if request.user.groups.filter(name='Agência'):
+            usuario = Usuario.objects.filter(user=request.user)
+            empresas = list(EmpresaUsuario.objects.filter(usuario = usuario).values_list('empresa_id', flat=True))
+            qs = qs.filter(empresa__in=empresas)
+
+        return qs
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'empresa':
+            usuario = Usuario.objects.filter(user=request.user)
+            empresas = list(EmpresaUsuario.objects.filter(usuario=usuario).values_list('empresa', flat=True))
+            kwargs['queryset'] = Empresa.objects.filter(pk__in=empresas)
+        return super(EmpresaAgenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 @admin.register(EmpresaUsuario)
 class EmpresaUsuarioAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'usuario')
@@ -38,8 +59,6 @@ class EmpresaAdmin(admin.ModelAdmin):
     edit_link.allow_tags = True
     edit_link.short_description = "Nome"
 
-
-
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmpresaAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['cep'].widget.attrs['style'] = 'width: 5em;'
@@ -60,7 +79,7 @@ class EmpresaAdmin(admin.ModelAdmin):
 
         return qs
 
-    
+
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url', )

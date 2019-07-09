@@ -36,7 +36,7 @@ class CustomIndexDashboard(Dashboard):
             ),
             modules.ModelList(
                 u'Cadastro das Inscrições',
-                models=('inscricao.*',)
+                models=('inscricao.*', )
             ),
             modules.ModelList(
                 u'Adminstração',
