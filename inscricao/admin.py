@@ -7,6 +7,8 @@ from inscricao.models import *
 from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
                               PowerTabularInline)
 
+from base.views import *
+
 
 class AgenciaInline(admin.TabularInline):
     model = EmpresaAgencia
@@ -58,6 +60,9 @@ class EmpresaAdmin(admin.ModelAdmin):
              obj.id, obj.nome)
     edit_link.allow_tags = True
     edit_link.short_description = "Nome"
+    
+    def add_view(self, request, form_url='', extra_context=None):
+        return NovaEmpresaView.as_view()(request)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmpresaAdmin, self).get_form(request, obj, **kwargs)

@@ -16,7 +16,7 @@ from django.views import View
 from base.forms import *
 from inscricao.forms import *
 from inscricao.models import *
-from inscricao.admin import AgenciaInline
+#from inscricao.admin import AgenciaInline
 from util.email import sendmail
 from util.models import UserToken, create_token, valid_token
 
