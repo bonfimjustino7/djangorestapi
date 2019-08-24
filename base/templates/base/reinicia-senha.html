@@ -4,10 +4,10 @@
 {% block conteudo %}
 
     <div class="columns">
-        <div class="column is-6 is-offset-3">
+        <div class="column is-6 is-offset-3" style="margin-top: 300px;">
             <div class="box is-radiusless">
                 <div class="has-text-centered">
-                    <img src="{% static "base/img/logo.png" %}" width="150" alt="">
+                    <img src="{% static "base/img/logo.png" %}" width="200" alt="">
                     <h1 class="title">Reiniciar Senha</h1>
                 </div>
 
@@ -31,6 +31,7 @@
 
                     <div class="field has-text-centered">
                         <input type="submit" class="button is-link bt1 is-radiusless" value="Enviar">
+                        <a href="{% url 'login' %}" class="button is-link bt2 is-radiusless">Voltar ao login</a>
                     </div>
                 </form>
             </div>
