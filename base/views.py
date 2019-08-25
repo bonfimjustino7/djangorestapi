@@ -216,7 +216,7 @@ class ReiniciaSenha2View(View):
             self.dados['token'] = self.kwargs['token']
             return render(request, self.template, self.dados)
         else:
-            self.dados['formulario'] =  'readonly'
+            self.dados['formulario'] = 'readonly'
             messages.error(request, 'Usuário não encontrado ou link expirado.\n Por favor clique em recuperar senha novamente')
             return redirect('reset-senha')
 
@@ -227,18 +227,16 @@ class ReiniciaSenha2View(View):
             if self.dados['formulario'].is_valid():
                 try:
                     user = User.objects.get(username = UserToken.objects.get(token = self.kwargs['token']).owner)
-                    if valid_token(owner = user.username, tk = self.kwargs['token']):
+                    if valid_token(owner=user.username, tk=self.kwargs['token']):
                         user.set_password(self.dados['formulario'].cleaned_data['senha'])
                         user.save()
-                        messages.success(request, 'Senha alterada com sucesso. Faça o login para continuar.')
                         login(request, user)
                         return redirect('/admin')
                     else:
                         messages.error(request, 'Token inválido.')
                 except Exception as erro:
                     messages.error(request, 'Erro: {}'.format(erro.__str__()))
-            else:        
-                print('não é válido')    
+
         return render(request, self.template, self.dados)
 
 
@@ -431,7 +429,7 @@ def cadastro_fiscal(request):
         formulario = DadosFiscaisEmpresaForm(request.POST)
         if formulario.is_valid():
             try:
-                empresa = Empresa.objects.get(id = request.session['empresa'])
+                empresa = Empresa.objects.get(id=request.session['empresa'])
                 resposta['status'] = 200
             except Exception as erro:
                 resposta['status'] = 500
