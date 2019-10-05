@@ -4,9 +4,14 @@ from ntpath import exists
 from os.path import exists
 
 from django.contrib import messages
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group, User
+=======
+from django.utils.safestring import mark_safe
+
+>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
 from django.forms import formset_factory
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -25,6 +30,9 @@ class HomeView(View):
     def get(self, request, **kwargs):
         return redirect('/login/')
 
+class HomeView(View):
+    def get(self, request, **kwargs):
+        return redirect('/login/')
 
 class LoginView(View):
     template = 'base/login.html'
@@ -43,6 +51,7 @@ class LoginView(View):
         self.dados['formulario_login'] = LoginForm(request.POST)
         if self.dados['formulario_login'].is_valid():
 
+<<<<<<< HEAD
             login_str = self.dados['formulario_login'].cleaned_data['usuario']
             if '@' in login_str:
                 messages.warning(request, 'Entre com o seu login e não com o email')
@@ -52,6 +61,19 @@ class LoginView(View):
                     username=login_str,
                     password=self.dados['formulario_login'].cleaned_data['senha']
             )
+=======
+            if '@' in self.dados['formulario_login'].cleaned_data['usuario']:
+                if User.objects.filter(email = self.dados['formulario_login'].cleaned_data['usuario']).exists():
+                    usuario = authenticate(
+                        username = User.objects.get(email = self.dados['formulario_login'].cleaned_data['usuario']).username,
+                        password = self.dados['formulario_login'].cleaned_data['senha']
+                    )
+            else:
+                usuario = authenticate(
+                    username=self.dados['formulario_login'].cleaned_data['usuario'],
+                    password=self.dados['formulario_login'].cleaned_data['senha']
+                )
+>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
 
             if usuario:
                 if usuario.is_active:
@@ -116,7 +138,11 @@ class Registro2View(View):
             self.dados['formulario_registro'].fields['usuario'].required = True
             self.dados['token_usuario'] = self.kwargs['token']
         else:
+<<<<<<< HEAD
             self.dados['token_usuario'] = 'invalid'
+=======
+            self.dados['token_usuario'] = 'aaaa'
+>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
             messages.error(request, mark_safe('Pré-cadastro não encontrado ou expirado. Clique <a href="/registro/">aqui</a> para solicitar o seu pré-cadastro.'))
         return render(request, self.template, self.dados)
 
@@ -279,6 +305,28 @@ class NovaEmpresaView(LoginRequiredMixin, View):
             emp = Empresa.objects.get(pk=int(request.POST.get('id')))
             formulario = RegistroEmpresaForm(request.POST, instance=emp)
         formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
+        email = request.POST.get('email')
+        vp_email = request.POST.get('vp_email')
+        c1_email = request.POST.get('c1_email')
+        c2_email = request.POST.get('c2_email')
+
+        if (email == vp_email and email != '' and vp_email != ''):
+            formulario.add_error('email', 'E-mails devem ser diferentes')
+
+        if (email == c1_email and email != '' and c1_email != ''):
+            formulario.add_error('email', 'E-mails devem ser diferentes')
+
+        if (email == c2_email and email != '' and c2_email != ''):
+            formulario.add_error('email', 'E-mails devem ser diferentes')
+
+        if (vp_email == c1_email and vp_email != '' and c1_email != ''):
+            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
+
+        if (vp_email == c2_email and vp_email != '' and c2_email != ''):
+            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
+
+        if (c1_email == c2_email and c1_email != '' and c2_email != ''):
+            formulario.add_error('C1_Email', 'E-mails devem ser diferentes')
 
         nome_empresa = request.POST.get('nome').strip().upper()
         email = request.POST.get('email')
