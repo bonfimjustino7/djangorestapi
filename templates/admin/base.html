@@ -22,7 +22,7 @@
     <div id="header" style="height: 60px; padding-bottom: 15px; padding-left: 50px; background-color: #8cc3de; color: #5a5a48">
         <div id="branding" >
             <!--{% block branding %}{% endblock %} -->
-            <img class="logo" src="http://app.colunistas.com.br/static/base/img/logo.png" alt="" height="70" width="120">
+            <img class="logo" src="{% static 'base/img/logo.png' %}" alt="" height="70" width="120">
         </div>
         {% block usertools %}
         {% if has_permission %}
