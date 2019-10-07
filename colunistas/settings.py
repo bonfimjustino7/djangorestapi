@@ -45,11 +45,11 @@ INSTALLED_APPS = [
     'captcha',
     'ckeditor',
     'mptt',
-    'smart_selects',
     'easy_thumbnails',
     'util',
     'base',
     'inscricao',
+    'smart_selects',
 ]
 
 # Install theme
