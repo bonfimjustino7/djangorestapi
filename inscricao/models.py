@@ -104,7 +104,7 @@ class Inscricao(models.Model):
     seq = models.IntegerField('Seq')
     titulo = models.CharField(max_length=60)
     #agencia = models.ForeignKey(EmpresaAgencia,on_delete=models.PROTECT)
-    agencia = ChainedForeignKey(EmpresaAgencia, chained_field=empresa, chained_model_field=empresa, show_all=False)
+    agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa', show_all=False)
     categoria = models.ForeignKey(Categoria,on_delete=models.PROTECT)
     parcerias = models.CharField(max_length=50, null=True, blank=True)
     formato = models.ForeignKey(Formato,on_delete=models.PROTECT, null=True, blank=True)

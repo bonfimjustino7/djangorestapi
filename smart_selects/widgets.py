@@ -134,7 +134,7 @@ class ChainedSelect(Select):
                 if ch not in final_choices:
                     final_choices.append(ch)
         self.choices = ()
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs(attrs, {'type': self.input_type})
         if 'class' in final_attrs:
             final_attrs['class'] += ' chained'
         else:
@@ -254,7 +254,7 @@ class ChainedSelectMultiple(SelectMultiple):
         # fetch related choices later
         final_choices = []
         self.choices = ()  # need to set explicitly because the Select widget will use it in render
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs(attrs, {'type': self.input_type})
         if 'class' in final_attrs:
             final_attrs['class'] += ' chained'
         else:
