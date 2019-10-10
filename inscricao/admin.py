@@ -45,29 +45,35 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_filter = ('regional','area')
-    list_display = ('edit_link', 'uf', 'cidade','area')
-    fields = (('nome', 'regional', 'area',), ('cep', 'uf', 'cidade'),
-              ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),
-              ('homepage', 'email'),
-              ('VP_Nome', 'VP_Cargo', 'VP_Email'), ('VP_DDD', 'VP_Telefone',),
-              ('C1_Nome', 'C1_Cargo', 'C1_Email'), ('C1_DDD', 'C1_Telefone',),
-              ('C2_Nome', 'C2_Cargo', 'C2_Email'), ('C2_DDD', 'C2_Telefone',),
-              )
+    list_display = ('nome', 'uf', 'cidade','area')
+
+    fieldsets = (
+        ('EMPRESA RESPONSÁVEL PELA INSCRIÇÃO', {
+           'fields': ('regional', ('nome', 'area'), ('cep', 'cidade', 'uf'), ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),'homepage', 'email')
+        }),
+        ('VP OU DIRETOR RESPONSÁVEL PELAS INSCRIÇÕES', {
+            'fields': (('VP_Nome', 'VP_Cargo'), ('VP_Email', 'VP_DDD', 'VP_Telefone'))
+        }),
+        ('OUTROS CONTATOS NA EMPRESA (Profissionais que também receberão as comunicações da Abracomp sobre a premiação.)', {
+            'fields': (('C1_Nome', 'C1_Cargo'), ('C1_Email', 'C1_DDD', 'C1_Telefone'), ('C2_Nome', 'C2_Cargo'), ('C2_Email', 'C2_DDD', 'C2_Telefone',))
+        }),
+    )
     inlines = [AgenciaInline]
-    
-    def edit_link(self,obj):
+    form = RegistroEmpresaForm
+    """def edit_link(self,obj):
         return u'<a href="/nova-empresa/?id=%s">%s</a>' % (
              obj.id, obj.nome)
     edit_link.allow_tags = True
     edit_link.short_description = "Nome"
     
     def add_view(self, request, form_url='', extra_context=None):
-        return NovaEmpresaView.as_view()(request)
+        return NovaEmpresaView.as_view()(request)"""
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmpresaAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['cep'].widget.attrs['style'] = 'width: 5em;'
         form.base_fields['ddd'].widget.attrs['style'] = 'width: 2em;'
+        form.base_fields['VP_DDD'].widget.attrs['style'] = 'width: 2em;'
         form.base_fields['C1_DDD'].widget.attrs['style'] = 'width: 2em;'
         form.base_fields['C2_DDD'].widget.attrs['style'] = 'width: 2em;'
         form.base_fields['nome'].widget.attrs['style'] = 'width: 30em;'
@@ -83,6 +89,13 @@ class EmpresaAdmin(admin.ModelAdmin):
             qs = qs.filter(pk__in=empresas)
 
         return qs
+
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        empresaUser = EmpresaUsuario()
+        empresaUser.usuario = Usuario.objects.get(user=request.user)
+        empresaUser.empresa = obj
+        empresaUser.save()
 
 
 class MaterialInline(admin.TabularInline):

@@ -1,8 +1,10 @@
 from django.db import models
+from django.dispatch import receiver
 from localflavor.br.forms import BRCNPJField
 from django.contrib.auth.models import User
 from base.models import *
 from smart_selects.db_fields import ChainedForeignKey
+from django.db.models.signals import m2m_changed, post_save
 
 
 class Usuario(models.Model):
@@ -103,7 +105,6 @@ class Inscricao(models.Model):
     empresa = models.ForeignKey(Empresa,on_delete=models.PROTECT)
     seq = models.IntegerField('Seq')
     titulo = models.CharField(max_length=60)
-    #agencia = models.ForeignKey(EmpresaAgencia,on_delete=models.PROTECT)
     agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa', show_all=False)
     categoria = models.ForeignKey(Categoria,on_delete=models.PROTECT)
     parcerias = models.CharField(max_length=50, null=True, blank=True)
