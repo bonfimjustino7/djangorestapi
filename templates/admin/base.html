@@ -89,5 +89,37 @@
 <!-- END Container -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+<script>
+    $('#id_nome').attr('style', "text-transform: uppercase;")
+    $('#id_nome').on("change", function () {
+            nome = $('#id_nome').val();
+            p = ["LTDA", "PROPAGANDA", "COMUNICAÇÃO", "CRIAÇÃO", "PROMOÇÕES", "DESIGN"]
+            nome_final = ''
+            nome_array = nome.split(' ')
+            for (x in nome_array) {
+               if (jQuery.inArray( nome_array[x].toUpperCase(), p )==-1) {
+                    nome_final = nome_final + ' ' + nome_array[x]
+
+                }
+            }
+            $('#id_nome').val(nome_final)
+        });
+
+        function pesquisaCep() {
+            var entrada = document.getElementById('id_cep').value.replace('-', '')
+            $.get(`https://viacep.com.br/ws/${entrada}/json/`, function(endereco, status) {
+                if (status == 'success') {
+                    //console.log(endereco)
+                    $('#id_endereco').val(endereco.logradouro)
+                    $('#id_bairro').val(endereco.bairro)
+                    $('#id_uf').val(endereco.uf)
+                    $('#id_cidade').val(endereco.localidade)
+                }
+            });
+        }
+
+        $('#id_cep').blur(pesquisaCep);
+</script>
 </body>
 </html>
