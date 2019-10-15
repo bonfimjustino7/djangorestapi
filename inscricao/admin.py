@@ -43,9 +43,9 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 
 
 @admin.register(Empresa)
-class EmpresaAdmin(admin.ModelAdmin):
+class EmpresaAdmin(PowerModelAdmin):
     list_filter = ('regional','area')
-    list_display = ('nome', 'uf', 'cidade','area')
+    list_display = ('nome', 'uf', 'cidade', 'area')
 
     fieldsets = (
         ('EMPRESA RESPONSÁVEL PELA INSCRIÇÃO', {
@@ -60,14 +60,6 @@ class EmpresaAdmin(admin.ModelAdmin):
     )
     inlines = [AgenciaInline]
     form = RegistroEmpresaForm
-    """def edit_link(self,obj):
-        return u'<a href="/nova-empresa/?id=%s">%s</a>' % (
-             obj.id, obj.nome)
-    edit_link.allow_tags = True
-    edit_link.short_description = "Nome"
-    
-    def add_view(self, request, form_url='', extra_context=None):
-        return NovaEmpresaView.as_view()(request)"""
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmpresaAdmin, self).get_form(request, obj, **kwargs)
@@ -92,10 +84,9 @@ class EmpresaAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        empresaUser = EmpresaUsuario()
-        empresaUser.usuario = Usuario.objects.get(user=request.user)
-        empresaUser.empresa = obj
-        empresaUser.save()
+        if not request.user.is_superuser:
+            usuario = Usuario.objects.get(user=request.user)
+            EmpresaUsuario.objects.get_or_create(usuario=usuario, empresa=obj)
 
 
 class MaterialInline(admin.TabularInline):
