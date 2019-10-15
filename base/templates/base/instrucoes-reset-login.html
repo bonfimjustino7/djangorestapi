@@ -7,10 +7,14 @@
                 <div class="box is-radiusless">
                     <div class="has-text-centered">
                         <img src="{% static "base/img/logo.png" %}" width="150" alt="">
-                        <h1 class="title">Instruções para o Registro</h1>
+                        <h1 class="title">Instruções para recuperação da senha</h1>
                         <br/>
                         <p>1) Abra a sua caixa de correio e busque pelo email enviado por nós</p>
-                        <p>2) Clique no link para solicitar uma nova senha!</p>
+                        <p>2) Clique no link para registrar uma nova senha!</p>
+                        <br/>
+                        <div class="field has-text-centered">
+                            <a href="{% url 'login' %}" class="button is-link bt2 is-radiusless">Retornar</a>
+                        </div>
                 </div>
             </div>
         </div>
