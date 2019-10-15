@@ -25,7 +25,6 @@ class LoginForm(forms.Form):
 class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
     nome = forms.CharField(
         required=True,
-#<<<<<<< HEAD
         widget=forms.widgets.TextInput(attrs={'class': 'input', 'placeholder': 'Nome'}),
     )
     sobrenome = forms.CharField(
@@ -36,42 +35,19 @@ class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
         required=True,
         label='E-mail',
         widget=forms.widgets.EmailInput(attrs={'class': 'input', 'placeholder': 'E-mail'}),
-#=======
-        #widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome'}),
-    )
-    sobrenome = forms.CharField(
-        required=True,
-        widget = forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Sobrenome'}),
-    )
-    email = forms.EmailField(
-        required=True,
-        label = 'E-mail',
-        widget = forms.widgets.EmailInput(attrs = {'class': 'input', 'placeholder': 'E-mail'}),
-#>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
     )
 
     def clean_email(self):
         email = self.cleaned_data['email']
-#<<<<<<< HEAD
         if User.objects.filter(email=email,is_active=True).exists():
             raise ValidationError('Já existe um usuário utilizando este e-mail')
-#=======
-
-        if User.objects.filter(email = email, is_active = True).exists():
-            raise ValidationError('Já existe um usuário utilizando este email')
-
-#>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
         return email
 
 
 class Registro2Form(forms.Form):
     usuario = forms.CharField(
-#<<<<<<< HEAD
-        #label='Digite um login',
-        #widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome de Usuário'})
-
         label='Digite um login',
-        widget = forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome de Usuário'})
+        widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Nome de Usuário'})
     )
     senha = forms.CharField(
         required = True,

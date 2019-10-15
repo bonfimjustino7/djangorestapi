@@ -3,11 +3,7 @@
 
 {% block conteudo %}
     <div class="columns">
-<<<<<<< HEAD
         <div class="column is-6 is-offset-3 registro">
-=======
-        <div class="column is-6 is-offset-3">
->>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
             <div class="box is-radiusless">
                 <div class="has-text-centered">
                     <img src="{% static "base/img/logo.png" %}" width="150" alt="">
@@ -22,18 +18,11 @@
                         <div class="column is-6">
                             <div class="field campo">
                                 {{formulario_registro.nome.label_tag}}
-<<<<<<< HEAD
-=======
-                                <!-- {% if formulario_registro.nome.field.required %}
-                                    <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
-                                {% endif %} -->
->>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
                                 {{formulario_registro.nome}}
                                 {{formulario_registro.nome.errors}}
                                 {{formulario_registro.nome.help_text}}
                             </div>
-<<<<<<< HEAD
-                        </div>                  
+                        </div>
                         <div class="column is-6">
                             <div class="field campo">
                                 {{formulario_registro.sobrenome.label_tag}}
@@ -45,26 +34,6 @@
                     </div>
 
                     <div class="columns">
-=======
-                        </div>                        
-                    </div>
-
-                    <div class="columns">
-                        <div class="column is-6">
-                            <div class="field campo">
-                                {{formulario_registro.sobrenome.label_tag}}
-                                <!-- {% if formulario_registro.sobrenome.field.required %}
-                                    <span class="required" style="font-weight: bold;"> <i class="fas fa-circle fa-xs"></i> Obrigatório</span>
-                                {% endif %} -->
-                                {{formulario_registro.sobrenome}}
-                                {{formulario_registro.sobrenome.errors}}
-                                {{formulario_registro.sobrenome.help_text}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="columns">
->>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
                         <div class="column is-12">
                             <div class="field campo">
                                 {{formulario_registro.email.label_tag}}

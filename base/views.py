@@ -8,10 +8,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group, User
-#=======
-from django.utils.safestring import mark_safe
-
-#>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
 from django.forms import formset_factory
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -30,9 +26,6 @@ class HomeView(View):
     def get(self, request, **kwargs):
         return redirect('/login/')
 
-class HomeView(View):
-    def get(self, request, **kwargs):
-        return redirect('/login/')
 
 class LoginView(View):
     template = 'base/login.html'
@@ -51,7 +44,6 @@ class LoginView(View):
         self.dados['formulario_login'] = LoginForm(request.POST)
         if self.dados['formulario_login'].is_valid():
 
-#<<<<<<< HEAD
             login_str = self.dados['formulario_login'].cleaned_data['usuario']
             if '@' in login_str:
                 messages.warning(request, 'Entre com o seu login e não com o email')
@@ -61,19 +53,6 @@ class LoginView(View):
                     username=login_str,
                     password=self.dados['formulario_login'].cleaned_data['senha']
             )
-#=======
-            if '@' in self.dados['formulario_login'].cleaned_data['usuario']:
-                if User.objects.filter(email = self.dados['formulario_login'].cleaned_data['usuario']).exists():
-                    usuario = authenticate(
-                        username = User.objects.get(email = self.dados['formulario_login'].cleaned_data['usuario']).username,
-                        password = self.dados['formulario_login'].cleaned_data['senha']
-                    )
-            else:
-                usuario = authenticate(
-                    username=self.dados['formulario_login'].cleaned_data['usuario'],
-                    password=self.dados['formulario_login'].cleaned_data['senha']
-                )
-#>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
 
             if usuario:
                 if usuario.is_active:
@@ -138,11 +117,7 @@ class Registro2View(View):
             self.dados['formulario_registro'].fields['usuario'].required = True
             self.dados['token_usuario'] = self.kwargs['token']
         else:
-#<<<<<<< HEAD
             self.dados['token_usuario'] = 'invalid'
-#=======
-            self.dados['token_usuario'] = 'aaaa'
-#>>>>>>> f8580d87f256f173a4ec49464b277a424b9b9ce8
             messages.error(request, mark_safe('Pré-cadastro não encontrado ou expirado. Clique <a href="/registro/">aqui</a> para solicitar o seu pré-cadastro.'))
         return render(request, self.template, self.dados)
 
@@ -256,15 +231,13 @@ class ReiniciaSenha2View(View):
                     if valid_token(owner = user.username, tk = self.kwargs['token']):
                         user.set_password(self.dados['formulario'].cleaned_data['senha'])
                         user.save()
-                        messages.success(request, 'Senha alterada com sucesso. Faça o login para continuar.')
                         login(request, user)
                         return redirect('/admin')
                     else:
                         messages.error(request, 'Token inválido.')
                 except Exception as erro:
                     messages.error(request, 'Erro: {}'.format(erro.__str__()))
-            else:        
-                print('não é válido')    
+
         return render(request, self.template, self.dados)
 
 
