@@ -50,7 +50,10 @@ INSTALLED_APPS = [
     'base',
     'inscricao',
     'smart_selects',
+    'crispy_forms',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 # Install theme
 themedir = os.path.join(BASE_DIR, '../theme')

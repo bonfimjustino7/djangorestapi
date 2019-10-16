@@ -70,6 +70,7 @@ form ul.inline li {
 .aligned label {
     display: block;
     padding: 4px 10px 0 0;
+    float: left;
     width: 160px;
     word-wrap: break-word;
     line-height: 1;

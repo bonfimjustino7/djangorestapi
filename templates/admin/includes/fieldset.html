@@ -1,0 +1,112 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        <div class="help" style="margin-left: 0px; max-width: 450px; margin-bottom: 10px; padding-left: 0px;">{{ field.field.help_text }}</div>
+                        <div class="campos">
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% else %}
+                            {{ field.field }}
+                        {% endif %}
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>
+<style>
+    .aligned label {
+    display: block;
+    padding: 4px 10px 0 0;
+    float: none !important;
+    width: 160px;
+    word-wrap: break-word;
+    line-height: 1;
+}
+.aligned label {
+    width: 200px !important;
+}
+label {
+    text-align: left;
+}
+field-VP_DDD label.inline{
+    width: 60px !important;
+}
+div.help{
+    position: relative;
+    top: 0px;
+    margin-left: -10px;
+}
+.field-VP_DDD label, {
+      width: 100px !important;
+
+}
+
+.field-area div.help{
+    margin-bottom: 20px
+}
+.field-box.field-cep div.help{
+    width: 90px;
+    margin-bottom: -10px !important;
+    margin-top: -15px !important;
+    padding-bottom: 10px;
+}
+.field-box.field-cidade div.help, .field-box.field-uf div.help{
+    margin-top: 10px !important;
+}
+.field-box.field-homepage div.help{
+    width: 200px;
+}
+.field-box.field-email div.help{
+    margin-bottom: 26px !important;
+}
+.field-box.field-area div.help{
+    margin-top: 15px !important;
+}
+.field-box.field-VP_Telefone div.help, .field-box.field-C1_Telefone div.help, .field-box.field-C2_Telefone div.help{
+    margin-top: -15px !important;
+}
+div.help{
+    color: #807b7b !important;
+}
+form .aligned ul{
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+    margin-top: -15px !important;
+}
+
+.field-regional div.help{
+    float: left;
+    margin-left: 0px;
+    position: relative;
+    left: 150px;
+    width: 220px;
+    top: 15px;
+}
+.field-regional div.campos{
+    float: left;
+    position: relative;
+    left: -220px;
+}
+.field-regional ul.errorlist{
+    margin-top: 5px !important;
+}
+.campos{
+    display: block;
+    margin-top: -10px;
+}
+</style>

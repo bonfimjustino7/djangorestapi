@@ -9,6 +9,8 @@ from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
 
 from base.views import *
 
+change_form_template = 'admin/myapp/extras/openstreetmap_change_form.html'
+
 
 class AgenciaInline(admin.TabularInline):
     model = EmpresaAgencia
@@ -47,9 +49,10 @@ class EmpresaAdmin(PowerModelAdmin):
     list_filter = ('regional','area')
     list_display = ('nome', 'uf', 'cidade', 'area')
 
+
     fieldsets = (
         ('EMPRESA RESPONSÁVEL PELA INSCRIÇÃO', {
-           'fields': ('regional', ('nome', 'area'), ('cep', 'cidade', 'uf'), ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),'homepage', 'email')
+           'fields': ('regional', ('nome', 'area'), ('cep', 'cidade', 'uf'), ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),('homepage', 'email'))
         }),
         ('VP OU DIRETOR RESPONSÁVEL PELAS INSCRIÇÕES', {
             'fields': (('VP_Nome', 'VP_Cargo'), ('VP_Email', 'VP_DDD', 'VP_Telefone'))
