@@ -7,7 +7,7 @@ from base.forms import CAMPO_TEXTO_PADRAO
 from .models import *
 
 class RegistroEmpresaForm(forms.ModelForm):
-    regional = forms.ModelChoiceField(queryset=Regional.objects.all(), help_text='Consulte o regulamento para saber em qual delas a sua região se enquadra.')
+    regional = forms.ModelChoiceField(queryset=Regional.objects.all(), help_text='Consulte o regulamento para saber em qual delas a sua região se enquadra.', required=True)
     nome = forms.CharField(label='Nome da Empresa', help_text='Use o nome de fantasia simplificado da empresa, sem "Ltda", "Propaganda", "Comunicação", "Criação", "Promoções", etc.')
     area = forms.ModelChoiceField(label='Área de Atuação', queryset=Area.objects.all(), help_text='Escolha a que mais se aproxime da sua principal área de atuação.')
     cep = forms.CharField(max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-000"}), help_text='Digite no formato 00000-000')
@@ -20,7 +20,7 @@ class RegistroEmpresaForm(forms.ModelForm):
     telefone = forms.CharField(label='Telefone', max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
     celular = forms.CharField(label='Celular',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
     email = forms.EmailField(required=False, help_text='Apenas se a empresa tiver um email central')
-    homepage = forms.URLField(required=True, help_text=' Digite o endereço do site da empresa. Não precisa digitar "http://"')
+    homepage = forms.URLField(required=False, help_text=' Digite o endereço do site da empresa. Não precisa digitar "http://"')
     VP_Email = forms.EmailField(required=True)
 
     VP_Telefone = forms.CharField(label='Telefone',max_length=9, required=True, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))

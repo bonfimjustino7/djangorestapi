@@ -8,11 +8,10 @@
             {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
             {% for field in line %}
                 <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
-                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
                     {% if field.is_checkbox %}
                         {{ field.field }}{{ field.label_tag }}
                     {% else %}
-                        <div class="help" style="margin-left: 0px; max-width: 450px; margin-bottom: 10px; padding-left: 0px;">{{ field.field.help_text }}</div>
+
                         <div class="campos">
                         {{ field.label_tag }}
                         {% if field.is_readonly %}
@@ -21,6 +20,9 @@
                             {{ field.field }}
                         {% endif %}
                         </div>
+                        {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %} <!-- msg de erro -->
+                        <div class="help" style="margin-left: 0px; max-width: 450px; margin-bottom: 10px; padding-left: 0px;">{{ field.field.help_text }}</div>
+
                     {% endif %}
 
                 </div>
@@ -29,7 +31,7 @@
     {% endfor %}
 </fieldset>
 <style>
-    .aligned label {
+.aligned label {
     display: block;
     padding: 4px 10px 0 0;
     float: none !important;
@@ -58,11 +60,12 @@ div.help{
 
 .field-area div.help{
     margin-bottom: 20px
+    margin-top: -10px;
 }
 .field-box.field-cep div.help{
     width: 90px;
     margin-bottom: -10px !important;
-    margin-top: -15px !important;
+    margin-top: 0px !important;
     padding-bottom: 10px;
 }
 .field-box.field-cidade div.help, .field-box.field-uf div.help{
@@ -75,10 +78,10 @@ div.help{
     margin-bottom: 26px !important;
 }
 .field-box.field-area div.help{
-    margin-top: 15px !important;
+    margin-top: 5px !important;
 }
 .field-box.field-VP_Telefone div.help, .field-box.field-C1_Telefone div.help, .field-box.field-C2_Telefone div.help{
-    margin-top: -15px !important;
+    margin-top: 5px !important;
 }
 div.help{
     color: #807b7b !important;
@@ -89,24 +92,25 @@ form .aligned ul{
     margin-top: -15px !important;
 }
 
-.field-regional div.help{
-    float: left;
-    margin-left: 0px;
-    position: relative;
-    left: 150px;
-    width: 220px;
-    top: 15px;
-}
 .field-regional div.campos{
     float: left;
     position: relative;
-    left: -220px;
 }
-.field-regional ul.errorlist{
-    margin-top: 5px !important;
+.field-regional div.help{
+    display: inline-block;
+    position: relative;
+    left: -70px;
+    top: 15px;
+    width: 220px !important;
 }
 .campos{
     display: block;
     margin-top: -10px;
+}
+ul.errorlist li {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    margin-top: 20px !important;
 }
 </style>
