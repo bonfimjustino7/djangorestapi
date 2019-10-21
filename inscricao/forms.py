@@ -24,16 +24,16 @@ class RegistroEmpresaForm(forms.ModelForm):
     VP_Email = forms.EmailField(required=True)
 
     VP_Telefone = forms.CharField(label='Telefone',max_length=9, required=True, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
-    C1_Nome = forms.CharField(label='VP ou Diretor da Empresa', required=True)
-    C1_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=True)
-    C1_Email = forms.EmailField(label='Email', required=True)
-    C1_DDD = forms.CharField(label='DDD', max_length=2,required=True)
-    C1_Telefone = forms.CharField(label='Telefone', max_length=9, required=True, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
-    C2_Nome = forms.CharField(label='VP ou Diretor da Empresa', max_length=100, required=True)
-    C2_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=True)
-    C2_Email = forms.EmailField(label='Email', required=True)
-    C2_DDD = forms.CharField(label='DDD', max_length=2, required=True, )
-    C2_Telefone = forms.CharField(label='Telefone', max_length=9, required=True, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    C1_Nome = forms.CharField(label='VP ou Diretor da Empresa', required=False)
+    C1_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=False)
+    C1_Email = forms.EmailField(label='Email', required=False)
+    C1_DDD = forms.CharField(label='DDD', max_length=2,required=False)
+    C1_Telefone = forms.CharField(label='Telefone', max_length=9, required=False, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    C2_Nome = forms.CharField(label='VP ou Diretor da Empresa', max_length=100, required=False)
+    C2_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=False)
+    C2_Email = forms.EmailField(label='Email', required=False)
+    C2_DDD = forms.CharField(label='DDD', max_length=2, required=False, )
+    C2_Telefone = forms.CharField(label='Telefone', max_length=9, required=False, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
 
     class Meta:
         model = Empresa

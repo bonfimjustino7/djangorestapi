@@ -21,7 +21,7 @@
                         {% endif %}
                         </div>
                         {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %} <!-- msg de erro -->
-                        <div class="help" style="margin-left: 0px; max-width: 450px; margin-bottom: 10px; padding-left: 0px;">{{ field.field.help_text }}</div>
+                        <div class="help" style="margin-left: 0px; max-width: 450px; margin-bottom: 0px; padding-left: 0px;">{{ field.field.help_text }}</div>
 
                     {% endif %}
 
@@ -112,5 +112,37 @@ ul.errorlist li {
     display: block;
     margin-bottom: 4px;
     margin-top: 20px !important;
+}
+#id_homepage, #id_email{
+    width: 240px;
+}
+.field-ddd .campos .required{
+    width: 60px !important;
+}
+#id_telefone, #id_celular, #id_VP_Telefone, #id_C1_Telefone, #id_C2_Telefone{
+    width: 70px;
+}
+.field-ddd{
+    margin-right: 0px !important;
+}
+.field-VP_DDD .required{
+    width: 60px !important;
+    padding-right: 0px !important;
+}
+.field-VP_DDD, .field-C1_DDD, .field-C2_DDD{
+    margin-right: 0px !important;
+}
+.field-VP_Email{
+    margin-right: 21px !important;
+}
+.field-C1_DDD .inline, .field-C2_DDD .inline{
+    width: 60px !important;
+    padding-right: 0px;
+}
+#id_VP_Email{
+    width: 260px !important;
+}
+.field-cep .campos .required{
+    width: 153px !important;
 }
 </style>

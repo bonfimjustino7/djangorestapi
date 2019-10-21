@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'base',
     'inscricao',
     'smart_selects',
-    'crispy_forms',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

@@ -10,6 +10,7 @@ from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
 from base.views import *
 
 change_form_template = 'admin/myapp/extras/openstreetmap_change_form.html'
+from django.core.urlresolvers import reverse
 
 
 class AgenciaInline(admin.TabularInline):
@@ -49,6 +50,10 @@ class EmpresaAdmin(PowerModelAdmin):
     list_filter = ('regional','area')
     list_display = ('nome', 'uf', 'cidade', 'area')
 
+    def get_buttons(self, request, object_id):
+        buttons = super(EmpresaAdmin, self).get_buttons(request, object_id)
+        buttons.append(PowerButton(url='/admin/inscricao/inscricao/add', label=u'Adicionar Inscrição'))
+        return buttons
 
     fieldsets = (
         ('EMPRESA RESPONSÁVEL PELA INSCRIÇÃO', {

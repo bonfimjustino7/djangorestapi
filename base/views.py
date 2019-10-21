@@ -150,7 +150,7 @@ class Registro2View(View):
                     login(request, user)
 
                     messages.success(request, 'Usuário cadastrado com sucesso.')
-                    return redirect('nova-empresa')
+                    return redirect('/admin/inscricao/empresa/add')
                 else:
                     messages.error(request, 'Token inválido ou desativado. Realize seu pré-cadastro novamente.')
                     return redirect('start')
