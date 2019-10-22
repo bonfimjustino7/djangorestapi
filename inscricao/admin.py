@@ -63,7 +63,7 @@ class EmpresaAdmin(PowerModelAdmin):
             'fields': (('VP_Nome', 'VP_Cargo'), ('VP_Email', 'VP_DDD', 'VP_Telefone'))
         }),
         ('OUTROS CONTATOS NA EMPRESA (Profissionais que também receberão as comunicações da Abracomp sobre a premiação.)', {
-            'fields': (('C1_Nome', 'C1_Cargo'), ('C1_Email', 'C1_DDD', 'C1_Telefone'), ('C2_Nome', 'C2_Cargo'), ('C2_Email', 'C2_DDD', 'C2_Telefone',))
+            'fields': (('C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone'), ('C2_Nome', 'C2_Cargo','C2_Email', 'C2_DDD', 'C2_Telefone',))
         }),
     )
     inlines = [AgenciaInline]

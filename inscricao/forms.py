@@ -11,29 +11,29 @@ class RegistroEmpresaForm(forms.ModelForm):
     nome = forms.CharField(label='Nome da Empresa', help_text='Use o nome de fantasia simplificado da empresa, sem "Ltda", "Propaganda", "Comunicação", "Criação", "Promoções", etc.')
     area = forms.ModelChoiceField(label='Área de Atuação', queryset=Area.objects.all(), help_text='Escolha a que mais se aproxime da sua principal área de atuação.')
     cep = forms.CharField(max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-000"}), help_text='Digite no formato 00000-000')
-    telefone = forms.CharField(label='Telefone',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    telefone = forms.CharField(label='Telefone',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
     celular = BRPhoneNumberField(required=False)
-    C1_Telefone = forms.CharField(max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
-    C2_Telefone = forms.CharField(max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    C1_Telefone = forms.CharField(max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
+    C2_Telefone = forms.CharField(max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
     endereco = forms.CharField(max_length=100, required=True)
     bairro = forms.CharField(max_length=20, required=True)
-    telefone = forms.CharField(label='Telefone', max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
-    celular = forms.CharField(label='Celular',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    telefone = forms.CharField(label='Telefone', max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
+    celular = forms.CharField(label='Celular',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
     email = forms.EmailField(required=False, help_text='Apenas se a empresa tiver um email central')
     homepage = forms.URLField(required=False, help_text=' Digite o endereço do site da empresa. Não precisa digitar "http://"')
     VP_Email = forms.EmailField(required=True)
 
-    VP_Telefone = forms.CharField(label='Telefone',max_length=9, required=True, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    VP_Telefone = forms.CharField(label='Telefone',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
     C1_Nome = forms.CharField(label='VP ou Diretor da Empresa', required=False)
     C1_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=False)
     C1_Email = forms.EmailField(label='Email', required=False)
     C1_DDD = forms.CharField(label='DDD', max_length=2,required=False)
-    C1_Telefone = forms.CharField(label='Telefone', max_length=9, required=False, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    C1_Telefone = forms.CharField(label='Telefone', max_length=9, required=False, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
     C2_Nome = forms.CharField(label='VP ou Diretor da Empresa', max_length=100, required=False)
     C2_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=False)
     C2_Email = forms.EmailField(label='Email', required=False)
     C2_DDD = forms.CharField(label='DDD', max_length=2, required=False, )
-    C2_Telefone = forms.CharField(label='Telefone', max_length=9, required=False, help_text=u'XXXXX-XXXX', widget=forms.TextInput(attrs={'data-mask':"0000-0000"}))
+    C2_Telefone = forms.CharField(label='Telefone', max_length=9, required=False, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
 
     class Meta:
         model = Empresa
@@ -51,9 +51,11 @@ class RegistroEmpresaForm(forms.ModelForm):
         email = self.cleaned_data['cep'].replace('-','')
         return email
 
+
     def clean_nome(self):
         nome = self.cleaned_data['nome'].upper()
         return nome
+
 
     def clean(self):
 
@@ -66,6 +68,8 @@ class RegistroEmpresaForm(forms.ModelForm):
         vp_email = self.cleaned_data.get('VP_Email')
         c1_email = self.cleaned_data.get('C1_Email')
         c2_email = self.cleaned_data.get('C2_Email')
+
+        
 
         if email == vp_email and email != '' and vp_email != '':
             self._errors['email'] = self.error_class(['E-mail do VP deve ser diferentes'])
