@@ -40,6 +40,11 @@ class EmpresaAgenciaAdmin(admin.ModelAdmin):
         return super(EmpresaAgenciaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+@admin.register(Usuario)
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+
+
 @admin.register(EmpresaUsuario)
 class EmpresaUsuarioAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'usuario')

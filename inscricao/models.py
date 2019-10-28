@@ -21,9 +21,9 @@ class Usuario(models.Model):
 
 def letra_maiuscula(name):
     items = []
-    if name != None:
+    if name:
         for item in name.lower().split():
-            if len(item)>2:
+            if len(item) > 2:
                 item = item.capitalize()
 
             items.append(item)
@@ -153,7 +153,7 @@ class Inscricao(models.Model):
     roteiro = models.TextField('Roteiro de Rádio', null=True, blank=True)
 
     def __str__(self):
-        return u'%s' % (self.seq)
+        return u'%s' % self.seq
 
     class Meta:
         ordering = ('seq', )
