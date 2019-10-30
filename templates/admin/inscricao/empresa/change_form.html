@@ -54,6 +54,7 @@
 {% endif %}
 
 {% block field_sets %}
+
 {% for fieldset in adminform %}
   {% include "admin/inscricao/empresa/includes/fieldset.html" %}
 {% endfor %}
@@ -70,44 +71,10 @@
 {% block after_related_objects %}{% endblock %}
 
 <!--{% block submit_buttons_bottom %}{% submit_row %}{% endblock %} -->
-<div class="botoes" style="
-    padding: 12px 14px;
-    margin: 0 0 20px;
-    background: #f8f8f8;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    text-align: right;
-    overflow: hidden;">
-  <button id="salvar" class="default" type="submit" style="
-    float: right; 
-    width: 100px; 
-    display: inline-block; 
-    border: none; 
-    height: 35px; 
-    cursor: pointer; 
-    border-radius: 5px; 
-    background: #417690; 
-    color: #fff;
-    font-family: Arial;
-    font-size: 12px;"
-  >SALVAR</button>
-<a href="/admin/inscricao/inscricao/add/" style="
-    float: right; 
-    width: 150px; 
-    display: inline-block; 
-    border: none; 
-    height: 28px; 
-    cursor: pointer; 
-    border-radius: 5px; 
-    background: #79aec8; 
-    color: #fff;
-    font-family: Arial;
-    font-size: 14px;
-    margin-right: 20px;
-    text-align: center;
-    padding-top: 9px;"
-  >Adicionar Inscrição</a>
-</div>
+<div class="submit-row">
+    <input type="submit" value="Salvar" class="default">
+
+        <a href="{% if original %}/admin/inscricao/inscricao/add{% else %}#{% endif%}"><input type="button" value="Adicionar Inscrição" {% if not original %} disabled {% endif%}></a></div>
 
 
 {% block admin_change_form_document_ready %}
