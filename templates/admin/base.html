@@ -106,10 +106,10 @@
             for (x in nome_array) {
                if (jQuery.inArray( nome_array[x].toUpperCase(), p )==-1) {
                     nome_final = nome_final + ' ' + nome_array[x]
-
                 }
             }
-            $('#id_nome').val(nome_final)
+            nome_final = nome_final.trim()
+            $('#id_nome').val(nome_final);
         });
 
         function pesquisaCep() {
@@ -138,6 +138,34 @@
             $('#id_C1_Telefone').val(remover($('#id_C1_Telefone').val()))
             $('#id_C2_Telefone').val(remover($('#id_C2_Telefone').val()))
         });
+
+        $('#id_telefone').mask('00000-0000');
+        $('#id_telefone').blur(function(event){
+            if ($(this).val().length == 9){
+                 $(this).mask('0000-00009');
+            }else{
+                $(this).mask('00000-00009');
+            }
+        });
+
+        $('#id_celular').mask('00000-0000');
+        $('#id_celular').blur(function(event){
+            if ($(this).val().length == 9){
+                 $(this).mask('0000-00009');
+            }else{
+                $(this).mask('00000-00009');
+            }
+        });
+
+        $('#id_VP_Telefone').mask('00000-0000');
+        $('#id_VP_Telefone').blur(function(event){
+            if ($(this).val().length == 9){
+                 $(this).mask('0000-00009');
+            }else{
+                $(this).mask('00000-00009');
+            }
+        });
+
 
 </script>
 

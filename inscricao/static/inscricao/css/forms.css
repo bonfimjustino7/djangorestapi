@@ -112,3 +112,9 @@ ul.errorlist li {
 .field-cep .campos .required{
     width: 153px !important;
 }
+#id_nome{
+    width: 250px !important;
+}
+.field-telefone .campos label{
+    width: 90px !important;
+}
