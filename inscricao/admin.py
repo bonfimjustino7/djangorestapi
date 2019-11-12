@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.shortcuts import get_object_or_404
 from localflavor.md import forms
 from tabbed_admin import TabbedModelAdmin
 
@@ -101,6 +102,13 @@ class EmpresaAdmin(PowerModelAdmin):
             usuario = Usuario.objects.get(user=request.user)
             EmpresaUsuario.objects.get_or_create(usuario=usuario, empresa=obj)
 
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        if form.cleaned_data['area'].pk == 3:
+            for instance in instances:
+                instance.save()
+
+        formset.save_m2m()
 
 class MaterialInline(admin.TabularInline):
     model = Material
