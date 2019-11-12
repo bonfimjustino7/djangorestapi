@@ -104,7 +104,8 @@ class EmpresaAdmin(PowerModelAdmin):
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
-        if form.cleaned_data['area'].pk == 3:
+        area = form.cleaned_data['area'].pk
+        if not request.user.is_superuser and area == 1 or area == 3 or area == 27:
             for instance in instances:
                 instance.save()
 
