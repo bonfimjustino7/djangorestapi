@@ -72,11 +72,13 @@
 
 <!--{% block submit_buttons_bottom %}{% submit_row %}{% endblock %} -->
 <div class="submit-row">
-    <input type="submit" value="Salvar" class="default">
-
-        <a href="{% if original %}/admin/inscricao/inscricao/add{% else %}#{% endif%}"><input type="button" value="Adicionar Inscrição" {% if not original %} disabled {% endif%}></a></div>
-
-
+    <input type="submit" value="Salvar" name="_continue" class="default">
+    {% if not original.empresaagencia_set.filter.exists %}
+        <a href="/admin/inscricao/inscricao/empresa/"><input type="button" value="Adicionar Inscrição" disabled ></a></div>
+    {% else %}
+        <a href="/admin/inscricao/inscricao/add"><input type="button" value="Adicionar Inscrição" ></a></div>
+    {% endif %}
+<!--    {{original.empresaagencia_set.filter.exists}}-->
 {% block admin_change_form_document_ready %}
     <script type="text/javascript"
             id="django-admin-form-add-constants"
