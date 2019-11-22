@@ -97,21 +97,14 @@ class EmpresaAdmin(PowerModelAdmin):
         return qs
 
     def save_model(self, request, obj, form, change):
+        area = form.cleaned_data['area'].pk
         obj.save()
         if not request.user.is_superuser:
+            if area == 1 or area == 3 or area == 27:
+                if not EmpresaAgencia.objects.filter(agencia=obj.nome).exists():
+                    obj.empresaagencia_set.create(empresa=obj, agencia=obj.nome, uf=obj.uf)
             usuario = Usuario.objects.get(user=request.user)
             EmpresaUsuario.objects.get_or_create(usuario=usuario, empresa=obj)
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        area = form.cleaned_data['area'].pk
-        if not request.user.is_superuser:
-            if area == 3:
-                for instance in instances:
-                    instance.agencia = instance.empresa.nome
-                    instance.save()
-
-        formset.save_m2m()
 
 class MaterialInline(admin.TabularInline):
     model = Material
