@@ -108,6 +108,7 @@ class EmpresaAdmin(PowerModelAdmin):
         if not request.user.is_superuser:
             if area == 3:
                 for instance in instances:
+                    instance.agencia = instance.empresa.nome
                     instance.save()
 
         formset.save_m2m()
