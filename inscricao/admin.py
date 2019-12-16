@@ -1,5 +1,4 @@
 from django.contrib import admin
-from localflavor.md import forms
 from tabbed_admin import TabbedModelAdmin
 
 from base.models import *
@@ -148,3 +147,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.usuario = Usuario.objects.get(user=request.user)
         obj.save()
+
+
+@admin.register(Usuario)
+class UsuarioAdmin(PowerModelAdmin):
+    list_display = ('nome_completo',)
