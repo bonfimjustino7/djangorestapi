@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Prêmio Colunistas</title>
+        <link rel="stylesheet" href="{% static "base/css/bulma.min.css" %}">
+        <link rel="stylesheet" href="{% static "base/css/main.css" %}">
+        <link rel="shortcut icon" href="{% static "base/favicon.ico" %}">
+    </head>
+
+    <body style="background: url({% static 'base/img/back.jpg' %}) no-repeat;">
+        <section class="section">
+            <div class="container">
+
+                {% block conteudo %}{% endblock conteudo %}
+
+            </div>
+        </section>
+
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    </body>
+
+</html>
