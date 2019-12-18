@@ -115,9 +115,11 @@ class MaterialInline(admin.TabularInline):
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premio', )
     list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
+    readonly_fields = ('seq', )
+
 
     tab_info = (
-        (None, {'fields': (('premio', 'empresa', 'agencia'), 'titulo', 'categoria', 'cliente', 'parcerias', 'dtinicio')}),
+        (None, {'fields': (('premio', 'empresa', 'agencia'), 'titulo', 'categoria', 'cliente', 'parcerias', 'dtinicio', 'formato')}),
     )
 
     tab_materiais = (
