@@ -20,13 +20,13 @@ div.help{
     top: 0px;
     margin-left: -10px;
 }
-.field-VP_DDD label, {
+.field-VP_DDD label {
       width: 100px !important;
 
 }
 
 .field-area div.help{
-    margin-bottom: 20px
+    margin-bottom: 20px;
     margin-top: -10px;
 }
 .field-box.field-cep div.help{

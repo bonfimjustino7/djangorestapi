@@ -166,7 +166,9 @@ class Inscricao(models.Model):
         return u'%d' % self.inscricao_set.count()
 
     def save(self, *args, **kwargs):
-        self.seq = 1
+        if not self.seq:
+            seq_ant = Inscricao.objects.last().seq
+            self.seq = seq_ant + 1
         super(Inscricao, self).save(*args, **kwargs)
 
 
