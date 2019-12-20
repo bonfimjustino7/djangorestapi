@@ -169,5 +169,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
-        obj.usuario = Usuario.objects.get(user=request.user)
+        empresa = EmpresaUsuario.objects.get(empresa=request.POST['empresa'])
+        obj.usuario = Usuario.objects.get(id=empresa.usuario_id)
         obj.save()
