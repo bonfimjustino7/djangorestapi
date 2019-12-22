@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from localflavor.br.forms import BRCNPJField
 from django.contrib.auth.models import User
 from base.models import *
-from smart_selects.db_fields import ChainedForeignKey
+from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
 from django.db.models.signals import m2m_changed, post_save
 
 
@@ -176,15 +176,16 @@ class Inscricao(models.Model):
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
+   # tipo = ChainedForeignKey(TipoMaterial, chained_field='inscricao__premio__', chained_model_field='materiais')
     arquivo = models.FileField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
-        return u'%s (%s)' % (self.formato, self.id)
+        return u'%s (%s)' % (self.tipo, self.id)
 
     class Meta:
-        ordering = ('tipo', )
+
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
 

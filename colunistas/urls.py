@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from inscricao import views
 from filebrowser.sites import site
 
 # django 2
@@ -39,6 +40,7 @@ urlpatterns = [
 	url(r'^chaining/', include('smart_selects.urls')),
 	url(r'^', include('base.urls')),
 	url(r'^', include('util.urls')),
+	url(r'^tipos_materiais/(?P<id>\d+)/$', views.tipo_materiais),
 ]
 
 if 'theme' in settings.INSTALLED_APPS:

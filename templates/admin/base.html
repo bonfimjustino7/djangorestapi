@@ -93,7 +93,8 @@
     {% block footer %}<div id="footer"></div>{% endblock %}
 </div>
 <!-- END Container -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
 <script>
@@ -165,6 +166,59 @@
                 $(this).mask('00000-00009');
             }
         });
+
+        jQuery('#id_premio').change(function () {
+
+            $.get(`/tipos_materiais/${$(this).val()}`, function (res) {
+                for(var i = 0; i < 100; i++){
+                    var select = document.getElementById(`id_material_set-${i}-tipo`)
+                    $(select).empty()
+                    $(select).append($('<option></option>').attr("value", '?').text('------'))
+                    $.each(res, function (id, text) {
+                        $(select).append($('<option></option>').attr("value", text.id).text(text.text))
+                    })
+                }
+            })
+        })
+
+        function carregar(){
+             $.get(`/tipos_materiais/${$('#id_premio').val()}`, function (res) {
+                for(var i = 0; i < 100; i++){
+                    var select = document.getElementById(`id_material_set-${i}-tipo`)
+                    $(select).empty()
+                    $(select).append($('<option></option>').attr("value", '?').text('------'))
+                    $.each(res, function (id, text) {
+                        $(select).append($('<option></option>').attr("value", text.id).text(text.text))
+                    })
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            carregar()
+            $('.add-row').click(function () {
+               $.get(`/tipos_materiais/${$('#id_premio').val()}`, function (res) {
+                for(var i = 0; i < 100; i++){
+                    var select = document.getElementById(`id_material_set-${i}-tipo`)
+                    $(select).empty()
+                    $(select).append($('<option></option>').attr("value", '?').text('------'))
+                    $.each(res, function (id, text) {
+                        $(select).append($('<option></option>').attr("value", text.id).text(text.text))
+                    })
+                }
+                })
+            })
+        })
+
+
+                // for (var i = 1; i <= r.length; i++){
+                //     var option = document.createElement('option')
+                //     // console.log(r[i].text)
+                //     // option.text =   res[i].text
+                //     // option.value = res[i].id
+                //     // select.add(option, select[i])
+                //     $('#id_material_set-0-tipo').append('<option>' + r[i].text + '<option/>')
+                // }
 
 
 </script>

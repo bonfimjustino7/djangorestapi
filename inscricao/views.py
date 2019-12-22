@@ -1,3 +1,18 @@
+from django.http import HttpResponse
 from django.shortcuts import render
+import json
+from base.models import Premio, Premiacao
 
-# Create your views here.
+
+def tipo_materiais(request, id):
+    context = {}
+    premio = Premio.objects.get(id=id)
+
+    context = premio.premiacao.materiais.all().values_list('id', 'descricao').order_by('id')
+    result = []
+    for reg in context:
+        result.append({
+            'id': reg[0],
+            'text': reg[1],
+        })
+    return HttpResponse(json.dumps(result), content_type='application/json')
