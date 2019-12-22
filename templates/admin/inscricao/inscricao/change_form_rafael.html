@@ -1,4 +1,4 @@
-﻿{% extends "admin/edit_form.html" %}
+{% extends "admin/edit_form.html" %}
 
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript">
@@ -9,7 +9,6 @@
         }else{
             $('.field-formato').show();
         }
-
         $('#id_controle_manual').click(function(event) {
             if($('#id_controle_manual').attr('checked') == true){
                 $('.field-formato').slideUp();
