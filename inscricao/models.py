@@ -170,7 +170,11 @@ class Inscricao(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.seq:
-            seq_ant = Inscricao.objects.last().seq
+            ultima = Inscricao.objects.filter(empresa=self.empresa).last()
+            if ultima:
+                seq_ant = ultima.seq
+            else:
+                seq_ant = 0
             self.seq = seq_ant + 1
         super(Inscricao, self).save(*args, **kwargs)
 
