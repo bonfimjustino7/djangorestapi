@@ -185,7 +185,35 @@
                 }
             })
         }
-
+        function habilarCampos(valor, campo){
+            campo = campo.split('tipo')
+            var arquivo = campo[0] + 'arquivo'
+            var url = campo[0] + 'url'
+            console.log(arquivo)
+            console.log(url)
+            $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
+                 $.each(res, function (id, value) {
+                    if(valor == value.id){
+                        if(value.url != true){
+                            $(`.dynamic-material_set .field-url input#${url}`).prop('disabled', true)
+                            console.log(value.url)
+                        }
+                        else{
+                            $(`.dynamic-material_set .field-url input#${url}`).prop('disabled', false)
+                            console.log(value.url)
+                        }
+                        if(value.arquivo != true){
+                            $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', true)
+                            console.log(value.arquivo)
+                        }
+                        else{
+                           $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', false)
+                            console.log(value.arquivo)
+                        }
+                    }
+                 })
+            })
+        }
         function carregarUm(cont){
             //console.log(cont)
              $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
@@ -207,6 +235,14 @@
             })
             $('.add-row').click(function () {
                carregarUm(contarSelects())
+            })
+            $('.dynamic-material_set select').change(function (event) {
+                console.log($(this).val())
+                //console.log(event.target.id)
+                var campo = event.target.id
+                //document.querySelector('.dynamic-material_set .field-tipo select').className;
+
+                habilarCampos($(this).val(), campo)
             })
 
         })
