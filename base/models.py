@@ -16,6 +16,7 @@ class Regional(models.Model):
         ordering = ('nome', )
         verbose_name_plural = 'Regionais'
 
+    # TODO: Na hora de salvar, verificar se não existe um estado em mais de uma regional
     def __str__(self):
         return self.nome
 

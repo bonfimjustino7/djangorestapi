@@ -34,8 +34,12 @@ class Command(BaseCommand):
             line_count = 0
             for row in reader:
                 line_count += 1
-                codigo = row['CodCategoria'][:2]
-                premiacao = Premiacao.objects.get(codigo=codigo)
+                codigo = row['CodCategoria'][:3]
+                try:
+                    premiacao = Premiacao.objects.get(codigo=codigo)
+                except Premiacao.DoesNotExist:
+                    print('Premiação não encontrada %s' % codigo)
+                    return
                 grupo = row['NomeDeGrupo'][0] == 'V'
                 Categoria.objects.create(codigo=row['CodCategoria'], nome=row['Categoria'],
                                          descricao=row['Descricao'],
