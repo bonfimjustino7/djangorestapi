@@ -7,6 +7,7 @@ from base.models import *
 from inscricao.models import *
 from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
                               PowerTabularInline)
+from django.contrib.messages import constants as messages
 
 from base.views import *
 
@@ -117,7 +118,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premiacao', )
     # list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
     readonly_fields = ('seq', )
-
+    #actions = ('exportar', )
     tab_info = (
         (None, {'fields': (('premiacao', 'empresa', 'agencia'), ('categoria', 'formato'),
                            'titulo',  'cliente', 'parcerias', 'dtinicio', )}),
@@ -164,6 +165,13 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         else:
             return 'empresa', 'seq', 'titulo', 'categoria', 'cliente',
 
+    # def exportar(self, request, queryset):
+    #     if request.user.is_superuser:
+    #         self.message_user(request, 'Você não é superuser', 50, messages.ERROR)
+    #
+    #
+    # exportar.short_description = u'Exportação das Inscrições'
+
     '''
         def add_view(self, request, form_url="", extra_context=None):
         data = request.GET.copy()
@@ -185,6 +193,20 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             else:
                 kwargs['queryset'] = Empresa.objects.all()
 
+            usuario = Usuario.objects.get(user=request.user)
+            empresa = EmpresaUsuario.objects.filter(usuario=usuario)
+
+            if empresa.count() == 1:
+                kwargs['initial'] = empresa.get().empresa
+
+        elif db_field.name == 'agencia':
+            usuario = Usuario.objects.get(user=request.user)
+            empresas = EmpresaUsuario.objects.filter(usuario = usuario)
+            if empresas.count() == 1:
+                agencias = EmpresaAgencia.objects.filter(empresa=empresas.get().empresa)
+                if agencias.count() == 1:
+                    agencia = EmpresaAgencia.objects.get(empresa=empresas.get().empresa)
+                    kwargs['initial'] = agencia
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
