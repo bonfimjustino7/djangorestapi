@@ -11,21 +11,22 @@ def only_numbers(value):
 
 def nvl(objeto,alternativa):
     # simula a função clássica do Oracle: Retorna uma alternativa caso o objeto esteja vazio
-    if objeto == None:
-        return alternativa
-    else:
+    if objeto:
         return objeto
+    else:
+        return alternativa
 
 
 def upper_first(value):
     # Retorna a string capitalizada, considerando preposições em Português
     result = ''
     for sentence in value.split(" "):
-        if sentence in ['de','da','do','para','e','entre']:
+        if sentence in ['de', 'da', 'do', 'para', 'e', 'entre']:
             result = result + " " + sentence
         else:
             result = result + " " + capfirst(sentence)
     return result.lstrip()
+
 
 # Retorna o objeto referenciado no PATH do request
 def get_object_from_path(request, model):
@@ -60,6 +61,8 @@ def server_status():
             data = [int(data) if data.isdigit() else data for data in memory.split()[1:]]
             json[memory.split()[0]] = dict(zip(header, data))
     return json
+
+
 
 '''
 def encode_utf8(text):

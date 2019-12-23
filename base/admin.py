@@ -5,22 +5,15 @@ from poweradmin.admin import PowerModelAdmin
 from base.models import *
 
 
-class PremioInline(admin.TabularInline):
-    model = Premio
-    fields = ['ano', 'regional', 'status']
-    ordering = ['-ano']
-    extra = 0
-
-
 @admin.register(Premiacao)
 class PremiacaoAdmin(admin.ModelAdmin):
     list_display = ['nome', 'codigo', 'ordem']
     ordering = ['ordem']
-    inlines = [PremioInline]
 
 
 @admin.register(Categoria)
 class CategoriaAdmin(PowerModelAdmin):
+    list_filter = ('premiacao', )
     search_fields = ['codigo', 'nome']
     list_display = ['codigo', 'nome', 'descricao', 'grupo']
     ordering = ['codigo']
@@ -35,7 +28,7 @@ class PremioInlineFormSet(forms.models.BaseInlineFormSet):
 
 class PremioRegionalInline(admin.TabularInline):
     model = Premio
-    fields = ['ano', 'premiacao', 'status']
+    fields = ['ano', 'status']
     ordering = ['-ano']
     extra = 0
     formset = PremioInlineFormSet
@@ -54,8 +47,8 @@ class TipoMaterialAdmin(PowerModelAdmin):
 @admin.register(Formato)
 class FormatoAdmin(PowerModelAdmin):
     list_filter = ('premiacao',)
-    list_display = ('nome','codigo','premiacao')
-    fields = ('nome','codigo','premiacao')
+    list_display = ('nome', 'codigo', 'premiacao')
+    fields = ('nome', 'codigo', 'premiacao')
 
 
 admin.site.register(UF)

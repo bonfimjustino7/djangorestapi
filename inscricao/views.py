@@ -5,10 +5,8 @@ from base.models import Premio, Premiacao
 
 
 def tipo_materiais(request, id):
-    context = {}
-    premio = Premio.objects.get(id=id)
-
-    context = premio.premiacao.materiais.all().values_list('id', 'descricao').order_by('id')
+    premiacao = Premiacao.objects.get(id=id)
+    context = premiacao.materiais.all().values_list('id', 'descricao').order_by('id')
     result = []
     for reg in context:
         result.append({

@@ -100,17 +100,19 @@ texto_outros_creditos = 'Outros Créditos de Fornecedores'
 
 
 class Inscricao(models.Model):
-    premio = models.ForeignKey(Premio,on_delete=models.PROTECT)
-    usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
-    empresa = models.ForeignKey(Empresa,on_delete=models.PROTECT)
+    premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT)
+    premio = models.ForeignKey(Premio, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
     seq = models.IntegerField('Seq')
     titulo = models.CharField(max_length=60)
     agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa', show_all=False)
-    categoria = models.ForeignKey(Categoria,on_delete=models.PROTECT)
-    parcerias = models.CharField(max_length=50, null=True, blank=True)
-    #formato = models.ForeignKey(Formato,on_delete=models.PROTECT, null=True, blank=True)
-    formato = ChainedForeignKey(Formato, chained_field='premio', chained_model_field='premiacao', show_all=False)
+    categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
+                                show_all=False, on_delete=models.PROTECT)
+    formato = ChainedForeignKey(Formato, chained_field='premiacao', chained_model_field='premiacao',
+                                show_all=False, on_delete=models.PROTECT)
     cliente = models.CharField(max_length=60, null=True, blank=True)
+    parcerias = models.CharField(max_length=50, null=True, blank=True)
     produto = models.CharField(max_length=30, null=True, blank=True)
     dtinicio = models.DateField('Veiculação ou Início')
     isolada = models.BooleanField(default=False)
@@ -176,7 +178,6 @@ class Inscricao(models.Model):
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
-   # tipo = ChainedForeignKey(TipoMaterial, chained_field='inscricao__premio__', chained_model_field='materiais')
     arquivo = models.FileField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
@@ -185,7 +186,6 @@ class Material(models.Model):
         return u'%s (%s)' % (self.tipo, self.id)
 
     class Meta:
-
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
 

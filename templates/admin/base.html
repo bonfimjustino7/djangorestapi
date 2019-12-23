@@ -168,7 +168,7 @@
         });
 
         function carregar(cont){
-             $.get(`/tipos_materiais/${$('#id_premio').val()}`, function (res) {
+             $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
                 for(var i = 0; i < cont; i++){
                     var select = document.getElementById(`id_material_set-${i}-tipo`)
                     var val_select = $(select).val()
@@ -188,7 +188,7 @@
 
         function carregarUm(cont){
             //console.log(cont)
-             $.get(`/tipos_materiais/${$('#id_premio').val()}`, function (res) {
+             $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
                     var select = document.getElementById(`id_material_set-${cont-1}-tipo`)
                     $(select).empty()
                     $(select).append($('<option></option>').attr("value", '').text('------'))
@@ -202,7 +202,7 @@
         }
         $(document).ready(function () {
             carregar(contarSelects())
-            $('#id_premio').change(function () {
+            $('#id_premiacao').change(function () {
                 carregar(contarSelects())
             })
             $('.add-row').click(function () {

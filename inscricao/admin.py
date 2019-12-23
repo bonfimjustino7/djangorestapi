@@ -11,7 +11,6 @@ from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
 from base.views import *
 
 change_form_template = 'admin/myapp/extras/openstreetmap_change_form.html'
-from django.core.urlresolvers import reverse
 
 
 class AgenciaInline(admin.TabularInline):
@@ -106,20 +105,22 @@ class EmpresaAdmin(PowerModelAdmin):
             usuario = Usuario.objects.get(user=request.user)
             EmpresaUsuario.objects.get_or_create(usuario=usuario, empresa=obj)
 
+
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url', )
+    extra = 1
 
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
-    list_filter = ('premio', )
-    list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
+    list_filter = ('premiacao', )
+    # list_display = ('empresa', 'seq', 'titulo', 'categoria', 'cliente')
     readonly_fields = ('seq', )
 
-
     tab_info = (
-        (None, {'fields': (('premio', 'empresa', 'agencia'), 'titulo', 'categoria', 'cliente', 'parcerias', 'dtinicio', 'formato')}),
+        (None, {'fields': (('premiacao', 'empresa', 'agencia'), ('categoria', 'formato'),
+                           'titulo',  'cliente', 'parcerias', 'dtinicio', )}),
     )
 
     tab_materiais = (
@@ -156,6 +157,24 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             qs = qs.filter(usuario=usuario, premio__status__in=('A','E'))
 
         return qs
+
+    def get_list_display(self, request):
+        if request.user.groups.filter(name='Agência'):
+            return 'seq', 'premiacao', 'titulo', 'categoria', 'cliente',
+        else:
+            return 'empresa', 'seq', 'titulo', 'categoria', 'cliente',
+
+    '''
+        def add_view(self, request, form_url="", extra_context=None):
+        data = request.GET.copy()
+        data['user'] = request.user.id
+        data['status'] = POST_STATUS.APPROVED
+        request.GET = data
+        return super(PostAdmin, self).add_view(request, form_url="", extra_context=extra_context)
+    
+    def get_changeform_initial_data(self, request, **kwargs):
+        super(InscricaoAdmin, self).get_changeform_initial_data(self, request, **kwargs)
+    '''
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'empresa':

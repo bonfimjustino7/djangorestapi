@@ -3,10 +3,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+def ano_corrente():
+    return 2019
+
+
 class Regional(models.Model):
     codigo = models.CharField('Código', max_length=2)
     nome = models.CharField(max_length=30)
-    estados = models.CharField(max_length=100, help_text='Separe os estados com vírgula',null=True)
+    estados = models.CharField(max_length=100, help_text='Separe os estados com vírgula', null=True)
 
     class Meta:
         ordering = ('nome', )
@@ -110,24 +114,18 @@ PREMIO_STATUS = (
 
 
 class Premio(models.Model):
-    ano = models.SmallIntegerField(default=2019)
-    premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT)
+    ano = models.SmallIntegerField()
     regional = models.ForeignKey(Regional, on_delete=models.PROTECT)
     status = models.CharField(max_length=1, choices=PREMIO_STATUS, default='A')
 
     def __str__(self):
-        return '%s' % self.premiacao
+        return '%s' % self.ano
 
     def descricao_completa(self):
-        return '{} ({} - {})'.format(
-            self.premiacao,
+        return '{}/{}'.format(
             self.regional,
             self.ano
         )
-
-    def ano_corrente(self):
-        return 2019
-    ano_corrente.short_description = 'Ano'
 
     class Meta:
         ordering = ('ano', )
