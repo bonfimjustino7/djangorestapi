@@ -164,18 +164,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         else:
             return 'empresa', 'seq', 'titulo', 'categoria', 'cliente',
 
-    '''
-        def add_view(self, request, form_url="", extra_context=None):
-        data = request.GET.copy()
-        data['user'] = request.user.id
-        data['status'] = POST_STATUS.APPROVED
-        request.GET = data
-        return super(PostAdmin, self).add_view(request, form_url="", extra_context=extra_context)
-    
-    def get_changeform_initial_data(self, request, **kwargs):
-        super(InscricaoAdmin, self).get_changeform_initial_data(self, request, **kwargs)
-    '''
-
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'empresa':
             if request.user.groups.filter(name='Agência'):
