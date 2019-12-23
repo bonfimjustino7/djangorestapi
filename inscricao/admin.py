@@ -148,6 +148,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         ('Ficha Técnica Agência', tab_ficha_agencia),
         ('Ficha Técnica Fornecedores', tab_ficha_fornec),
     ]
+    actions = ('exportar', )
 
     def get_queryset(self, request):
         qs = super(InscricaoAdmin, self).get_queryset(request)
@@ -163,6 +164,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         else:
             return 'empresa', 'seq', 'titulo', 'categoria', 'cliente',
 
+    def get_actions(self, request):
+        actions = super(InscricaoAdmin, self).get_actions(request)
+        if not request.user.is_superuser:
+            del actions['exportar']
+        return actions
+
     def exportar(self, request, queryset):
         return
     exportar.short_description = u'Exportação das Inscrições'
@@ -176,20 +183,26 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             else:
                 kwargs['queryset'] = Empresa.objects.all()
 
-            usuario = Usuario.objects.get(user=request.user)
-            empresa = EmpresaUsuario.objects.filter(usuario=usuario)
-
-            if empresa.count() == 1:
-                kwargs['initial'] = empresa.get().empresa
+            try:
+                usuario = Usuario.objects.get(user=request.user)
+                empresa = EmpresaUsuario.objects.filter(usuario=usuario)
+                if empresa.count() == 1:
+                    kwargs['initial'] = empresa.get().empresa
+            except Usuario.DoesNotExist:
+                None
 
         elif db_field.name == 'agencia':
-            usuario = Usuario.objects.get(user=request.user)
-            empresas = EmpresaUsuario.objects.filter(usuario = usuario)
-            if empresas.count() == 1:
-                agencias = EmpresaAgencia.objects.filter(empresa=empresas.get().empresa)
-                if agencias.count() == 1:
-                    agencia = EmpresaAgencia.objects.get(empresa=empresas.get().empresa)
-                    kwargs['initial'] = agencia
+            try:
+                usuario = Usuario.objects.get(user=request.user)
+                empresas = EmpresaUsuario.objects.filter(usuario=usuario)
+                if empresas.count() == 1:
+                    agencias = EmpresaAgencia.objects.filter(empresa=empresas.get().empresa)
+                    if agencias.count() == 1:
+                        agencia = EmpresaAgencia.objects.get(empresa=empresas.get().empresa)
+                        kwargs['initial'] = agencia
+            except Usuario.DoesNotExist:
+                None
+
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
@@ -199,4 +212,3 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             empresa = EmpresaUsuario.objects.get(empresa=request.POST['empresa'])
             obj.usuario = Usuario.objects.get(id=empresa.usuario_id)
         obj.save()
-
