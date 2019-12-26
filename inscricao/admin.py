@@ -7,7 +7,7 @@ from base.models import *
 from inscricao.models import *
 from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
                               PowerTabularInline)
-from django.contrib.messages import constants as messages
+from django.contrib import messages
 
 from base.views import *
 
@@ -205,7 +205,34 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def letra_maiuscula(name):
+        items = []
+        if name:
+            for item in name.lower().split():
+                if len(item) > 2:
+                    item = item.capitalize()
+
+                items.append(item)
+            return ' '.join(items)
+
     def save_model(self, request, obj, form, change):
+        obj.titulo = letra_maiuscula(obj.titulo)
+        obj.parcerias = letra_maiuscula(obj.parcerias)
+        obj.cliente = letra_maiuscula(obj.cliente)
+
+        if ',' in obj.titulo.lower() or '/' in obj.titulo.lower():
+            messages.warning(request, 'Não coloque os títulos de cada peça. Use um título que identifique o conjunto')
+
+        try:
+            if 'Institucional' in obj.produto and not obj.categoria_id == 71:
+                messages.warning(request, "Esta inscrição não está na categoria Institucional. Indique um produto mais preciso ou deixe o campo em branco")
+        except Exception:
+            None
+
+        if obj.cliente == obj.produto:
+            obj.produto = ''
+            messages.warning(request, "Se o campo Produto tiver a mesma informação do campo Cliente não há necessidade de preenchimento!")
+
         if not change:
             regional = Regional.objects.get(estados__contains=obj.agencia.uf)
             obj.premio = Premio.objects.get(ano=ano_corrente(), regional=regional)
