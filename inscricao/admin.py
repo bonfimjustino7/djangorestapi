@@ -219,6 +219,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         obj.titulo = letra_maiuscula(obj.titulo)
         obj.parcerias = letra_maiuscula(obj.parcerias)
         obj.cliente = letra_maiuscula(obj.cliente)
+        obj.produto = letra_maiuscula(obj.produto)
 
         if ',' in obj.titulo.lower() or '/' in obj.titulo.lower():
             messages.warning(request, 'Não coloque os títulos de cada peça. Use um título que identifique o conjunto')
