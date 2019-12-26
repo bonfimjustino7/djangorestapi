@@ -118,8 +118,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premiacao', )
     readonly_fields = ('seq', )
     tab_info = (
-        (None, {'fields': (('premiacao', 'empresa', 'agencia'), ('categoria', 'formato'),
-                           'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio', )}),
+        (None, {'fields': (('premiacao', 'empresa', 'agencia',), ('categoria', 'formato',),
+                           'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio',)}),
     )
 
     tab_materiais = (
@@ -143,12 +143,23 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     )
 
     tabs = [
-        ('Informações Gerais', tab_info),
-        ('Quantidade de Materiais', tab_materiais),
-        ('Ficha Técnica Agência', tab_ficha_agencia),
-        ('Ficha Técnica Fornecedores', tab_ficha_fornec),
+        (u'Informações Gerais', tab_info),
+        (u'Quantidade de Materiais', tab_materiais),
+        (u'Ficha Técnica Agência', tab_ficha_agencia),
+        (u'Ficha Técnica Fornecedores', tab_ficha_fornec),
+    ]
+
+    tab_info = [
+        ('Informações Gerais', tab_info)
     ]
     actions = ('exportar', )
+
+    change_form_template = 'admin/inscricao/inscricao/change_form.html'
+
+    def get_tabs(self, request, obj=None):
+        if not obj:
+            return self.tab_info
+        return self.tabs
 
     def get_queryset(self, request):
         qs = super(InscricaoAdmin, self).get_queryset(request)
@@ -230,7 +241,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         except Exception:
             None
 
-        if obj.cliente == obj.produto:
+        if obj.cliente == obj.produto and obj.cliente is not None or obj.produto is not None:
             obj.produto = ''
             messages.warning(request, "Se o campo Produto tiver a mesma informação do campo Cliente não há necessidade de preenchimento!")
 
