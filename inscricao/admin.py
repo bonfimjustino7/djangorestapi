@@ -1,10 +1,16 @@
+import csv
+import io
+import zipfile
+
 from django.contrib import admin
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from localflavor.md import forms
 from tabbed_admin import TabbedModelAdmin
 
 from base.models import *
 from inscricao.models import *
+from poweradmin.actions import export_as_csv_action
 from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
                               PowerTabularInline)
 from django.contrib import messages
@@ -182,7 +188,26 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return actions
 
     def exportar(self, request, queryset):
-        return
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="inscricoes.csv"'
+
+
+        # saida = io.BytesIO()
+        # f = zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED)
+        writer = csv.writer(response)
+
+        writer.writerow(['Empresa', 'Seq', 'Título', 'Categoria'])
+        for query in queryset:
+            writer.writerow([query.empresa, query.seq, query.titulo, query.categoria])
+
+
+        # f.writestr('inscricoes.csv', writer)
+        # f.close()
+        #responseZip = HttpResponse(saida.getValue(), content_type='application/x-zip')
+        #responseZip['Content-Disposition'] = 'attachment; filename="exportação.zip"'
+
+        return response
+
     exportar.short_description = u'Exportação das Inscrições'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):

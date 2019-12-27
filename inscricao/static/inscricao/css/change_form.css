@@ -1,0 +1,38 @@
+
+#id_titulo, #id_parcerias, #id_produto{
+    width: 400px;
+}
+
+.form-row{
+    position: relative;
+    padding: 0 !important;
+    padding-top: 5px !important;
+}
+div.help{
+    position: absolute;
+    top: 10px;
+    left: 125px;
+    z-index: 2;
+}
+#tabs-4  div.help{
+    position: absolute;
+    top: 10px;
+    left: 215px;
+    z-index: 2;
+}
+
+div.form-row input{
+    z-index: 100;
+}
+form .aligned div.help{
+    margin-left: 0px !important;
+}
+.aligned label{
+    width: 110px !important;
+}
+#tabs-4  label{
+    width: 200px !important;
+}
+.field-OutrosFornecedor1 label, .field-OutrosFornecedor2 label, .field-OutrosFornecedor3 label, .field-OutrosFornecedor4 label{
+    width: 200px !important;
+}
