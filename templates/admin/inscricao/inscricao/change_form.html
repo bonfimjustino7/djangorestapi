@@ -9,6 +9,10 @@
     <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/change_form.css" %}" />
 {% endblock %}
 <div id="content-main">
+      <div id="mensagem" class="modal" >
+          <p>Thanks for clicking. That felt good.</p>
+          <a href="#" rel="modal:close">Close</a>
+      </div>
   {% block object-tools %}{{ block.super }}{% endblock %}
     <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
         <div>
@@ -122,7 +126,10 @@
 
         </div>
     </form>
-     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
         <script>
            $(document).ready(function () {
              var a = document.querySelector('a.deletelink')
@@ -137,6 +144,15 @@
                 $(this).css('display', 'none')
            })
 
+            // $('fieldset.module table thead tr').append('<th>Roteiro</th>')
+            // $('fieldset.module table tbody tr.form-row').append('<td class="btn-editar"><input type="button" class="" value="Editar"></td>')
+            // $('.delete').append('<a class="inline-deletelink" href="#">Remover</a>')
+            // $('.btn-editar a.inline-deletelink').css('display', 'none')
+            // $('.add-row td').prop('colspan', '6')
+            //
+            // $('.btn-editar input').click(function () {
+            //     $('#mensagem').modal()
+            // })
         </script>
 </div>
 {% endblock %}

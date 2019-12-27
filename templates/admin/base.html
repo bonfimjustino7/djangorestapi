@@ -88,6 +88,7 @@
 
         <br class="clear" />
     </div>
+
     <!-- END Content -->
 
     {% block footer %}<div id="footer"></div>{% endblock %}
@@ -96,6 +97,9 @@
 <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 <script>
     $('#id_nome').attr('style', "text-transform: uppercase;")
@@ -185,12 +189,13 @@
                 }
             })
         }
-        function habilarCampos(valor, campo){
+        function habilarCampos(valor, campo, classe){
             campo = campo.split('tipo')
             var arquivo = campo[0] + 'arquivo'
             var url = campo[0] + 'url'
-            console.log(arquivo)
-            console.log(url)
+            classe = classe.split('-')
+            classe = classe[0] +'-'+ classe[1]
+
             $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
                  $.each(res, function (id, value) {
                     if(valor == value.id){
@@ -210,6 +215,17 @@
                            $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', false)
                             console.log(value.arquivo)
                         }
+                        // if(value.roteiro == false){
+                        //     $(`table tbody tr#${classe} td.btn-editar input[type=button]`).css('display', 'none')
+                        //     console.log('Desabililar')
+                        //     console.log(`tr#${classe} td.btn-editar input`)
+                        // }
+                        // else{
+                        //      $(`table tbody tr#${classe} td.btn-editar input[type=button]`).css('display', 'inline-block')
+                        //     console.log('habiliar')
+                        //     console.log(`tr#${classe} .btn-editar input`)
+                        //
+                        // }
                     }
                  })
             })
@@ -228,6 +244,9 @@
         function contarSelects(){
             return document.querySelectorAll('.dynamic-material_set .field-tipo select').length
         }
+        // function contarLinhas(){
+        //     return document.querySelectorAll('table tbody tr.dynamic-material_set').length
+        // }
         $(document).ready(function () {
             carregar(contarSelects())
             $('#id_premiacao').change(function () {
@@ -235,16 +254,28 @@
             })
             $('.add-row').click(function () {
                carregarUm(contarSelects())
+                // $('.btn-editar a.inline-deletelink').css('display', 'none')
+                //  $('.btn-editar input').click(function () {
+                //     $('#mensagem').modal()
+                //  })
+                 $('.dynamic-material_set  td.field-tipo select').change(function (event) {
+                    var campo = event.target.id
+                    var classe = event.target.name
+                    habilarCampos($(this).val(), campo, classe)
+                })
             })
-            $('.dynamic-material_set select').change(function (event) {
+
+            $('.dynamic-material_set  td.field-tipo select').change(function (event) {
+                //console.log($(this).val())
+                console.log(event.target.id)
+                 var campo = event.target.id
+                // //document.querySelector('.dynamic-material_set .field-tipo select').className;
+                var classe = event.target.name
                 console.log($(this).val())
-                //console.log(event.target.id)
-                var campo = event.target.id
-                //document.querySelector('.dynamic-material_set .field-tipo select').className;
-
-                habilarCampos($(this).val(), campo)
+                 habilarCampos($(this).val(), campo, classe)
             })
-
+             var valor = $('.dynamic-material_set  td.field-tipo select').val()
+             habilarCampos(valor,)
         })
 
 </script>
