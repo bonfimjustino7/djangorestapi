@@ -125,7 +125,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premiacao', )
     readonly_fields = ('seq', )
     tab_info = (
-        (None, {'fields': (('premiacao', 'empresa', 'agencia',), ('categoria', 'formato',),
+        (None, {'fields': (('premiacao', 'empresa', 'agencia',), 'categoria',
                            'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio',)}),
     )
 
@@ -141,7 +141,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     tab_ficha_fornec = (
         (None,
          {'fields':
-              ('ProdutoraFilme','DiretorFilme','ProdutoraAudio','DiretorAudio',
+              ('ProdutoraFilme', 'DiretorFilme', 'ProdutoraAudio', 'DiretorAudio',
                'EstudioFotografia', 'Fotografo', 'EstudioIlustracao', 'Ilustrador', 'ManipulacaoDigital',
                'Finalizacao',), }),
         ('Outros Fornecedores',

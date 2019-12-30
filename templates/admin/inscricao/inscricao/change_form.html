@@ -10,7 +10,7 @@
 {% endblock %}
 <div id="content-main">
       <div id="mensagem" class="modal" >
-          <p>Thanks for clicking. That felt good.</p>
+          <p>Teste do Modal</p>
           <a href="#" rel="modal:close">Close</a>
       </div>
   {% block object-tools %}{{ block.super }}{% endblock %}
@@ -105,14 +105,12 @@
 
             <!-- Se for add-->
                 {% if not original %}
-                    <input type="submit" value="Salvar" name="_save" class="default" disabled>
+                    <input type="submit" value="Salvar" name="_continue" class="default" disabled>
             <!-- Se for change -->
                 {% else %}
                      <p class="deletelink-box">
                         <a href="" class="deletelink">Apagar</a>
                     </p>
-                   <input type="submit" value="Salvar" name="_save" class="default">
-
                 {% endif %}
                  <input type="submit" value="Salvar e adicionar outro(a)" name="_addanother">
                 <input type="submit" value="Salvar e continuar editando" name="_continue">

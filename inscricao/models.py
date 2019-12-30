@@ -58,7 +58,7 @@ class Empresa(models.Model):
     C2_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100, null = True, blank = True)
     C2_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60, null = True, blank = True)
     C2_Email = models.EmailField(u'E-Mail', blank=True, null=True)
-    C2_DDD = models.CharField('DDD', max_length=2, null = True, blank = True)
+    C2_DDD = models.CharField('DDD', max_length=2, null=True, blank=True)
     C2_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
 
     def __str__(self):
@@ -90,8 +90,8 @@ class EmpresaAgencia(models.Model):
 
 
 class EmpresaUsuario(models.Model):
-    empresa = models.ForeignKey(Empresa,on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     dtinclusao = models.DateTimeField(auto_now_add=True)
 
 
@@ -108,8 +108,6 @@ class Inscricao(models.Model):
     titulo = models.CharField(max_length=60)
     agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa', show_all=False)
     categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
-                                show_all=False, on_delete=models.PROTECT)
-    formato = ChainedForeignKey(Formato, chained_field='premiacao', chained_model_field='premiacao',
                                 show_all=False, on_delete=models.PROTECT)
     cliente = models.CharField(max_length=60, null=True, blank=True)
     parcerias = models.CharField(max_length=50, null=True, blank=True)
