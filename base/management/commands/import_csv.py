@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 except Premiacao.DoesNotExist:
                     print('Premiação não encontrada %s' % codigo)
                     return
-                if len(row['Categoria']) > 40:
+                if len(row['Categoria']) > 60:
                     print('Erro len: %s' % row['Categoria'])
                 grupo = row['NomeDeGrupo'][0] == 'V'
                 Categoria.objects.create(codigo=row['CodCategoria'], nome=row['Categoria'],
