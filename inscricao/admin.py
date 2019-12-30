@@ -1,3 +1,4 @@
+
 import csv
 import io
 import zipfile
@@ -187,24 +188,91 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             del actions['exportar']
         return actions
 
-    def exportar(self, request, queryset):
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="inscricoes.csv"'
-
-
-        # saida = io.BytesIO()
-        # f = zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED)
-        writer = csv.writer(response)
-
-        writer.writerow(['Empresa', 'Seq', 'Título', 'Categoria'])
+    def gravar_inscricoes(self, queryset, lista_empresas):
+        output = io.StringIO()  ## temp output file
+        writer = csv.writer(output, dialect='excel', delimiter=';')
+        # Não consiguir encontrar outra maneira de adicionar os campos na linha do csv
         for query in queryset:
-            writer.writerow([query.empresa, query.seq, query.titulo, query.categoria])
+            writer.writerow([
+                query.premiacao,
+                query.premio,
+                query.usuario,
+                query.empresa,
+                query.seq,
+                query.titulo,
+                query.agencia,
+                query.categoria,
+                query.formato,
+                query.cliente,
+                query.parcerias,
+                query.produto,
+                query.dtinicio,
+                query.isolada,
+                query.DiretorCriacao,
+                query.Planejamento,
+                query.Redacao,
+                query.DiretorArte,
+                query.ProducaoGrafica,
+                query.ProducaoRTVC,
+                query.TecnologiaDigital,
+                query.OutrosAgencia1,
+                query.OutrosAgencia2,
+                query.OutrosAgencia3,
+                query.OutrosAgencia4,
+                query.Midia,
+                query.Atendimento,
+                query.Aprovacao,
+                query.ProdutoraFilme,
+                query.DiretorFilme,
+                query.ProdutoraAudio,
+                query.DiretorAudio,
+                query.EstudioFotografia,
+                query.Fotografo,
+                query.EstudioIlustracao,
+                query.Ilustrador,
+                query.ManipulacaoDigital,
+                query.Finalizacao,
+                query.OutrosFornecedor1,
+                query.OutrosFornecedor2,
+                query.OutrosFornecedor3,
+                query.OutrosFornecedor4,
+                query.roteiro,
+            ])
+            if not query.empresa in lista_empresas:
+                lista_empresas.append(query.empresa)
+        return output
 
+    def gravar_materiais(self, queryset):
+        output = io.StringIO()  ## temp output file
+        writer = csv.writer(output, dialect='excel', delimiter=';')
+        writer.writerow(['Inscricao', 'Tipo', 'Arquivo', 'URL', 'IDSoundCloud'])
+        for query in queryset:
+            for mat in query.material_set.all():
+                writer.writerow([mat.inscricao_id, mat.tipo_id, mat.arquivo, mat.url, mat.idsoundcloud])
+        return output
 
-        # f.writestr('inscricoes.csv', writer)
-        # f.close()
-        #responseZip = HttpResponse(saida.getValue(), content_type='application/x-zip')
-        #responseZip['Content-Disposition'] = 'attachment; filename="exportação.zip"'
+    def gravar_empresas(self, queryset, lista_empresas):
+        output = io.StringIO()  ## temp output file
+        writer = csv.writer(output, dialect='excel', delimiter=';')
+        writer.writerow(['Nome'])
+        for query in lista_empresas:
+            writer.writerow([query])
+        return output
+
+    def exportar(self, request, queryset):
+
+        response = HttpResponse(content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=backup.csv.zip'
+        z = zipfile.ZipFile(response, 'w')  ## write zip to response
+        lista_empresas = []
+
+        # criando zip
+        inscricoes = self.gravar_inscricoes(queryset, lista_empresas)
+        z.writestr("inscricoes.csv", inscricoes.getvalue())
+        materiais = self.gravar_materiais(queryset)
+        z.writestr("materiais.csv", materiais.getvalue())
+        empresa = self.gravar_empresas(queryset, lista_empresas)
+        z.writestr("empresas.csv", empresa.getvalue())
 
         return response
 
