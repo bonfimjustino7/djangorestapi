@@ -29,6 +29,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def import_categoria(filename):
+        print('Import Categorias')
         with open('data/'+filename, mode='r', encoding='iso-8859-1') as csv_file:
             reader = csv.DictReader(csv_file, delimiter=';', quotechar='"')
             line_count = 0
@@ -40,6 +41,8 @@ class Command(BaseCommand):
                 except Premiacao.DoesNotExist:
                     print('Premiação não encontrada %s' % codigo)
                     return
+                if len(row['Categoria']) > 40:
+                    print('Erro len: %s' % row['Categoria'])
                 grupo = row['NomeDeGrupo'][0] == 'V'
                 Categoria.objects.create(codigo=row['CodCategoria'], nome=row['Categoria'],
                                          descricao=row['Descricao'],
