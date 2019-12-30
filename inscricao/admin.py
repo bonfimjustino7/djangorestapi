@@ -2,6 +2,7 @@
 import csv
 import io
 import zipfile
+import datetime
 
 from django.contrib import admin
 from django.http import HttpResponse
@@ -194,15 +195,17 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         # Não consiguir encontrar outra maneira de adicionar os campos na linha do csv
         for query in queryset:
             writer.writerow([
+                query.id,
                 query.premiacao,
                 query.premio,
                 query.usuario,
+                query.empresa.id,
                 query.empresa,
                 query.seq,
                 query.titulo,
+                query.agencia.id,
                 query.agencia,
                 query.categoria,
-                query.formato,
                 query.cliente,
                 query.parcerias,
                 query.produto,
@@ -236,7 +239,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 query.OutrosFornecedor2,
                 query.OutrosFornecedor3,
                 query.OutrosFornecedor4,
-                query.roteiro,
             ])
             if not query.empresa in lista_empresas:
                 lista_empresas.append(query.empresa)
@@ -262,7 +264,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def exportar(self, request, queryset):
 
         response = HttpResponse(content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=backup.csv.zip'
+        response['Content-Disposition'] = 'attachment; filename=backup %s.zip' %datetime.date.today()
         z = zipfile.ZipFile(response, 'w')  ## write zip to response
         lista_empresas = []
 
@@ -274,6 +276,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         empresa = self.gravar_empresas(queryset, lista_empresas)
         z.writestr("empresas.csv", empresa.getvalue())
 
+        for inscricao in queryset:
+            inscricao.dtexportacao = datetime.date.today()
         return response
 
     exportar.short_description = u'Exportação das Inscrições'
