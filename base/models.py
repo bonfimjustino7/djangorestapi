@@ -95,7 +95,7 @@ class Area(models.Model):
 # Categorias da Inscrição
 class Categoria(models.Model):
     codigo = models.CharField('Código', max_length=6)
-    nome = models.CharField(max_length=40)
+    nome = models.CharField(max_length=50)
     descricao = models.TextField('Texto explicativo')
     grupo = models.BooleanField(default=False)
     premiacao = models.ForeignKey(Premiacao)

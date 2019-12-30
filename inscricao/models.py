@@ -151,7 +151,8 @@ class Inscricao(models.Model):
                                          help_text=texto_outros_autores, null=True, blank=True)
     OutrosFornecedor4 = models.CharField(texto_outros_creditos, max_length=80,
                                          help_text=texto_outros_autores, null=True, blank=True)
-    roteiro = models.TextField('Roteiro de Rádio', null=True, blank=True)
+    dtinclusao = models.DateTimeField('Dt.Inclusão', auto_now_add=True, null=True, blank=True)
+    dtexportacao = models.DateField('Dt.Exportação', null=True, blank=True)
 
     def __str__(self):
         return u'%s' % self.seq
