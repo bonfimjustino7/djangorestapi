@@ -100,7 +100,8 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-
+<script type='text/javascript' src='//code.jquery.com/jquery-compat-git.js'></script>
+    <script type='text/javascript' src='//igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js'></script>
 <script>
     $('#id_nome').attr('style', "text-transform: uppercase;")
     $('#id_nome').on("change", function () {
@@ -144,32 +145,22 @@
             $('#id_C2_Telefone').val(remover($('#id_C2_Telefone').val()))
         });
 
-        $('#id_telefone').mask('00000-0000');
-        $('#id_telefone').blur(function(event){
-            if ($(this).val().length == 9){
-                 $(this).mask('0000-00009');
-            }else{
-                $(this).mask('00000-00009');
+       var behavior = function (val) {
+            return val.replace(/\D/g, '').length === 9 ? '00000-0000' : '0000-00009';
+        },
+        options = {
+            onKeyPress: function (val, e, field, options) {
+                field.mask(behavior.apply({}, arguments), options);
             }
-        });
+        };
+         $('#id_VP_Telefone').mask('0000-0000');
+        $('#id_telefone').mask(behavior, options);
+        $('#id_celular').mask(behavior, options);
 
-        $('#id_celular').mask('00000-0000');
-        $('#id_celular').blur(function(event){
-            if ($(this).val().length == 9){
-                 $(this).mask('0000-00009');
-            }else{
-                $(this).mask('00000-00009');
-            }
-        });
+        $('#id_C1_Telefone').mask(behavior, options);
+        $('#id_C2_Telefone').mask(behavior, options);
 
-        $('#id_VP_Telefone').mask('00000-0000');
-        $('#id_VP_Telefone').blur(function(event){
-            if ($(this).val().length == 9){
-                 $(this).mask('0000-00009');
-            }else{
-                $(this).mask('00000-00009');
-            }
-        });
+
 
         function carregar(cont){
              $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
