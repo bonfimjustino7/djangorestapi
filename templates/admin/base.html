@@ -5,7 +5,7 @@
 <head>
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" />
-{% block extrastyle %}{% endblock %}
+{% block extrastyle %}{{ block.super }}{% endblock %}
 {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
 {% block extrahead %}{% endblock %}
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
@@ -55,7 +55,7 @@
         </div>
         {% endif %}
         {% endblock %}
-        {% block nav-global %}{% endblock %}
+        {% block nav-global %}{{ block.super }}{% endblock %}
     </div>
     <!-- END Header -->
     {% block breadcrumbs %}

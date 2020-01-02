@@ -32,6 +32,7 @@ SITE_NAME = 'Premio Colunistas'
 
 INSTALLED_APPS = [
     'admin_tools',
+    'admin_tools.menu',
     'admin_tools.dashboard',
     'poweradmin',
     'django.contrib.admin',

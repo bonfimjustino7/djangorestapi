@@ -44,7 +44,6 @@ class TipoMaterialAdmin(PowerModelAdmin):
     fields = ('descricao', ('arquivo', 'url', 'roteiro'),)
 
 
-@admin.register(Formato)
 class FormatoAdmin(PowerModelAdmin):
     list_filter = ('premiacao',)
     list_display = ('nome', 'codigo', 'premiacao')
