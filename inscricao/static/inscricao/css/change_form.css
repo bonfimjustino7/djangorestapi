@@ -36,3 +36,7 @@ form .aligned div.help{
 .field-OutrosFornecedor1 label, .field-OutrosFornecedor2 label, .field-OutrosFornecedor3 label, .field-OutrosFornecedor4 label{
     width: 200px !important;
 }
+
+.timezonewarning {
+  display: none; !important;
+}
