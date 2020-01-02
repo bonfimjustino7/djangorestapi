@@ -73,6 +73,8 @@ class Empresa(models.Model):
         self.C1_Cargo = letra_maiuscula(self.C1_Cargo)
         self.C2_Nome = letra_maiuscula(self.C2_Nome)
         self.C2_Cargo = letra_maiuscula(self.C2_Cargo)
+        self.bairro = letra_maiuscula(self.bairro)
+        self.endereco = letra_maiuscula(self.endereco)
         super(Empresa, self).save(*args, **kwargs)
 
 

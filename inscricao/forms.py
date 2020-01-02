@@ -64,10 +64,48 @@ class RegistroEmpresaForm(forms.ModelForm):
 
         email = self.cleaned_data.get('email')
         vp_email = self.cleaned_data.get('VP_Email')
-        c1_email = self.cleaned_data.get('C1_Email')
-        c2_email = self.cleaned_data.get('C2_Email')
+        vp_nome = self.cleaned_data.get('VP_Nome')
 
-        
+        c1_nome = self.cleaned_data.get('C1_Nome')
+        c1_cargo = self.cleaned_data.get('C1_Cargo')
+        c1_email = self.cleaned_data.get('C1_Email')
+        c1_telefone = self.cleaned_data.get('C1_Telefone')
+
+        c2_email = self.cleaned_data.get('C2_Email')
+        c2_nome = self.cleaned_data.get('C2_Nome')
+        c2_cargo = self.cleaned_data.get('C2_Cargo')
+        c2_telefone = self.cleaned_data.get('C2_Telefone')
+
+        if c1_nome:
+            if not c1_cargo:
+                self._errors['C1_Cargo'] = self.error_class(['Preencha este campo.'])
+            if not c1_email:
+                self._errors['C1_Email'] = self.error_class(['Preencha este campo.'])
+            if not c1_telefone:
+                self._errors['C1_Telefone'] = self.error_class(['Preencha este campo.'])
+                self._errors['C1_DDD'] = self.error_class(['Preencha este campo.'])
+
+        if c2_nome:
+            if not c2_cargo:
+                self._errors['C2_Cargo'] = self.error_class(['Preencha este campo.'])
+            if not c2_email:
+                self._errors['C2_Email'] = self.error_class(['Preencha este campo.'])
+            if not c2_telefone:
+                self._errors['C2_Telefone'] = self.error_class(['Preencha este campo.'])
+                self._errors['C2_DDD'] = self.error_class(['Preencha este campo.'])
+
+        if vp_nome == c1_nome and not vp_nome == '':
+            self._errors['C1_Nome'] = self.error_class(['O nome do diretor VP deve ser diferente do Outros contatos da empresa'])
+
+        if vp_nome == c2_nome and not vp_nome == '':
+            self._errors['C2_Nome'] = self.error_class(
+                ['O nome do diretor VP deve ser diferente de Outros contatos da empresa.'])
+        if c1_nome == c2_nome and not c1_nome == '':
+            self._errors['C1_Nome'] = self.error_class(
+                ['Os nomes dos diretores não podem ser iguais.'])
+            self._errors['C2_Nome'] = self.error_class(
+                ['Os nomes dos diretores não podem ser iguais.'])
+
 
         if email == vp_email and email != '' and vp_email != '':
             self._errors['email'] = self.error_class(['E-mail do VP deve ser diferentes'])
@@ -89,6 +127,8 @@ class RegistroEmpresaForm(forms.ModelForm):
 
         if Empresa.objects.filter(nome=nome_empresa).exclude(pk=self.instance.pk):
             self._errors['nome'] = self.error_class(['Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.'])
+
+
 
         return self.cleaned_data
 

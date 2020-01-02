@@ -21,7 +21,6 @@ from base.views import *
 
 change_form_template = 'admin/myapp/extras/openstreetmap_change_form.html'
 
-
 class AgenciaInline(admin.TabularInline):
     model = EmpresaAgencia
     fields = ('agencia', 'uf', )
