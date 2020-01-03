@@ -153,7 +153,7 @@
                 field.mask(behavior.apply({}, arguments), options);
             }
         };
-         $('#id_VP_Telefone').mask('0000-0000');
+         $('#id_VP_Telefone').mask(behavior, options);
         $('#id_telefone').mask(behavior, options);
         $('#id_celular').mask(behavior, options);
 
@@ -232,15 +232,71 @@
                     })
             })
         }
+        function carregarEstados(cont) {
+
+                $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
+                    for (var i = 0; i < cont; i++) {
+                        var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
+                        var val_select = $(select).val()
+                        $(select).empty()
+                        $(select).append($('<option></option>').attr("value", '').text('------'))
+                        $.each(res, function (id, value) {
+                            if (val_select == value) {
+                                $(select).append($('<option value="' + value + '" selected="selected">' + value + '</option>'))
+                            } else {
+                                $(select).append($('<option value="' + value + '">' + value + '</option>'))
+                            }
+                        })
+                    }
+                }).fail(function () {
+                    console.log('erro')
+                    limparEstados(contarAgencias())
+                })
+
+        }
+        function limparEstados(cont) {
+            if(!$('#id_regional').val()){
+                for (var i = 0; i < cont; i++) {
+                    var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
+                    $(select).empty()
+                    $(select).append($('<option></option>').attr("value", '').text('------'))
+                }
+            }
+        }
+        function carregarEstado(cont) {
+            $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
+
+                    var select = document.getElementById(`id_empresaagencia_set-${cont-1}-uf`)
+                    var val_select = $(select).val()
+                    $(select).empty()
+                    $(select).append($('<option></option>').attr("value", '').text('------'))
+                    $.each(res, function (id, value) {
+                        if(val_select == value){
+                            $(select).append($('<option value="'+value+'" selected="selected">'+ value+'</option>'))
+                        }
+                        else{
+                            $(select).append($('<option value="'+value+'">'+ value+'</option>'))
+                        }
+                    })
+
+            })
+        }
         function contarSelects(){
             return document.querySelectorAll('.dynamic-material_set .field-tipo select').length
         }
         // function contarLinhas(){
         //     return document.querySelectorAll('table tbody tr.dynamic-material_set').length
         // }
+        function contarAgencias(){
+            return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
+        }
         $(document).ready(function () {
             carregar(contarSelects())
+            limparEstados(contarAgencias())
+            carregarEstados(contarAgencias())
+
             $('#id_premiacao').change(function () {
+                 limparEstados(contarAgencias())
                 carregar(contarSelects())
             })
             $('.add-row').click(function () {
@@ -254,6 +310,14 @@
                     var classe = event.target.name
                     habilarCampos($(this).val(), campo, classe)
                 })
+            })
+
+            $('#id_regional').change(function () {
+                carregarEstados(contarAgencias())
+            })
+            $('.add-row').click(function () {
+                carregarEstado(contarAgencias())
+                limparEstados(contarAgencias())
             })
 
             $('.dynamic-material_set  td.field-tipo select').change(function (event) {
