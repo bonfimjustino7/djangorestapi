@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import json
-from base.models import Premio, Premiacao
+from base.models import Premio, Premiacao, Regional
 
 
 def tipo_materiais(request, id):
@@ -18,3 +18,9 @@ def tipo_materiais(request, id):
            # 'roteiro': reg[4]
         })
     return HttpResponse(json.dumps(result), content_type='application/json')
+
+def filtrar_estados(request, id):
+    regional = Regional.objects.get(id=id)
+    estados = regional.estados.split(',')
+    estados = [estado.strip(' ') for estado in estados]
+    return HttpResponse(json.dumps(estados), content_type='application/json')
