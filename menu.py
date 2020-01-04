@@ -32,7 +32,7 @@ class CustomMenu(Menu):
             items.Bookmarks(u'Favoritos'),
             CustomAppList(
                 u'Inscrição',
-                models=('inscricao.models.*', )
+                models=('inscricao.models.Inscricao', 'inscricao.models.Empresa',)
             ),
             CustomAppList(
                 u'Adminstração',
