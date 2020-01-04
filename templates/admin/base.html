@@ -12,8 +12,21 @@
 
 </head>
 <style>
-
-
+     .related-widget-wrapper-link {
+            display: none !important;
+     }
+     .form-row{
+         border-bottom: none !important;
+     }
+    .vForeignKeyRawIdAdminField, .inline-group .tabular td.original p {
+        display: none;
+    }
+    .inline-group .tabular tr.has_original td {
+        padding-top: 1em !important;
+    }
+   .help{
+       padding-left: 1px !important;
+   }
 </style>
 {% load i18n %}
 
@@ -98,10 +111,10 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <script type='text/javascript' src='//code.jquery.com/jquery-compat-git.js'></script>
-    <script type='text/javascript' src='//igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js'></script>
+<script type='text/javascript' src='//igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js'></script>
 <script>
     $('#id_nome').attr('style', "text-transform: uppercase;")
     $('#id_nome').on("change", function () {

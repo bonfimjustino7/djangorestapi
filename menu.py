@@ -41,3 +41,4 @@ class CustomMenu(Menu):
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences', ),
             ),
         ]
+
