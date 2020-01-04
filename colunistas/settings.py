@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'admin_tools',
     'admin_tools.menu',
     'admin_tools.dashboard',
+    'admin_tools.menu',
     'poweradmin',
     'django.contrib.admin',
     'django.contrib.auth',
