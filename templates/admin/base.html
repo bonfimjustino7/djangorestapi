@@ -255,14 +255,14 @@
                         $(select).append($('<option></option>').attr("value", '').text('------'))
                         $.each(res, function (id, value) {
                             if (val_select == value) {
-                                $(select).append($('<option value="' + value + '" selected="selected">' + value + '</option>'))
+                                $(select).append($('<option value="'+ value +'" selected="selected">'+ value +'</option>'))
                             } else {
-                                $(select).append($('<option value="' + value + '">' + value + '</option>'))
+                                $(select).append($('<option value="'+ value +'">'+ value +'</option>'))
                             }
                         })
                     }
                 }).fail(function () {
-                    console.log('erro')
+                    //console.log('erro')
                     limparEstados(contarAgencias())
                 })
 
