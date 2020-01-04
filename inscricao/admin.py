@@ -1,18 +1,16 @@
-
 import csv
 import io
 import zipfile
 import datetime
 
+from util.stdlib import upper_first
 from django.contrib import admin
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from localflavor.md import forms
 from tabbed_admin import TabbedModelAdmin
 
 from base.models import *
 from inscricao.models import *
-from poweradmin.actions import export_as_csv_action
+
 from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
                               PowerTabularInline)
 from django.contrib import messages
@@ -21,9 +19,10 @@ from base.views import *
 
 change_form_template = 'admin/myapp/extras/openstreetmap_change_form.html'
 
+
 class AgenciaInline(admin.TabularInline):
     model = EmpresaAgencia
-    fields = ('agencia', 'uf', )
+    fields = ('agencia', 'uf',)
     extra = 0
 
 
@@ -35,7 +34,7 @@ class EmpresaAgenciaAdmin(admin.ModelAdmin):
         qs = super(EmpresaAgenciaAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
             usuario = Usuario.objects.filter(user=request.user)
-            empresas = list(EmpresaUsuario.objects.filter(usuario = usuario).values_list('empresa_id', flat=True))
+            empresas = list(EmpresaUsuario.objects.filter(usuario=usuario).values_list('empresa_id', flat=True))
             qs = qs.filter(empresa__in=empresas)
 
         return qs
@@ -60,7 +59,7 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Empresa)
 class EmpresaAdmin(PowerModelAdmin):
-    list_filter = ('regional','area')
+    list_filter = ('regional', 'area')
     list_display = ('nome', 'uf', 'cidade', 'area')
 
     def get_buttons(self, request, object_id):
@@ -70,13 +69,17 @@ class EmpresaAdmin(PowerModelAdmin):
 
     fieldsets = (
         ('EMPRESA RESPONSÁVEL PELA INSCRIÇÃO', {
-           'fields': ('regional', ('nome', 'area'), ('cep', 'cidade', 'uf'), ('endereco', 'bairro'), ('ddd', 'telefone', 'celular'),('homepage', 'email'))
+            'fields': ('regional', ('nome', 'area'), ('cep', 'cidade', 'uf'), ('endereco', 'bairro'),
+                       ('ddd', 'telefone', 'celular'), ('homepage', 'email'))
         }),
         ('VP OU DIRETOR RESPONSÁVEL PELAS INSCRIÇÕES', {
             'fields': (('VP_Nome', 'VP_Cargo'), ('VP_Email', 'VP_DDD', 'VP_Telefone'))
         }),
-        ('OUTROS CONTATOS NA EMPRESA (Profissionais que também receberão as comunicações da Abracomp sobre a premiação.)', {
-            'fields': (('C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone'), ('C2_Nome', 'C2_Cargo','C2_Email', 'C2_DDD', 'C2_Telefone',))
+        (
+        'OUTROS CONTATOS NA EMPRESA (Profissionais que também receberão as comunicações da Abracomp sobre a premiação.)',
+        {
+            'fields': (('C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone'),
+                       ('C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',))
         }),
     )
     inlines = [AgenciaInline]
@@ -98,7 +101,7 @@ class EmpresaAdmin(PowerModelAdmin):
         qs = super(EmpresaAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
             usuario = Usuario.objects.filter(user=request.user)
-            empresas = list(EmpresaUsuario.objects.filter(usuario = usuario).values_list('empresa_id', flat=True))
+            empresas = list(EmpresaUsuario.objects.filter(usuario=usuario).values_list('empresa_id', flat=True))
             qs = qs.filter(pk__in=empresas)
 
         return qs
@@ -116,14 +119,14 @@ class EmpresaAdmin(PowerModelAdmin):
 
 class MaterialInline(admin.TabularInline):
     model = Material
-    fields = ('tipo', 'arquivo', 'url', )
+    fields = ('tipo', 'arquivo', 'url',)
     extra = 1
 
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
-    list_filter = ('premiacao', )
-    readonly_fields = ('seq', )
+    list_filter = ('premiacao',)
+    readonly_fields = ('seq',)
     tab_info = (
         (None, {'fields': (('premiacao', 'empresa', 'agencia',), 'categoria',
                            'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio',)}),
@@ -134,7 +137,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     )
 
     tab_ficha_agencia = (
-        (None, {'fields': ('DiretorCriacao','Planejamento', 'Redacao', 'DiretorArte',
+        (None, {'fields': ('DiretorCriacao', 'Planejamento', 'Redacao', 'DiretorArte',
                            'ProducaoGrafica', 'ProducaoRTVC')}),
     )
 
@@ -159,7 +162,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     tab_info = [
         ('Informações Gerais', tab_info)
     ]
-    actions = ('exportar', )
+    actions = ('exportar',)
 
     change_form_template = 'admin/inscricao/inscricao/change_form.html'
 
@@ -172,7 +175,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         qs = super(InscricaoAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
             usuario = Usuario.objects.filter(user=request.user)
-            qs = qs.filter(usuario=usuario, premio__status__in=('A','E'))
+            qs = qs.filter(usuario=usuario, premio__status__in=('A', 'E'))
 
         return qs
 
@@ -189,22 +192,20 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return actions
 
     def gravar_inscricoes(self, queryset, lista_empresas):
-        output = io.StringIO()  ## temp output file
+        output = io.StringIO()  # temp output file
         writer = csv.writer(output, dialect='excel', delimiter=';')
-        # Não consiguir encontrar outra maneira de adicionar os campos na linha do csv
         for query in queryset:
             writer.writerow([
                 query.id,
                 query.premiacao,
                 query.premio,
-                query.usuario,
                 query.empresa.id,
                 query.empresa,
                 query.seq,
                 query.titulo,
                 query.agencia.id,
                 query.agencia,
-                query.categoria,
+                query.categoria.codigo,
                 query.cliente,
                 query.parcerias,
                 query.produto,
@@ -239,12 +240,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 query.OutrosFornecedor3,
                 query.OutrosFornecedor4,
             ])
-            if not query.empresa in lista_empresas:
+            if query.empresa not in lista_empresas:
                 lista_empresas.append(query.empresa)
         return output
 
     def gravar_materiais(self, queryset):
-        output = io.StringIO()  ## temp output file
+        output = io.StringIO()
         writer = csv.writer(output, dialect='excel', delimiter=';')
         writer.writerow(['Inscricao', 'Tipo', 'Arquivo', 'URL', 'IDSoundCloud'])
         for query in queryset:
@@ -253,7 +254,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return output
 
     def gravar_empresas(self, queryset, lista_empresas):
-        output = io.StringIO()  ## temp output file
+        output = io.StringIO()
         writer = csv.writer(output, dialect='excel', delimiter=';')
         writer.writerow(['Nome'])
         for query in lista_empresas:
@@ -263,7 +264,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def exportar(self, request, queryset):
 
         response = HttpResponse(content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=backup %s.zip' %datetime.date.today()
+        response['Content-Disposition'] = 'attachment; filename=backup %s.zip' % datetime.date.today()
         z = zipfile.ZipFile(response, 'w')  ## write zip to response
         lista_empresas = []
 
@@ -312,34 +313,25 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def letra_maiuscula(name):
-        items = []
-        if name:
-            for item in name.lower().split():
-                if len(item) > 2:
-                    item = item.capitalize()
-
-                items.append(item)
-            return ' '.join(items)
-
     def save_model(self, request, obj, form, change):
-        obj.titulo = letra_maiuscula(obj.titulo)
-        obj.parcerias = letra_maiuscula(obj.parcerias)
-        obj.cliente = letra_maiuscula(obj.cliente)
-        obj.produto = letra_maiuscula(obj.produto)
+        obj.titulo = upper_first(obj.titulo)
+        obj.parcerias = upper_first(obj.parcerias)
+        obj.cliente = upper_first(obj.cliente)
+        obj.produto = upper_first(obj.produto)
 
-        if ',' in obj.titulo.lower() or '/' in obj.titulo.lower():
+        if ',' in obj.titulo or '/' in obj.titulo:
             messages.warning(request, 'Não coloque os títulos de cada peça. Use um título que identifique o conjunto')
 
-        try:
-            if 'Institucional' in obj.produto and not obj.categoria_id == 71:
-                messages.warning(request, "Esta inscrição não está na categoria Institucional. Indique um produto mais preciso ou deixe o campo em branco")
-        except Exception:
-            None
+        if obj.produto:
+            if 'institucional' in obj.produto.lower() and 'institucional' not in obj.categoria.nome.lower():
+                messages.warning(request,
+                                 "Esta inscrição não está na categoria Institucional. " +
+                                 "Indique um produto mais preciso ou deixe o campo em branco")
 
-        if obj.cliente == obj.produto and obj.cliente is not None or obj.produto is not None:
+        if obj.cliente == obj.produto and obj.cliente:
             obj.produto = ''
-            messages.warning(request, "Se o campo Produto tiver a mesma informação do campo Cliente não há necessidade de preenchimento!")
+            messages.info(request,
+                          "Se o campo Produto tiver a mesma informação do campo Cliente não há necessidade de preenchimento!")
 
         if not change:
             regional = Regional.objects.get(estados__contains=obj.agencia.uf)

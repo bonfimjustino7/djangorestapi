@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 This file was generated with the custommenu management command, it contains
 the classes for the admin menu, you can customize this class as you want.
@@ -16,9 +15,8 @@ from admin_tools.menu.items import MenuItem
 class CustomAppList(items.AppList):
 
     def init_with_context(self, context):
-
-        items = self._visible_models(context['request'])
-        for model, perms in items:
+        models = self._visible_models(context['request'])
+        for model, perms in models:
             if not perms['change']:
                 continue
             item = MenuItem(title=capfirst(model._meta.verbose_name_plural), url=self._get_admin_change_url(model, context))

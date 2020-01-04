@@ -20,11 +20,12 @@ def nvl(objeto,alternativa):
 def upper_first(value):
     # Retorna a string capitalizada, considerando preposições em Português
     result = ''
-    for sentence in value.split(" "):
-        if sentence in ['de', 'da', 'do', 'para', 'e', 'entre']:
-            result = result + " " + sentence
-        else:
-            result = result + " " + capfirst(sentence)
+    if value:
+        for sentence in value.split(" "):
+            if sentence in ['de', 'da', 'do', 'para', 'e', 'entre']:
+                result = result + " " + sentence
+            else:
+                result = result + " " + capfirst(sentence)
     return result.lstrip()
 
 
@@ -34,6 +35,7 @@ def get_object_from_path(request, model):
     if object_id.isdigit():
         return model.objects.get(pk=object_id)
     raise model.DoesNotExist()
+
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')

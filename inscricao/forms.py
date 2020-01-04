@@ -6,6 +6,7 @@ from localflavor.br.forms import BRCNPJField
 from base.forms import CAMPO_TEXTO_PADRAO
 from .models import *
 
+
 class RegistroEmpresaForm(forms.ModelForm):
     regional = forms.ModelChoiceField(queryset=Regional.objects.all(), help_text='Consulte o regulamento para saber em qual delas a sua região se enquadra.', required=True)
     nome = forms.CharField(label='Nome da Empresa', max_length=30, help_text='Use o nome de fantasia simplificado da empresa, sem "Ltda", "Propaganda", "Comunicação", "Criação", "Promoções", etc.')
@@ -18,10 +19,10 @@ class RegistroEmpresaForm(forms.ModelForm):
     telefone = forms.CharField(label='Telefone 1', max_length=9, required=False)
     celular = forms.CharField(label='Telefone 2',max_length=9, required=False)
     email = forms.EmailField(required=False, help_text='Apenas se a empresa tiver um email central')
-    homepage = forms.URLField(required=False, help_text=' Digite o endereço do site da empresa. Não precisa digitar "http://"')
+    homepage = forms.URLField(required=False, help_text=' Digite o endereço (URL) do site da empresa')
     VP_Email = forms.EmailField(required=True)
 
-    VP_Telefone = forms.CharField(label='Telefone',max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
+    VP_Telefone = forms.CharField(label='Telefone', max_length=9, required=True, widget=forms.TextInput(attrs={'data-mask':"00000-0000"}))
     C1_Nome = forms.CharField(label='VP ou Diretor da Empresa', required=False)
     C1_Cargo = forms.CharField(label='Cargo VP ou Diretor', max_length=60, required=False)
     C1_Email = forms.EmailField(label='Email', required=False)
@@ -49,17 +50,19 @@ class RegistroEmpresaForm(forms.ModelForm):
         email = self.cleaned_data['cep'].replace('-','')
         return email
 
-
     def clean_nome(self):
         nome = self.cleaned_data['nome'].upper()
         return nome
 
+#    def clean_homepage(self):
+#        texto = self.cleaned_data['homepage'].replace('http://', '').replace('https://', '')
+#        return texto
 
     def clean(self):
 
         try:
             nome_empresa = self.cleaned_data.get('nome').strip().upper()
-        except (Exception):
+        except:
             nome_empresa = ''
 
         email = self.cleaned_data.get('email')
@@ -106,15 +109,14 @@ class RegistroEmpresaForm(forms.ModelForm):
             self._errors['C2_Nome'] = self.error_class(
                 ['Os nomes dos diretores não podem ser iguais.'])
 
-
         if email == vp_email and email != '' and vp_email != '':
-            self._errors['email'] = self.error_class(['E-mail do VP deve ser diferentes'])
+            self._errors['email'] = self.error_class(['E-mail do VP e da Empresa devem ser diferentes'])
 
         if email == c1_email and email != '' and c1_email != '':
-            self._errors['email'] = self.error_class(['E-mail do Contato 1 devem ser diferentes'])
+            self._errors['email'] = self.error_class(['E-mail dos Contatos deve ser diferente'])
 
         if email == c2_email and email != '' and c2_email != '':
-            self._errors['email'] = self.error_class(['E-mail do Contato 2 devem ser diferentes'])
+            self._errors['email'] = self.error_class(['E-mail dos Contatos deve ser diferente'])
 
         if vp_email == c1_email and vp_email != '' and c1_email != '':
             self._errors['VP_Email'] = self.error_class(['E-mails do VP e do Contato 1 devem ser diferentes'])
@@ -128,9 +130,8 @@ class RegistroEmpresaForm(forms.ModelForm):
         if Empresa.objects.filter(nome=nome_empresa).exclude(pk=self.instance.pk):
             self._errors['nome'] = self.error_class(['Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.'])
 
-
-
         return self.cleaned_data
+
 
 class RegistroEmpresaAgenciaForm(forms.ModelForm):
     class Meta:
@@ -149,6 +150,6 @@ class RegistroRegionalForm(forms.ModelForm):
 
 
 class DadosFiscaisEmpresaForm(forms.Form):
-    cnpj = BRCNPJField(label = 'CNPJ', widget = CAMPO_TEXTO_PADRAO)
-    inscricao_estadual = forms.CharField(label = 'Inscrição Estadual', required = False, widget = CAMPO_TEXTO_PADRAO)
-    inscricao_municipal = forms.CharField(label = 'Inscrição Municipal', required = False, widget = CAMPO_TEXTO_PADRAO)
+    cnpj = BRCNPJField(label='CNPJ', widget=CAMPO_TEXTO_PADRAO)
+    inscricao_estadual = forms.CharField(label='Inscrição Estadual', required=False, widget=CAMPO_TEXTO_PADRAO)
+    inscricao_municipal = forms.CharField(label='Inscrição Municipal', required=False, widget=CAMPO_TEXTO_PADRAO)

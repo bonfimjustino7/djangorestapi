@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from localflavor.br.forms import BRCNPJField
 from django.contrib.auth.models import User
 from base.models import *
+from util.stdlib import upper_first
 from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
 from django.db.models.signals import m2m_changed, post_save
 
@@ -17,17 +18,6 @@ class Usuario(models.Model):
 
     def __str__(self):
         return u'%s (%s)' % (self.nome_completo, self.user)
-
-
-def letra_maiuscula(name):
-    items = []
-    if name:
-        for item in name.lower().split():
-            if len(item) > 2:
-                item = item.capitalize()
-
-            items.append(item)
-        return ' '.join(items)
 
 
 class Empresa(models.Model):
@@ -67,14 +57,14 @@ class Empresa(models.Model):
     def save(self, request=False, *args, **kwargs):
         self.nome = self.nome.upper()
         self.cep = self.cep.replace('-','')
-        self.VP_Nome = letra_maiuscula(self.VP_Nome)
-        self.VP_Cargo = letra_maiuscula(self.VP_Cargo)
-        self.C1_Nome = letra_maiuscula(self.C1_Nome)
-        self.C1_Cargo = letra_maiuscula(self.C1_Cargo)
-        self.C2_Nome = letra_maiuscula(self.C2_Nome)
-        self.C2_Cargo = letra_maiuscula(self.C2_Cargo)
-        self.bairro = letra_maiuscula(self.bairro)
-        self.endereco = letra_maiuscula(self.endereco)
+        self.VP_Nome = upper_first(self.VP_Nome)
+        self.VP_Cargo = upper_first(self.VP_Cargo)
+        self.C1_Nome = upper_first(self.C1_Nome)
+        self.C1_Cargo = upper_first(self.C1_Cargo)
+        self.C2_Nome = upper_first(self.C2_Nome)
+        self.C2_Cargo = upper_first(self.C2_Cargo)
+        self.bairro = upper_first(self.bairro)
+        self.endereco = upper_first(self.endereco)
         super(Empresa, self).save(*args, **kwargs)
 
 
