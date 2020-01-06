@@ -339,3 +339,36 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             empresa = EmpresaUsuario.objects.get(empresa=request.POST['empresa'])
             obj.usuario = Usuario.objects.get(id=empresa.usuario_id)
         obj.save()
+
+    def save_formset(self, request, form, formset, change):
+        warn1 = False
+        warn2 = False
+        if 'INT1' in form.cleaned_data['categoria'].codigo:
+            cont = 0
+            for mat in formset.cleaned_data:
+                if mat:
+                    if mat['tipo'].id == 10 or mat['tipo'].id == 9:
+                        cont += 1
+            if cont < 1:
+                messages.warning(request,
+                                 "Nesta Área e nesta Categoria é obrigatório apresentar uma apresentação (como PPT) ou um videocase. Veja no site em ‘Como preparar os seus materiais'.")
+                warn1 = True
+
+        if form.cleaned_data['premiacao'].codigo == 'FIL':
+            cont = 0
+            for mat in formset.cleaned_data:
+                if mat:
+                    if mat['tipo'].id == 10 or mat['tipo'].id == 9:
+                        cont += 1
+            if cont >= 1:
+                messages.warning(request,
+                                 "Nesta Área e nesta Categoria, não basta apresentar o videocase ou a apresentação. Indique a quantidade e o tipo de peça referente ao trabalho")
+                warn2 = True
+
+        if not warn1 and not warn2:
+            form.instance.status = 'V'
+        else:
+            form.instance.status = 'A'
+
+        form.save()
+        formset.save()
