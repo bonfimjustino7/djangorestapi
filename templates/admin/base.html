@@ -27,6 +27,13 @@
    .help{
        padding-left: 1px !important;
    }
+   div.breadcrumbs {
+       clear: both;
+       margin-top: 32px;
+   }
+    div.branding img.logo{
+        padding-top: 5px !important;
+    }
 </style>
 {% load i18n %}
 
@@ -41,7 +48,7 @@
     <div id="header" style="height: 60px; padding-bottom: 15px; padding-left: 50px; background-color: #8cc3de; color: #5a5a48">
         <div id="branding" >
             <!--{% block branding %}{% endblock %} -->
-            <img class="logo" src="{% static 'base/img/logo.png' %}" alt="" height="70" width="120">
+            <img class="logo" src="{% static 'base/img/logo.png' %}" alt="" style="padding-top:5px" height="70" width="120">
         </div>
         {% block usertools %}
         {% if has_permission %}
@@ -108,6 +115,8 @@
 </div>
 <!-- END Container -->
 <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
