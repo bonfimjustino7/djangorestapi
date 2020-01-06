@@ -90,6 +90,11 @@ class EmpresaUsuario(models.Model):
 texto_outros_autores = 'Utilize o formato: "Função, Fulano, Beltrano e Sicrano'
 texto_outros_creditos = 'Outros Créditos de Fornecedores'
 
+STATUS_INSCRICAO = (
+    ('A', 'Em edição'),
+    ('V', 'Validada'),
+)
+
 
 class Inscricao(models.Model):
     premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT)
@@ -145,6 +150,7 @@ class Inscricao(models.Model):
                                          help_text=texto_outros_autores, null=True, blank=True)
     dtinclusao = models.DateTimeField('Dt.Inclusão', auto_now_add=True, null=True, blank=True)
     dtexportacao = models.DateField('Dt.Exportação', null=True, blank=True)
+    status = models.CharField(max_length=1, default='A', choices=STATUS_INSCRICAO)
 
     def __str__(self):
         return u'%s' % self.seq
