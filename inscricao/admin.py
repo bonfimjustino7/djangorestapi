@@ -187,6 +187,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     def get_actions(self, request):
         actions = super(InscricaoAdmin, self).get_actions(request)
+        del actions['export_as_csv']
         if not request.user.is_superuser:
             del actions['exportar']
         return actions
