@@ -116,6 +116,19 @@ class EmpresaAdmin(PowerModelAdmin):
             usuario = Usuario.objects.get(user=request.user)
             EmpresaUsuario.objects.get_or_create(usuario=usuario, empresa=obj)
 
+    def save_formset(self, request, form, formset, change):
+        duplicidade = 0
+        instances = formset.save(commit=False)
+        existentes = formset.cleaned_data
+        for instance in instances:
+            for exist in existentes:
+                if instance.agencia == exist['agencia']:
+                    duplicidade += 1
+            if duplicidade < 2:
+                instance.save()
+                formset.save_m2m()
+            else:
+                messages.warning(request, 'Existem Agencias com mesmo nome, renomei-as para salvar!')
 
 class MaterialInline(admin.TabularInline):
     model = Material
