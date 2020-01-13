@@ -130,6 +130,9 @@ class EmpresaAdmin(PowerModelAdmin):
             else:
                 messages.warning(request, 'Existem Agencias com mesmo nome, renomei-as para salvar!')
 
+        for obj in formset.deleted_objects:
+            obj.delete()
+
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url',)
