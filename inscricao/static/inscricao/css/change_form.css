@@ -40,3 +40,16 @@ form .aligned div.help{
 .timezonewarning {
   display: none; !important;
 }
+
+#id_DiretorCriacao{
+    width: 660px !important;
+}
+#id_Planejamento, #id_ProducaoGrafica, #id_ProducaoRTVC, #id_OutrosFornecedor1, #id_OutrosFornecedor2, #id_OutrosFornecedor3, #id_OutrosFornecedor4{
+    width: 550px !important;
+}
+#id_Redacao, #id_DiretorArte{
+    width: 920px !important;
+}
+#id_ProdutoraFilme, #id_DiretorFilme, #id_ProdutoraAudio, #id_DiretorAudio, #id_EstudioFotografia, #id_Fotografo, #id_EstudioIlustracao, #id_Ilustrador, #id_ManipulacaoDigital, #id_Finalizacao{
+    width: 370px !important;
+}
