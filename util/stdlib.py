@@ -21,7 +21,7 @@ def upper_first(value):
     # Retorna a string capitalizada, considerando preposições em Português
     result = ''
     if value:
-        for sentence in value.split(" "):
+        for sentence in value.lower().split(" "):
             if sentence in ['de', 'da', 'do', 'para', 'e', 'entre']:
                 result = result + " " + sentence
             else:
