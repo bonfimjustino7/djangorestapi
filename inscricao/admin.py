@@ -331,6 +331,13 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def message_user(self, request, message, level=messages.INFO, extra_tags='',
+                     fail_silently=False):
+        nova_msg = message.split(' ')[3]
+        nova_msg = mark_safe('Inscrição "<a '+ nova_msg + ' alterada com sucesso.')
+        messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
+
+
     def save_model(self, request, obj, form, change):
         obj.titulo = upper_first(obj.titulo)
         obj.parcerias = upper_first(obj.parcerias)

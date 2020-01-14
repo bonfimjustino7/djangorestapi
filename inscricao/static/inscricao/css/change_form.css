@@ -53,3 +53,8 @@ form .aligned div.help{
 #id_ProdutoraFilme, #id_DiretorFilme, #id_ProdutoraAudio, #id_DiretorAudio, #id_EstudioFotografia, #id_Fotografo, #id_EstudioIlustracao, #id_Ilustrador, #id_ManipulacaoDigital, #id_Finalizacao{
     width: 370px !important;
 }
+
+div.field-agencia label.inline{
+    width: 70px !important;
+    padding-right: 0 !important;
+}
