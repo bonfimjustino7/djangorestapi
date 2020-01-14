@@ -12,7 +12,6 @@ class Command(BaseCommand):
         for registro in Categoria.objects.all():
             codigo = registro.codigo[0:3]
             if not registro.premiacao:
-                print(codigo)
                 registro.premiacao = Premiacao.objects.get(codigo=codigo)
                 registro.save()
 

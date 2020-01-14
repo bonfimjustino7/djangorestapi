@@ -15,9 +15,9 @@ def tipo_materiais(request, id):
             'text': reg[1],
             'arquivo': reg[2],
             'url': reg[3],
-           # 'roteiro': reg[4]
         })
     return HttpResponse(json.dumps(result), content_type='application/json')
+
 
 def filtrar_estados(request, id):
     regional = Regional.objects.get(id=id)

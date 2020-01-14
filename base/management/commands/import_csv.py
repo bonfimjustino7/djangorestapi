@@ -43,10 +43,9 @@ class Command(BaseCommand):
                     return
                 if len(row['Categoria']) > 60:
                     print('Erro len: %s' % row['Categoria'])
-                grupo = row['NomeDeGrupo'][0] == 'V'
                 Categoria.objects.create(codigo=row['CodCategoria'], nome=row['Categoria'],
                                          descricao=row['Descricao'],
-                                         premiacao=premiacao, grupo=grupo)
+                                         premiacao=premiacao)
             print('Linhas: %d' % line_count)
 
     def handle(self, *args, **options):

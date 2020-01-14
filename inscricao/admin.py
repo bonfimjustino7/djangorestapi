@@ -3,6 +3,7 @@ import io
 import zipfile
 import datetime
 
+from collections import Counter
 from util.stdlib import upper_first
 from django.contrib import admin
 from django.http import HttpResponse
@@ -197,9 +198,9 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     def get_list_display(self, request):
         if request.user.groups.filter(name='Agência'):
-            return 'seq', 'premiacao', 'titulo', 'categoria', 'cliente',
+            return 'titulo', 'seq', 'premiacao', 'categoria', 'cliente', 'status'
         else:
-            return 'empresa', 'seq', 'titulo', 'categoria', 'cliente',
+            return 'empresa', 'seq', 'titulo', 'categoria', 'cliente', 'status'
 
     def get_actions(self, request):
         actions = super(InscricaoAdmin, self).get_actions(request)
@@ -360,24 +361,30 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def save_formset(self, request, form, formset, change):
         warn1 = False
         warn2 = False
-        if 'INT1' in form.cleaned_data['categoria'].codigo:
-            cont = 0
-            for mat in formset.cleaned_data:
-                if mat:
-                    if mat['tipo'].id == 10 or mat['tipo'].id == 9:
-                        cont += 1
-            if cont < 1:
+
+        # quantidade de materiais por tipo
+        totais = Counter()
+        for mat in formset.cleaned_data:
+            if mat:
+                totais[ mat['tipo'].descricao ] += 1
+
+        # Regra 1
+        regra1 = False
+        codigo = form.cleaned_data['categoria'].codigo
+        for categoria in ('BRD10', 'MID10', 'RPB10', 'DES10', 'PRM10', 'PRM20', 'PRM30'):
+            if categoria in codigo:
+                regra1 = True
+                break
+
+        # Se for um dos prefixos acima, deve haver pelo menos uma apresentação ou videocase
+        if regra1:
+            if totais['Apresentação'] + totais['Video Case'] < 1:
                 messages.warning(request,
                                  "Nesta Área e nesta Categoria é obrigatório apresentar uma apresentação (como PPT) ou um videocase. Veja no site em ‘Como preparar os seus materiais'.")
                 warn1 = True
 
         if form.cleaned_data['premiacao'].codigo == 'FIL':
-            cont = 0
-            for mat in formset.cleaned_data:
-                if mat:
-                    if mat['tipo'].id == 10 or mat['tipo'].id == 9:
-                        cont += 1
-            if cont >= 1:
+            if totais['10'] + totais['9'] >= 1:
                 messages.warning(request,
                                  "Nesta Área e nesta Categoria, não basta apresentar o videocase ou a apresentação. Indique a quantidade e o tipo de peça referente ao trabalho")
                 warn2 = True
@@ -386,6 +393,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             form.instance.status = 'V'
         else:
             form.instance.status = 'A'
-
         form.save()
         formset.save()
+

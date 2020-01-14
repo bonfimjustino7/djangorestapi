@@ -97,8 +97,7 @@ class Categoria(models.Model):
     codigo = models.CharField('Código', max_length=6)
     nome = models.CharField(max_length=100)
     descricao = models.TextField('Texto explicativo')
-    grupo = models.BooleanField(default=False)
-    premiacao = models.ForeignKey(Premiacao)
+    premiacao = models.ForeignKey(Premiacao, verbose_name='Premiação')
 
     class Meta:
         ordering = ('codigo', )

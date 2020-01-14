@@ -15,7 +15,7 @@ class PremiacaoAdmin(admin.ModelAdmin):
 class CategoriaAdmin(PowerModelAdmin):
     list_filter = ('premiacao', )
     search_fields = ['codigo', 'nome']
-    list_display = ['codigo', 'nome', 'descricao', 'grupo']
+    list_display = ['codigo', 'nome', 'descricao', ]
     ordering = ['codigo']
 
 

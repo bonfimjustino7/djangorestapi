@@ -97,13 +97,14 @@ STATUS_INSCRICAO = (
 
 
 class Inscricao(models.Model):
-    premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT)
+    premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT, verbose_name='Premiação')
     premio = models.ForeignKey(Premio, on_delete=models.PROTECT)
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
     empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
     seq = models.IntegerField('Seq')
-    titulo = models.CharField(max_length=60)
-    agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa', show_all=False)
+    titulo = models.CharField('Título', max_length=60)
+    agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa',
+                                show_all=False, verbose_name='Agência')
     categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
                                 show_all=False, on_delete=models.PROTECT)
     cliente = models.CharField(max_length=60, null=True, blank=True)
