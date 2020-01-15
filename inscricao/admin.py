@@ -542,7 +542,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                     check = True
                     break
             if check:
-                messages.warning(request, 'Não pode ter url igual.')
+                messages.warning(request, 'Não pode ter urls iguais.')
 
         if not warn1 and not warn2:
             form.instance.status = 'V'
