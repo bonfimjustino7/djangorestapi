@@ -395,6 +395,141 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 messages.warning(request,
                                  "Nesta Área e nesta Categoria, não basta apresentar o videocase ou a apresentação. Indique a quantidade e o tipo de peça referente ao trabalho")
                 warn2 = True
+        # Regra 3
+        if 'INT1' in codigo:
+            if len(totais.keys()) < 2:
+                messages.warning(request, 'Deve haver pelo menos 2 tipos de materiais diferentes para esta categoria.')
+
+        # Regra 4
+        lista = list(totais.keys())
+        if 'BRC101' == codigo or 'BRC103' == codigo:
+            if not 'Filme' in lista:
+                messages.warning(request, 'O Tipo de material "Filme" é obrigatório para essa categoria.')
+
+        elif 'BRC102' == codigo or 'BRC104' == codigo:
+            if 'Mídia Digital' not in lista and 'Filme' not in lista:
+                messages.warning(request,
+                                 'Os Tipos de materiais "Filme ou Mídias Digitais" são obrigatórios para essa categoria.')
+        elif 'BRC105' == codigo:
+            if 'Jornal' not in lista and 'Revista' not in lista:
+                messages.warning(request,
+                                 'Os Tipos de materiais "Jornal ou Revista" são obrigatórios para essa categoria.')
+
+        # Regra 5
+        if form.cleaned_data['premiacao'].codigo == 'IMP':
+            for imp in range(100, 200+1):
+                c = 'IMP%d' % imp
+                if c in codigo:
+                    if 'Jornal' not in lista or 'Revista' not in lista:
+                        messages.warning(request, 'É obrigatório ter os materiais Jornal e Revista para essa categoria.')
+                    break
+        #Regra 7
+        if 'DIG30' in codigo:
+            if 'Web Sites' not in lista or len(lista) > 1:
+                messages.warning(request, 'É obrigatório ter somente o material Web Sites para essa categoria.')
+
+        elif 'DIG1' in codigo:
+            if 'Peças de Design' not in lista or len(lista) > 1:  # Obs: No doc está peças digitais, não encontrei e coloquei esse.
+                messages.warning(request, 'É obrigatório ter somente o material Peças de Design para essa categoria.')
+
+
+        # Regra 8
+        if 'FIL1' in codigo or 'FIL20' in codigo:
+            if 'Filme' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Filme para essa categoria.')
+
+        # Regra 9
+        if 'DIR201' == codigo:
+            if 'Filme' not in lista and 'Rádio' not in lista: #Se nenhum dois dois estiver na lista
+                messages.warning(request, 'É obrigatório ter um dos materiais Filme ou Rádio para essa categoria.')
+
+        elif 'DIR202' == codigo:
+            if 'Jornal' not in lista and 'Revista' not in lista and 'Promo' not in lista: #Se nenhum dois três estiver na lista
+                messages.warning(request, 'É obrigatório ter um materiais de Jornal, Revista e Promo para essa categoria.')
+
+        elif 'DIR203' == codigo:
+            if 'Digital' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Digital para essa categoria.')
+
+        elif 'DIR204' == codigo or 'DIR205' == codigo:
+            if 'Promo' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Promo para essa categoria.')
+
+        elif 'DIR206' == codigo:
+            if 'Digital' not in lista and 'Web Sites' not in lista and 'Promo' not in lista:
+                messages.warning(request, 'É obrigatório ter um desses materiais "Digital, Web Sites ou Promo," para essa categoria.')
+
+        elif 'DIR207' == codigo:
+            if 'Promo' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Promo para essa categoria.')
+
+        #Regra 10
+        if 'MID101' == codigo or 'MID102' == codigo:
+            if 'Filme' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Filme para essa categoria.')
+
+        elif 'MID103' == codigo:
+            if 'Rádio' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Rádio para essa categoria.')
+
+        elif 'MID104' == codigo:
+            if 'Jornal' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Jornal para essa categoria.')
+
+        elif 'MID105' == codigo:
+            if 'Revista' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Revista para essa categoria.')
+
+        elif 'MID106' == codigo:
+            if 'Exterior' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Exterior para essa categoria.')
+
+        elif 'MID107' == codigo or 'MID108' == codigo:
+            if 'Digital' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Digital para essa categoria.')
+
+        # Regra 11
+        if 'EXT1' in codigo or 'EXT20' in codigo:
+            if 'Exterior' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Exterior para essa categoria.')
+
+        # Regra 13
+        if 'PRM1' in codigo or 'PRM2' in codigo or 'PRM3' in codigo:
+            if 'Promo' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Promo para essa categoria.')
+
+        elif 'PRM404' == codigo:
+            if 'Web Sites' not in lista and 'Digital' not in lista:
+                messages.warning(request, 'É obrigatório ter o um dos desses materiais Web Sites, Digital para essa categoria.')
+
+        elif 'PRM4' in codigo:
+            if 'Promo' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Promo para essa categoria.')
+
+        elif 'RAD1' in codigo or 'RAD20' in codigo:
+            if 'Rádio' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Rádio para essa categoria.')
+
+        # Regra 16
+        if 'TEC10' in codigo:
+            if 'Filme' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Filme para essa categoria.')
+
+        elif 'TEC206' == codigo:
+            if 'Rádio' not in lista and 'Filme' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Rádio ou Filme para essa categoria.')
+
+        elif 'TEC201' == codigo or 'TEC202' == codigo or 'TEC204' == codigo:
+            if 'Rádio' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Rádio para essa categoria.')
+
+        elif 'TEC203' == codigo or 'TEC205' == codigo or 'TEC206' == codigo:
+            if 'Filme' not in lista:
+                messages.warning(request, 'É obrigatório ter o material Filme para essa categoria.')
+
+        elif 'TEC30' in codigo:
+            if 'Jornal' not in lista and 'Revista' not in lista and 'Exterior' not in lista and 'Promo' not in lista:
+                messages.warning(request, 'É obrigatório ter o um dos desses materiais  Jornal, Revista, Exterior ou Promo para essa categoria.')
 
         if not warn1 and not warn2:
             form.instance.status = 'V'
