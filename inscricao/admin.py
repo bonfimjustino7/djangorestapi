@@ -531,6 +531,19 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             if 'Jornal' not in lista and 'Revista' not in lista and 'Exterior' not in lista and 'Promo' not in lista:
                 messages.warning(request, 'É obrigatório ter o um dos desses materiais  Jornal, Revista, Exterior ou Promo para essa categoria.')
 
+        # Checagem adicional
+        if 'Filme' in lista or 'Videocase' in lista:
+            check = False
+            url = ''
+            for mat in formset.cleaned_data:
+                if not mat.get('url', False) == url:
+                    url = mat.get('url', False)
+                else:
+                    check = True
+                    break
+            if check:
+                messages.warning(request, 'Não pode ter url igual.')
+
         if not warn1 and not warn2:
             form.instance.status = 'V'
         else:
