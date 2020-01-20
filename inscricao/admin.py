@@ -155,7 +155,9 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     tab_ficha_agencia = (
         (None, {'fields': ('DiretorCriacao', 'Planejamento', 'Redacao', 'DiretorArte',
-                           'ProducaoGrafica', 'ProducaoRTVC')}),
+                           'ProducaoGrafica', 'ProducaoRTVC', 'TecnologiaDigital',
+                           ('OutrosAgencia1', 'OutrosAgencia2'),
+                           ('OutrosAgencia3', 'OutrosAgencia4'), )}),
     )
 
     tab_ficha_fornec = (
