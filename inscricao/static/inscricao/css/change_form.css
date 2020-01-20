@@ -58,3 +58,10 @@ div.field-agencia label.inline{
     width: 70px !important;
     padding-right: 0 !important;
 }
+
+a#calendarlink0 {
+    display: inline !important;
+}
+span.datetimeshortcuts a{
+    display: none;
+}
