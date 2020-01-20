@@ -313,14 +313,14 @@
             return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
         }
         $(document).ready(function () {
-            carregar(contarSelects())
-            limparEstados(contarAgencias())
-            carregarEstados(contarAgencias())
+            // carregar(contarSelects())
+            // limparEstados(contarAgencias())
+            // carregarEstados(contarAgencias())
 
-            $('#id_premiacao').change(function () {
-                 limparEstados(contarAgencias())
-                carregar(contarSelects())
-            })
+            // $('#id_premiacao').change(function () {
+            //      limparEstados(contarAgencias())
+            //     carregar(contarSelects())
+            // })
             $('.add-row').click(function () {
                carregarUm(contarSelects())
                 // $('.btn-editar a.inline-deletelink').css('display', 'none')
@@ -333,14 +333,14 @@
                     habilarCampos($(this).val(), campo, classe)
                 })
             })
-
-            $('#id_regional').change(function () {
-                carregarEstados(contarAgencias())
-            })
-            $('.add-row').click(function () {
-                carregarEstado(contarAgencias())
-                limparEstados(contarAgencias())
-            })
+            // Logica da filtragem de estados
+            // $('#id_regional').change(function () {
+            //     carregarEstados(contarAgencias())
+            // })
+            // $('.add-row').click(function () {
+            //     carregarEstado(contarAgencias())
+            //     limparEstados(contarAgencias())
+            // })
 
             $('.dynamic-material_set  td.field-tipo select').change(function (event) {
                 //console.log($(this).val())
