@@ -98,6 +98,13 @@ class EmpresaAdmin(PowerModelAdmin):
         form.base_fields['bairro'].widget.attrs['style'] = 'width: 30em;'
         return form
 
+    def message_user(self, request, message, level=messages.INFO, extra_tags='',
+                     fail_silently=False):
+        nova_msg = message.split(' ')[3]
+        nova_msg = mark_safe('Empresa "<a '+ nova_msg + ' alterada com sucesso.')
+        messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
+
+
     def get_queryset(self, request):
         qs = super(EmpresaAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
