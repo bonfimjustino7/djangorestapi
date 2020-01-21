@@ -19,16 +19,16 @@ class CategoriaAdmin(PowerModelAdmin):
     ordering = ['codigo']
 
 
-# TODO: Fazer funcionar
 class PremioInlineFormSet(forms.models.BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         super(PremioInlineFormSet, self).__init__(*args, **kwargs)
-        self.initial_extra = [{'ano': '2019'}, {'status': 'A'}]
+        self.initial_extra = [{'ano': ano_corrente()}, {'status': 'A'}]
 
 
 class PremioRegionalInline(admin.TabularInline):
     model = Premio
-    fields = ['ano', 'status']
+    fields = ['ano', 'status', 'total_inscricoes', 'total_inscricoes_pendentes',]
+    readonly_fields = ['total_inscricoes', 'total_inscricoes_pendentes',]
     ordering = ['-ano']
     extra = 0
     formset = PremioInlineFormSet

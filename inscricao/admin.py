@@ -104,7 +104,6 @@ class EmpresaAdmin(PowerModelAdmin):
         nova_msg = mark_safe('Empresa "<a '+ nova_msg + '</a>" alterada com sucesso.')
         messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
 
-
     def get_queryset(self, request):
         qs = super(EmpresaAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
@@ -141,6 +140,7 @@ class EmpresaAdmin(PowerModelAdmin):
         for obj in formset.deleted_objects:
             obj.delete()
 
+
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url',)
@@ -163,8 +163,9 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     tab_ficha_agencia = (
         (None, {'fields': ('DiretorCriacao', 'Planejamento', 'Redacao', 'DiretorArte',
                            'ProducaoGrafica', 'ProducaoRTVC', 'TecnologiaDigital',
-                           ('OutrosAgencia1', 'OutrosAgencia2'),
-                           ('OutrosAgencia3', 'OutrosAgencia4'), )}),
+                           'Midia', 'Atendimento', 'Aprovacao',
+                           'OutrosAgencia1', 'OutrosAgencia2',
+                           'OutrosAgencia3', 'OutrosAgencia4', )}),
     )
 
     tab_ficha_fornec = (
