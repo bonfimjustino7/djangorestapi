@@ -312,7 +312,15 @@
         function contarAgencias(){
             return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
         }
+        function contarFormRows(){
+            return document.querySelectorAll('fieldset.module .form-row').length
+        }
         $(document).ready(function () {
+            console.log(contarFormRows())
+            for(var i = 1; i < contarFormRows(); i++){
+
+
+            }
             // carregar(contarSelects())
             // limparEstados(contarAgencias())
             // carregarEstados(contarAgencias())
@@ -321,6 +329,7 @@
             //      limparEstados(contarAgencias())
             //     carregar(contarSelects())
             // })
+
             $('.add-row').click(function () {
                carregarUm(contarSelects())
                 // $('.btn-editar a.inline-deletelink').css('display', 'none')

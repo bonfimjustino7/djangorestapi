@@ -9,24 +9,27 @@
     padding-top: 5px !important;
 }
 div.help{
-    position: absolute;
-    top: 10px;
-    left: 125px;
-    z-index: 2;
+    display: none;
 }
-#tabs-4  div.help{
-    position: absolute;
-    top: 10px;
-    left: 215px;
-    z-index: 2;
-}
+/*div.help{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    left: 125px;*/
+/*    z-index: 2;*/
+/*}*/
+/*#tabs-4  div.help{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    left: 215px;*/
+/*    z-index: 2;*/
+/*}*/
 
-div.form-row input{
-    z-index: 100;
-}
-form .aligned div.help{
-    margin-left: 0px !important;
-}
+/*div.form-row input{*/
+/*    z-index: 100;*/
+/*}*/
+/*form .aligned div.help{*/
+/*    margin-left: 0px !important;*/
+/*}*/
 .aligned label{
     width: 110px !important;
 }
@@ -44,7 +47,7 @@ form .aligned div.help{
 #id_DiretorCriacao{
     width: 660px !important;
 }
-#id_Planejamento, #id_ProducaoGrafica, #id_ProducaoRTVC, #id_OutrosFornecedor1, #id_OutrosFornecedor2, #id_OutrosFornecedor3, #id_OutrosFornecedor4{
+#id_Planejamento, #id_ProducaoGrafica, #id_ProducaoRTVC, #id_OutrosFornecedor1, #id_OutrosFornecedor2, #id_OutrosFornecedor3, #id_OutrosFornecedor4, #id_TecnologiaDigital{
     width: 580px !important;
 }
 #id_Redacao, #id_DiretorArte{
@@ -64,4 +67,7 @@ a#calendarlink0 {
 }
 span.datetimeshortcuts a{
     display: none;
+}
+#id_OutrosAgencia1{
+
 }

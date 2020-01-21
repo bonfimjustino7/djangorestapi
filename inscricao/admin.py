@@ -347,6 +347,23 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
 
 
+
+    def get_form(self, request, obj=None, **kwargs):
+        texto_outros_autores = 'Utilize o formato: "Função, Fulano, Beltrano e Sicrano'
+
+        form = super(InscricaoAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['DiretorCriacao'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosAgencia1'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosAgencia2'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosAgencia3'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosAgencia4'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosFornecedor1'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosFornecedor2'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosFornecedor3'].widget.attrs['placeholder'] = texto_outros_autores
+        form.base_fields['OutrosFornecedor4'].widget.attrs['placeholder'] = texto_outros_autores
+
+        return form
+
     def save_model(self, request, obj, form, change):
         obj.titulo = upper_first(obj.titulo)
         obj.parcerias = upper_first(obj.parcerias)
