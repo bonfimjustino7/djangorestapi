@@ -122,14 +122,14 @@ class EmpresaAdmin(PowerModelAdmin):
         instances = formset.save(commit=False)
         existentes = formset.cleaned_data
         for instance in instances:
-            for exist in existentes:
-                if instance.agencia == exist['agencia']:
+            for agencia in existentes:
+                if instance.agencia == agencia['agencia']:
                     duplicidade += 1
             if duplicidade < 2:
                 instance.save()
                 formset.save_m2m()
             else:
-                messages.warning(request, 'Existem Agencias com mesmo nome, renomei-as para salvar!')
+                messages.warning(request, 'Não é permitido agências com mesmo nome. A agência duplicada foi excluída')
 
         for obj in formset.deleted_objects:
             obj.delete()
@@ -339,12 +339,39 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         nova_msg = mark_safe('Inscrição "<a '+ nova_msg + ' alterada com sucesso.')
         messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
 
-
     def save_model(self, request, obj, form, change):
         obj.titulo = upper_first(obj.titulo)
         obj.parcerias = upper_first(obj.parcerias)
         obj.cliente = upper_first(obj.cliente)
         obj.produto = upper_first(obj.produto)
+        obj.DiretorCriacao = upper_first(obj.DiretorCriacao)
+        obj.Planejamento = upper_first(obj.Planejamento)
+        obj.Redacao = upper_first(obj.Redacao)
+        obj.DiretorArte = upper_first(obj.DiretorArte)
+        obj.ProducaoGrafica = upper_first(obj.ProducaoGrafica)
+        obj.ProducaoRTVC = upper_first(obj.ProducaoRTVC)
+        obj.TecnologiaDigital = upper_first(obj.TecnologiaDigital)
+        obj.OutrosAgencia1 = upper_first(obj.OutrosAgencia1)
+        obj.OutrosAgencia2 = upper_first(obj.OutrosAgencia2)
+        obj.OutrosAgencia3 = upper_first(obj.OutrosAgencia3)
+        obj.OutrosAgencia4 = upper_first(obj.OutrosAgencia4)
+        obj.Midia = upper_first(obj.Midia)
+        obj.Atendimento = upper_first(obj.Atendimento)
+        obj.Aprovacao = upper_first(obj.Aprovacao)
+        obj.ProdutoraFilme = upper_first(obj.ProdutoraFilme)
+        obj.DiretorFilme = upper_first(obj.DiretorFilme)
+        obj.ProdutoraAudio = upper_first(obj.ProdutoraAudio)
+        obj.DiretorAudio = upper_first(obj.DiretorAudio)
+        obj.EstudioFotografia = upper_first(obj.EstudioFotografia)
+        obj.Fotografo = upper_first(obj.Fotografo)
+        obj.EstudioIlustracao = upper_first(obj.EstudioIlustracao)
+        obj.Ilustrador = upper_first(obj.Ilustrador)
+        obj.ManipulacaoDigital = upper_first(obj.ManipulacaoDigital)
+        obj.Finalizacao = upper_first(obj.Finalizacao)
+        obj.OutrosFornecedor1 = upper_first(obj.OutrosFornecedor1)
+        obj.OutrosFornecedor2 = upper_first(obj.OutrosFornecedor2)
+        obj.OutrosFornecedor3 = upper_first(obj.OutrosFornecedor3)
+        obj.OutrosFornecedor4 = upper_first(obj.OutrosFornecedor4)
 
         if ',' in obj.titulo or '/' in obj.titulo:
             messages.warning(request, 'Não coloque os títulos de cada peça. Use um título que identifique o conjunto')
@@ -361,10 +388,17 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                           "Se o campo Produto tiver a mesma informação do campo Cliente não há necessidade de preenchimento!")
 
         if not change:
-            regional = Regional.objects.get(estados__contains=obj.agencia.uf)
-            obj.premio = Premio.objects.get(ano=ano_corrente(), regional=regional)
-            empresa = EmpresaUsuario.objects.get(empresa=request.POST['empresa'])
-            obj.usuario = Usuario.objects.get(id=empresa.usuario_id)
+            empresa = Empresa.objects.get(id=request.POST['empresa'])
+            usuario = EmpresaUsuario.objects.filter(empresa=empresa)[0]
+            obj.usuario = Usuario.objects.get(id=usuario.usuario_id)
+
+            regional = Regional.objects.get(id=empresa.regional.id)
+            try:
+                obj.premio = Premio.objects.get(ano=ano_corrente(), regional=regional, status='A')
+            except Premio.DoesNotExist:
+                messages.error(request,
+                          "Não existe nenhuma premiação ativa para a regional %s" % regional)
+                obj.status = 'A'
         obj.save()
 
     def save_formset(self, request, form, formset, change):
