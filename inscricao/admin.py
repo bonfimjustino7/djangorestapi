@@ -146,6 +146,12 @@ class MaterialInline(admin.TabularInline):
     fields = ('tipo', 'arquivo', 'url',)
     extra = 1
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            if obj.premio.status == 'F':
+                return list(super().get_fields(request, obj))
+        return super(MaterialInline, self).get_readonly_fields(request, obj)
+
 class AnoFilter(admin.SimpleListFilter):
     title = 'ano'
     parameter_name = 'ano'
@@ -178,12 +184,6 @@ class RegionalFilter(admin.SimpleListFilter):
         else:
             usuario = Usuario.objects.filter(user=request.user)
             inscricoes = Inscricao.objects.filter(usuario=usuario)
-
-            # q = Premio.objects.values('regional').distinct().order_by('regional')
-            # regs = []
-            # for ano in q:
-            #     regs.append((ano['regional'], ano['regional']))
-            # return tuple(regs)
             reg_disponiveis = []
             for ins in inscricoes:
                 reg_disponiveis.append((ins.premio.regional.id, ins.premio.regional))
@@ -200,7 +200,6 @@ class RegionalFilter(admin.SimpleListFilter):
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premiacao', RegionalFilter, AnoFilter)
     readonly_fields = ('seq',)
-
     tab_info = (
         (None, {'fields': (('premiacao', 'empresa', 'agencia',), 'categoria',
                            'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio',)}),
@@ -247,6 +246,13 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         if not obj:
             return self.tab_info
         return self.tabs
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            if obj.premio.status == 'F':
+                return ('premiacao','usuario','empresa','seq','titulo','agencia','categoria','cliente','parcerias','produto','dtinicio','isolada','DiretorCriacao','Planejamento','Redacao','DiretorArte','ProducaoGrafica','ProducaoRTVC','TecnologiaDigital','OutrosAgencia1','OutrosAgencia2','OutrosAgencia3','OutrosAgencia4','Midia','Atendimento','Aprovacao','ProdutoraFilme','DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo','EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1','OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',)
+        return super(InscricaoAdmin, self).get_readonly_fields(request, obj)
+
 
     def get_queryset(self, request):
         qs = super(InscricaoAdmin, self).get_queryset(request)
