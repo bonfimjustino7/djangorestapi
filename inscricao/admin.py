@@ -196,6 +196,7 @@ class RegionalFilter(admin.SimpleListFilter):
         else:
             return queryset.all()
 
+
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premiacao', RegionalFilter, AnoFilter)
