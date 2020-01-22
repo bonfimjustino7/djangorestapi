@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 
 
 def ano_corrente():
@@ -126,6 +127,18 @@ class Premio(models.Model):
             self.regional,
             self.ano
         )
+
+    def total_inscricoes(self):
+        return self.inscricao_set.count()
+    total_inscricoes.short_description = 'Total de Inscrições'
+
+    def total_inscricoes_pendentes(self):
+        count = self.inscricao_set.filter(status='A').count()
+        if count > 0:
+            return mark_safe('<font color="red">%d</font>' % count)
+        else:
+            return '0'
+    total_inscricoes_pendentes.short_description = 'Inscrições Pendentes'
 
     class Meta:
         ordering = ('ano', )
