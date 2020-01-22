@@ -151,7 +151,18 @@ class AnoFilter(admin.SimpleListFilter):
     parameter_name = 'ano'
 
     def lookups(self, request, model_admin):
-        pass
+        if request.user.is_superuser:
+            q = Premio.objects.values('ano').distinct().order_by('ano')
+            regs = []
+            for ano in q:
+                regs.append((ano['ano'], ano['ano']))
+            return tuple(regs)
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value:
+            return queryset.filter(premio__ano=value)
+
 
 class RegionalFilter(admin.SimpleListFilter):
     title = 'regional'
@@ -165,11 +176,18 @@ class RegionalFilter(admin.SimpleListFilter):
                 regs.append((reg['id'], reg['nome']))
             return tuple(regs)
         else:
-            q = Premio.objects.values('regional').distinct().order_by('regional')
-            regs = []
-            for ano in q:
-                regs.append((ano['regional'], ano['regional']))
-            return tuple(regs)
+            usuario = Usuario.objects.filter(user=request.user)
+            inscricoes = Inscricao.objects.filter(usuario=usuario)
+
+            # q = Premio.objects.values('regional').distinct().order_by('regional')
+            # regs = []
+            # for ano in q:
+            #     regs.append((ano['regional'], ano['regional']))
+            # return tuple(regs)
+            reg_disponiveis = []
+            for ins in inscricoes:
+                reg_disponiveis.append((ins.premio.regional.id, ins.premio.regional))
+            return tuple(reg_disponiveis)
 
     def queryset(self, request, queryset):
         value = self.value()
@@ -180,7 +198,7 @@ class RegionalFilter(admin.SimpleListFilter):
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
-    list_filter = ('premiacao', RegionalFilter)
+    list_filter = ('premiacao', RegionalFilter, AnoFilter)
     readonly_fields = ('seq',)
 
     tab_info = (
