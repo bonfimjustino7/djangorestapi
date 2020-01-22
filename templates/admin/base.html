@@ -254,55 +254,55 @@
                     })
             })
         }
-        function carregarEstados(cont) {
-
-                $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
-                    for (var i = 0; i < cont; i++) {
-                        var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
-                        var val_select = $(select).val()
-                        $(select).empty()
-                        $(select).append($('<option></option>').attr("value", '').text('------'))
-                        $.each(res, function (id, value) {
-                            if (val_select == value) {
-                                $(select).append($('<option value="'+ value +'" selected="selected">'+ value +'</option>'))
-                            } else {
-                                $(select).append($('<option value="'+ value +'">'+ value +'</option>'))
-                            }
-                        })
-                    }
-                }).fail(function () {
-                    //console.log('erro')
-                    limparEstados(contarAgencias())
-                })
-
-        }
-        function limparEstados(cont) {
-            if(!$('#id_regional').val()){
-                for (var i = 0; i < cont; i++) {
-                    var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
-                    $(select).empty()
-                    $(select).append($('<option></option>').attr("value", '').text('------'))
-                }
-            }
-        }
-        function carregarEstado(cont) {
-            $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
-
-                    var select = document.getElementById(`id_empresaagencia_set-${cont-1}-uf`)
-                    var val_select = $(select).val()
-                    $(select).empty()
-                    $(select).append($('<option></option>').attr("value", '').text('------'))
-                    $.each(res, function (id, value) {
-                        if(val_select == value){
-                            $(select).append($('<option value="'+value+'" selected="selected">'+ value+'</option>'))
-                        }
-                        else{
-                            $(select).append($('<option value="'+value+'">'+ value+'</option>'))
-                        }
-                    })
-
-            })
-        }
+        // function carregarEstados(cont) {
+        //
+        //         $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
+        //             for (var i = 0; i < cont; i++) {
+        //                 var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
+        //                 var val_select = $(select).val()
+        //                 $(select).empty()
+        //                 $(select).append($('<option></option>').attr("value", '').text('------'))
+        //                 $.each(res, function (id, value) {
+        //                     if (val_select == value) {
+        //                         $(select).append($('<option value="'+ value +'" selected="selected">'+ value +'</option>'))
+        //                     } else {
+        //                         $(select).append($('<option value="'+ value +'">'+ value +'</option>'))
+        //                     }
+        //                 })
+        //             }
+        //         }).fail(function () {
+        //             //console.log('erro')
+        //             limparEstados(contarAgencias())
+        //         })
+        //
+        // }
+        // function limparEstados(cont) {
+        //     if(!$('#id_regional').val()){
+        //         for (var i = 0; i < cont; i++) {
+        //             var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
+        //             $(select).empty()
+        //             $(select).append($('<option></option>').attr("value", '').text('------'))
+        //         }
+        //     }
+        // }
+        // function carregarEstado(cont) {
+        //     $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
+        //
+        //             var select = document.getElementById(`id_empresaagencia_set-${cont-1}-uf`)
+        //             var val_select = $(select).val()
+        //             $(select).empty()
+        //             $(select).append($('<option></option>').attr("value", '').text('------'))
+        //             $.each(res, function (id, value) {
+        //                 if(val_select == value){
+        //                     $(select).append($('<option value="'+value+'" selected="selected">'+ value+'</option>'))
+        //                 }
+        //                 else{
+        //                     $(select).append($('<option value="'+value+'">'+ value+'</option>'))
+        //                 }
+        //             })
+        //
+        //     })
+        // }
         function contarSelects(){
             return document.querySelectorAll('.dynamic-material_set .field-tipo select').length
         }
@@ -315,14 +315,14 @@
 
         $(document).ready(function () {
 
-            // carregar(contarSelects())
+             carregar(contarSelects())
             // limparEstados(contarAgencias())
             // carregarEstados(contarAgencias())
 
-            // $('#id_premiacao').change(function () {
+             $('#id_premiacao').change(function () {
             //      limparEstados(contarAgencias())
-            //     carregar(contarSelects())
-            // })
+                 carregar(contarSelects())
+             })
 
             $('.add-row').click(function () {
                carregarUm(contarSelects())

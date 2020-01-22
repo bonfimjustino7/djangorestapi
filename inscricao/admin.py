@@ -146,11 +146,43 @@ class MaterialInline(admin.TabularInline):
     fields = ('tipo', 'arquivo', 'url',)
     extra = 1
 
+class AnoFilter(admin.SimpleListFilter):
+    title = 'ano'
+    parameter_name = 'ano'
+
+    def lookups(self, request, model_admin):
+        pass
+
+class RegionalFilter(admin.SimpleListFilter):
+    title = 'regional'
+    parameter_name = 'regional'
+
+    def lookups(self, request, model_admin):
+        if request.user.is_superuser:
+            regionais = Regional.objects.values('nome', 'id').all()
+            regs = []
+            for reg in regionais:
+                regs.append((reg['id'], reg['nome']))
+            return tuple(regs)
+        else:
+            q = Premio.objects.values('regional').distinct().order_by('regional')
+            regs = []
+            for ano in q:
+                regs.append((ano['regional'], ano['regional']))
+            return tuple(regs)
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value:
+            return queryset.filter(premio__regional=value)
+        else:
+            return queryset.all()
 
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
-    list_filter = ('premiacao',)
+    list_filter = ('premiacao', RegionalFilter)
     readonly_fields = ('seq',)
+
     tab_info = (
         (None, {'fields': (('premiacao', 'empresa', 'agencia',), 'categoria',
                            'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio',)}),
