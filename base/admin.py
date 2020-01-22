@@ -31,7 +31,7 @@ class PremioRegionalInline(admin.TabularInline):
     readonly_fields = ['total_inscricoes', 'total_inscricoes_pendentes',]
     ordering = ['-ano']
     extra = 0
-    formset = PremioInlineFormSet
+    # formset = PremioInlineFormSet
 
 
 @admin.register(Regional)
