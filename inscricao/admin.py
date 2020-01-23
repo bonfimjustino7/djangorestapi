@@ -253,9 +253,14 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.premio:
             if obj.premio.status == 'F':
-                return ('premiacao','usuario','empresa','seq','titulo','agencia','categoria','cliente','parcerias','produto','dtinicio','isolada','DiretorCriacao','Planejamento','Redacao','DiretorArte','ProducaoGrafica','ProducaoRTVC','TecnologiaDigital','OutrosAgencia1','OutrosAgencia2','OutrosAgencia3','OutrosAgencia4','Midia','Atendimento','Aprovacao','ProdutoraFilme','DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo','EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1','OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',)
+                return ('premiacao','usuario','empresa','seq','titulo','agencia','categoria','cliente','parcerias',
+                        'produto','dtinicio','isolada','DiretorCriacao','Planejamento','Redacao','DiretorArte',
+                        'ProducaoGrafica','ProducaoRTVC','TecnologiaDigital','OutrosAgencia1','OutrosAgencia2',
+                        'OutrosAgencia3','OutrosAgencia4','Midia','Atendimento','Aprovacao','ProdutoraFilme',
+                        'DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo',
+                        'EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1',
+                        'OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',)
         return super(InscricaoAdmin, self).get_readonly_fields(request, obj)
-
 
     def get_queryset(self, request):
         qs = super(InscricaoAdmin, self).get_queryset(request)
@@ -370,34 +375,34 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     exportar.short_description = u'Exportação das Inscrições'
 
+    # retorna uma lista de ids de empresas válidas
+    def empresas_validas(self, user):
+        if user.groups.filter(name='Agência'):
+            usuario = Usuario.objects.filter(user=user)
+            candidatas = EmpresaUsuario.objects.filter(usuario=usuario)
+            empresas = []
+            for empresa in candidatas:
+                if Premio.objects.filter(regional=empresa.empresa.regional, status='A').count() > 0:
+                    empresas.append(empresa.empresa_id)
+        else:
+            regionais_ativas = Premio.objects.filter(status='A').values_list('regional')
+            empresas = list(Empresa.objects.filter(regional__in=regionais_ativas).values_list('id', flat=True))
+        return empresas
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'empresa':
-            if request.user.groups.filter(name='Agência'):
-                usuario = Usuario.objects.filter(user=request.user)
-                empresas = list(EmpresaUsuario.objects.filter(usuario=usuario).values_list('empresa', flat=True))
-                kwargs['queryset'] = Empresa.objects.filter(pk__in=empresas)
-            else:
-                kwargs['queryset'] = Empresa.objects.all()
+            empresas = self.empresas_validas(request.user)
+            kwargs['queryset'] = Empresa.objects.filter(pk__in=empresas)
 
-            try:
-                usuario = Usuario.objects.get(user=request.user)
-                empresa = EmpresaUsuario.objects.filter(usuario=usuario)
-                if empresa.count() == 1:
-                    kwargs['initial'] = empresa.get().empresa
-            except Usuario.DoesNotExist:
-                None
+            if len(empresas) == 1:
+                kwargs['initial'] = Empresa.objects.get(id=empresas[0])
 
         elif db_field.name == 'agencia':
-            try:
-                usuario = Usuario.objects.get(user=request.user)
-                empresas = EmpresaUsuario.objects.filter(usuario=usuario)
-                if empresas.count() == 1:
-                    agencias = EmpresaAgencia.objects.filter(empresa=empresas.get().empresa)
-                    if agencias.count() == 1:
-                        agencia = EmpresaAgencia.objects.get(empresa=empresas.get().empresa)
-                        kwargs['initial'] = agencia
-            except Usuario.DoesNotExist:
-                None
+            empresas = self.empresas_validas(request.user)
+            if len(empresas) == 1:
+                agencias = EmpresaAgencia.objects.filter(empresa=empresas[0])
+                if agencias.count() == 1:
+                    kwargs['initial'] = agencias[0]
 
         return super(InscricaoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -677,4 +682,3 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             form.instance.status = 'A'
         form.save()
         formset.save()
-
