@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.dispatch import receiver
 from localflavor.br.forms import BRCNPJField
@@ -173,10 +175,15 @@ class Inscricao(models.Model):
         super(Inscricao, self).save(*args, **kwargs)
 
 
+def path(self, filename):
+    extension = os.path.splitext(filename)[-1]
+    new_filename = '%s%s' % (self.id, extension)
+    return new_filename
+
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
-    arquivo = models.FileField(null=True, blank=True)
+    arquivo = models.FileField(upload_to=path, null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
 
