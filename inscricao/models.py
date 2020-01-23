@@ -6,9 +6,11 @@ from django.dispatch import receiver
 from localflavor.br.forms import BRCNPJField
 from django.contrib.auth.models import User
 from base.models import *
+from colunistas import settings
 from util.stdlib import upper_first
 from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
-from django.db.models.signals import m2m_changed, post_save
+from django.db.models.signals import m2m_changed, post_save, post_delete
+
 
 class FileField(models.FileField):
     def save_form_data(self, instance, data):
@@ -207,3 +209,14 @@ class Material(models.Model):
     class Meta:
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
+
+@receiver(post_delete, sender=Material)
+def handler_file(sender, **kwargs):
+    print('DEBUG: avatar delete triggered')
+    avatar = kwargs['instance'].arquivo
+    path = os.path.join(settings.MEDIA_ROOT, avatar.name)
+    if os.path.exists(path):
+        os.remove(path)
+
+    # storage, path = avatar.original_image.storage, avatar.original_image.path
+    # storage.delete(path)
