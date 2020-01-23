@@ -5,7 +5,9 @@ from django.utils.safestring import mark_safe
 
 
 def ano_corrente():
-    return '2019'
+    import datetime
+    now = datetime.datetime.now()
+    return str(now.year)
 
 
 class Regional(models.Model):

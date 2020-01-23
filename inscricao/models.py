@@ -98,7 +98,7 @@ STATUS_INSCRICAO = (
 
 class Inscricao(models.Model):
     premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT, verbose_name='Premiação')
-    premio = models.ForeignKey(Premio, on_delete=models.PROTECT)
+    premio = models.ForeignKey(Premio, on_delete=models.PROTECT, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
     empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
     seq = models.IntegerField('Seq')

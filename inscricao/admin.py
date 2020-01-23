@@ -283,7 +283,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             writer.writerow([
                 query.id,
                 query.premiacao,
-                query.premio,
+                query.premio.regional,
+                query.premio.ano,
                 query.empresa.id,
                 query.empresa,
                 query.seq,
@@ -475,9 +476,14 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             usuario = EmpresaUsuario.objects.filter(empresa=empresa)[0]
             obj.usuario = Usuario.objects.get(id=usuario.usuario_id)
 
+        if not obj.premio:
             regional = Regional.objects.get(id=empresa.regional.id)
             try:
-                obj.premio = Premio.objects.get(ano=ano_corrente(), regional=regional, status='A')
+                obj.premio = Premio.objects.get(regional=regional, status='A')
+            except Premio.MultipleObjectsReturned:
+                messages.error(request,
+                          "Existe mais de um prêmio ativo para a regional %s" % regional)
+                obj.status = 'A'
             except Premio.DoesNotExist:
                 messages.error(request,
                           "Não existe nenhuma premiação ativa para a regional %s" % regional)
