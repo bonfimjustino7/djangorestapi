@@ -147,10 +147,11 @@ class MaterialInline(admin.TabularInline):
     extra = 1
 
     def get_readonly_fields(self, request, obj=None):
-        if obj:
+        if obj and obj.premio:
             if obj.premio.status == 'F':
                 return list(super().get_fields(request, obj))
         return super(MaterialInline, self).get_readonly_fields(request, obj)
+
 
 class AnoFilter(admin.SimpleListFilter):
     title = 'ano'
@@ -186,7 +187,8 @@ class RegionalFilter(admin.SimpleListFilter):
             inscricoes = Inscricao.objects.filter(usuario=usuario)
             reg_disponiveis = []
             for ins in inscricoes:
-                reg_disponiveis.append((ins.premio.regional.id, ins.premio.regional))
+                if ins.premio:
+                    reg_disponiveis.append((ins.premio.regional.id, ins.premio.regional))
             return tuple(reg_disponiveis)
 
     def queryset(self, request, queryset):
@@ -249,7 +251,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return self.tabs
 
     def get_readonly_fields(self, request, obj=None):
-        if obj:
+        if obj and obj.premio:
             if obj.premio.status == 'F':
                 return ('premiacao','usuario','empresa','seq','titulo','agencia','categoria','cliente','parcerias','produto','dtinicio','isolada','DiretorCriacao','Planejamento','Redacao','DiretorArte','ProducaoGrafica','ProducaoRTVC','TecnologiaDigital','OutrosAgencia1','OutrosAgencia2','OutrosAgencia3','OutrosAgencia4','Midia','Atendimento','Aprovacao','ProdutoraFilme','DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo','EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1','OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',)
         return super(InscricaoAdmin, self).get_readonly_fields(request, obj)
