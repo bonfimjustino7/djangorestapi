@@ -15,9 +15,11 @@
 
         <script>
             function verificarCombo(){
-                console.log(document.getElementById('id_empresa').length);
+                //console.log(document.getElementById('id_empresa').length);
                 var qtd = document.getElementById('id_empresa').length;
-                if (qtd  == 1){
+                var empresa = document.getElementById('id_empresa');
+                var valid = empresa.value ? empresa.value : false;
+                if (!valid && qtd == 1){
                    $('<ul class="messagelist">' +
                        '<li class="error">Inscrições encerradas para as empresas registradas</li></ul>').insertAfter('.breadcrumbs');
                 }
