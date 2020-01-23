@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from django.db import models
 from django.dispatch import receiver
@@ -177,7 +178,7 @@ class Inscricao(models.Model):
 
 def path(self, filename):
     extension = os.path.splitext(filename)[-1]
-    new_filename = '%s%s' % (self.id, extension)
+    new_filename = '%s%s' % (uuid.uuid4(), extension)
     return new_filename
 
 

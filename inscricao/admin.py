@@ -478,8 +478,9 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             messages.info(request,
                           "Se o campo Produto tiver a mesma informação do campo Cliente não há necessidade de preenchimento!")
 
-        if not change:
-            empresa = Empresa.objects.get(id=request.POST['empresa'])
+        empresa = Empresa.objects.get(id=request.POST['empresa'])
+
+        if not obj.usuario:
             usuario = EmpresaUsuario.objects.filter(empresa=empresa)[0]
             obj.usuario = Usuario.objects.get(id=usuario.usuario_id)
 
