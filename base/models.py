@@ -42,7 +42,8 @@ class TipoMaterial(models.Model):
     descricao = models.CharField('Descrição', max_length=40)
     arquivo = models.BooleanField('Permite anexar arquivo', default=False)
     url = models.BooleanField('Permite URL', default=False)
-    roteiro = models.BooleanField('Permite registro de roteiros', default=False)
+    youtube = models.BooleanField('Youtube/Vimeo obrigatórios', default=False)
+    dicas = models.TextField('Dicas para preenchimento', null=True)
 
     def __str__(self):
         return u'%s' % self.descricao

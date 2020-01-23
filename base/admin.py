@@ -41,7 +41,7 @@ class RegionalAdmin(PowerModelAdmin):
 
 @admin.register(TipoMaterial)
 class TipoMaterialAdmin(PowerModelAdmin):
-    fields = ('descricao', ('arquivo', 'url', 'roteiro'),)
+    fields = (('descricao', 'arquivo', 'url', 'youtube'), 'dicas')
 
 
 class FormatoAdmin(PowerModelAdmin):
