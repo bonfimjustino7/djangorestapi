@@ -10,6 +10,13 @@ from util.stdlib import upper_first
 from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
 from django.db.models.signals import m2m_changed, post_save
 
+class FileField(models.FileField):
+    def save_form_data(self, instance, data):
+        if data is not None:
+            file = getattr(instance, self.attname)
+            if file != data:
+                file.delete(save=False)
+        super(FileField, self).save_form_data(instance, data)
 
 class Usuario(models.Model):
     nome_completo = models.CharField('Nome', max_length=80)
@@ -178,14 +185,19 @@ class Inscricao(models.Model):
 
 def path(self, filename):
     extension = os.path.splitext(filename)[-1]
-    new_filename = '%s%s' % (uuid.uuid4(), extension)
-    return new_filename
+    if self.id:
+        filename = '%s' % self.id
+    else:
+        last_material = Material.objects.values('id').last()
+        filename = '%s' % str(last_material['id']+1)
 
+    new_filename = '%s/%s%s' % ('uploads', filename, extension)
+    return new_filename
 
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
-    arquivo = models.FileField(upload_to=path, null=True, blank=True)
+    arquivo = FileField(upload_to=path, null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
 
@@ -195,4 +207,3 @@ class Material(models.Model):
     class Meta:
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
-

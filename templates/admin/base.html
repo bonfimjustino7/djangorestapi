@@ -303,6 +303,8 @@
         //
         //     })
         // }
+
+
         function contarSelects(){
             return document.querySelectorAll('.dynamic-material_set .field-tipo select').length
         }
@@ -343,6 +345,15 @@
             //     limparEstados(contarAgencias())
             // })
 
+            // Iniciar com a logica dos materiais.
+            // var d = document.querySelector('.dynamic-material_set  td.field-tipo select');
+            // for(var i = 0; i < contarSelects(); i++){
+            //     var elemento = d.id;
+            //     var novo_elemento_id = `${elemento.split('-')[0]}-${i}-${elemento.split('-')[2]}`;
+            //     habilarCampos(d.value, novo_elemento_id);
+            //     console.log(novo_elemento_id)
+            // }
+            // //
             $('.dynamic-material_set  td.field-tipo select').change(function (event) {
                 //console.log($(this).val())
                 console.log(event.target.id)

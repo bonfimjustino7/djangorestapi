@@ -68,3 +68,6 @@ a#calendarlink0 {
 span.datetimeshortcuts a{
     display: none;
 }
+fieldset.module h2{
+    display: none;
+}
