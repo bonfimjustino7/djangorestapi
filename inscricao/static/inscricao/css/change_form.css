@@ -71,3 +71,15 @@ span.datetimeshortcuts a{
 fieldset.module h2{
     display: none;
 }
+ul.messagelist li.danger {
+    background: #ffefef url('../../../../static/admin/img/icon-no.svg') 40px 12px no-repeat;
+    background-size: 16px auto;
+}
+strong#dicas{
+    font-size: 12px;
+    color: #930b3a;
+}
+strong#dicas p{
+    font-size: 11px;
+    color: #333 !important;
+}

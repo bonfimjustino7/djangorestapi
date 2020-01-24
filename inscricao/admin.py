@@ -1,9 +1,13 @@
 import csv
 import io
+import urllib
 import zipfile
 import datetime
 
 from collections import Counter
+
+from bs4 import BeautifulSoup
+
 from util.stdlib import upper_first
 from django.contrib import admin
 from django.http import HttpResponse
@@ -676,6 +680,31 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                     break
             if check:
                 messages.warning(request, 'Não pode ter urls iguais.')
+
+        # Validação dos URL´s
+        import requests
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if instance.url:
+                url = instance.url.split('//')
+                if 'www' in url[1]:
+                    url = url[1].split('.')
+                    url = url[1] + '.' + url[2]
+                else:
+                    url = url[1]
+
+                r = requests.get('http://' + url)
+                if not r.ok:
+                    messages.error(request, 'Link inválido. O vídeo não existe no servidor especificado.')
+                else:
+                    soup = BeautifulSoup(r.content, 'html.parser')
+                    title = soup.title.text
+                    if title == 'YouTube':
+                        messages.error(request, 'Link inválido. O vídeo não existe no servidor especificado.')
+
+                url = url.split('/')[0]
+                if not 'youtube.com' == url and not 'youtu.be' == url and not 'vimeo.com' == url:
+                    messages.error(request, 'O filme ou vídeo deve estar hospedado no YouTube ou no Vimeo!')
 
         if not warn1 and not warn2:
             form.instance.status = 'V'

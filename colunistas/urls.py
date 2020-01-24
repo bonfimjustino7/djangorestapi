@@ -42,6 +42,7 @@ urlpatterns = [
 	url(r'^', include('util.urls')),
 	url(r'^tipos_materiais/(?P<id>\d+)/$', views.tipo_materiais),
 	url(r'^filtrar_estados/(?P<id>\d+)/$', views.filtrar_estados),
+	url(r'^dica_material/(?P<id>\d+)/$', views.dica_materiais),
 ]
 
 if 'theme' in settings.INSTALLED_APPS:

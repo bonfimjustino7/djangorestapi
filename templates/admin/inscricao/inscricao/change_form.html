@@ -9,10 +9,12 @@
     <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/change_form.css" %}" />
 {% endblock %}
 {% block js %}
-   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-
+         <script src="{% static "inscricao/js/dicas.js" %}"></script>
         <script>
             function verificarCombo(){
                 //console.log(document.getElementById('id_empresa').length);

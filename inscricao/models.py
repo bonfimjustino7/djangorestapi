@@ -212,11 +212,8 @@ class Material(models.Model):
 
 @receiver(post_delete, sender=Material)
 def handler_file(sender, **kwargs):
-    print('DEBUG: avatar delete triggered')
-    avatar = kwargs['instance'].arquivo
-    path = os.path.join(settings.MEDIA_ROOT, avatar.name)
-    if os.path.exists(path):
-        os.remove(path)
-
-    # storage, path = avatar.original_image.storage, avatar.original_image.path
-    # storage.delete(path)
+    filename = kwargs['instance'].arquivo
+    if filename:
+        path = os.path.join(settings.MEDIA_ROOT, filename.name)
+        if os.path.exists(path):
+            os.remove(path)
