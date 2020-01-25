@@ -196,6 +196,7 @@ def path(self, filename):
     new_filename = '%s/%s%s' % ('uploads', filename, extension)
     return new_filename
 
+
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)

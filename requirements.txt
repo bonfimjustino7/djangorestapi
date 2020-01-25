@@ -1,4 +1,4 @@
-Django==1.11
+Django<1.12
 mysqlclient
 xhtml2pdf
 django-admin-tools
@@ -9,6 +9,7 @@ django-smart-selects
 django-tabbed-admin
 gunicorn
 html5lib
+beautifulsoup4
 
 django-mptt==0.10.0
 easy-thumbnails==2.6
