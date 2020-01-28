@@ -45,6 +45,10 @@ urlpatterns = [
 	url(r'^dica_material/(?P<id>\d+)/$', views.dica_materiais),
 ]
 
+if settings.LOCAL:
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 if 'theme' in settings.INSTALLED_APPS:
 	urlpatterns += [url(r'^/', include('theme.urls')), ]
 
@@ -53,7 +57,3 @@ if 'theme' in settings.INSTALLED_APPS:
 # url(r'^/', include('cms.urls')), # django 1
 # path('', include('cms.urls')), # django 2
 # ]
-
-if settings.DEBUG:
-	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
