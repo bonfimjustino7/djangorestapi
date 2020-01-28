@@ -734,8 +734,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                     messages.error(request, 'Link %s inválido. Soundcloud não encontrado.' % instance.url)
                     erro = True
                 else:
-                    reponse_html = BeautifulSoup(request_radio.text, 'html.parser')
-                    link = reponse_html.find('link', attrs={'href': '/sc-opensearch.xml', 'rel': 'search', 'title': 'SoundCloud search', 'type': 'application/opensearchdescription+xml'})
+                    response_html = BeautifulSoup(request_radio.text, 'html.parser')
+                    link = response_html.find('link', attrs={'href': '/sc-opensearch.xml', 'rel': 'search', 'title': 'SoundCloud search', 'type': 'application/opensearchdescription+xml'})
                     if not link:
                         messages.error(request, 'Link inválido. O Áudio não existe no servidor especificado.')
                         erro = True
