@@ -7,10 +7,15 @@ import datetime
 from collections import Counter
 
 from bs4 import BeautifulSoup
+from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+from django.urls import reverse
+from django.utils.encoding import force_text
+from django.utils.html import format_html
+from django.utils.http import urlquote
 
 from util.stdlib import upper_first
 from django.contrib import admin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from tabbed_admin import TabbedModelAdmin
 
 from base.models import *
@@ -412,9 +417,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     def message_user(self, request, message, level=messages.INFO, extra_tags='',
                      fail_silently=False):
-        nova_msg = message.split(' ')[3]
-        nova_msg = mark_safe('Inscrição "<a '+ nova_msg + ' alterada com sucesso.')
-        messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
+        if level >= 30:
+            super(InscricaoAdmin, self).message_user(request, message, level, extra_tags, fail_silently)
+        else:
+            nova_msg = message.split(' ')[3]
+            nova_msg = mark_safe('Inscrição "<a '+ nova_msg + ' alterada com sucesso.')
+            messages.add_message(request, level, nova_msg, extra_tags=extra_tags, fail_silently=fail_silently)
 
     def get_form(self, request, obj=None, **kwargs):
         texto_outros_autores = 'Utilize o formato: "Função, Fulano, Beltrano e Sicrano'
@@ -713,11 +721,24 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 messages.error(request, 'Não podem haver urls iguais.')
                 error = True
 
-        # Validação dos URL´s
+        # Validação de URL
         import requests
         instances = formset.save(commit=False)
         for instance in instances:
-            if instance.url:
+            if instance.tipo.descricao == 'Rádio':
+                request_radio = requests.get(instance.url)
+
+                if not request_radio.ok:
+                    messages.error(request, 'Link %s inválido. Soundcloud não encontrado.' % instance.url)
+                    erro = True
+                else:
+                    reponse_html = BeautifulSoup(request_radio.text, 'html.parser')
+                    link = reponse_html.find('link', attrs={'href': '/sc-opensearch.xml', 'rel': 'search', 'title': 'SoundCloud search', 'type': 'application/opensearchdescription+xml'})
+                    if not link:
+                        messages.error(request, 'Link inválido. O Áudio não existe no servidor especificado.')
+                        erro = True
+
+            elif instance.tipo.youtube and instance.url:
                 url = instance.url.split('//')
                 if 'www' in url[1]:
                     url = url[1].split('.')
@@ -745,6 +766,24 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             form.instance.status = 'A'
         else:
             form.instance.status = 'V'
-
         form.save()
         formset.save()
+
+    def response_change(self, request, obj):
+        opts = self.model._meta
+        preserved_filters = self.get_preserved_filters(request)
+        msg_dict = {
+            'name': force_text(opts.verbose_name),
+            'obj': format_html('<a href="{}">{}</a>', urlquote(request.path), obj),
+        }
+        if obj.status == 'A':
+            msg = format_html(
+                ('{name} "{obj}" foi alterado mas contém erros.'),
+                **msg_dict
+            )
+            self.message_user(request, msg, messages.WARNING)
+            redirect_url = request.path
+            redirect_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, redirect_url)
+            return HttpResponseRedirect(redirect_url)
+
+        return super(InscricaoAdmin, self).response_change(request, obj)
