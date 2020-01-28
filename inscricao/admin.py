@@ -27,6 +27,8 @@ from django.contrib import messages
 
 from base.views import *
 
+from PIL import Image
+
 change_form_template = 'admin/myapp/extras/openstreetmap_change_form.html'
 
 
@@ -761,13 +763,35 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 if not 'youtube.com' == url and not 'youtu.be' == url and not 'vimeo.com' == url:
                     messages.error(request, 'O filme ou vídeo deve estar hospedado no YouTube ou no Vimeo!')
                     erro = True
+            formset.save()
 
+            if instance.arquivo:
+                extension_list = ['.jpg', '.png', '.jpeg', '.gif']
+                extension = os.path.splitext(instance.arquivo.path)[-1]
+                if extension in extension_list:
+                    image = Image.open(instance.arquivo.path)
+                    try:
+                        if image.info['dpi'][0] != 300:
+                            messages.error(request, 'Imagem inválida, a imagem deve possuir 300dpi.')
+                            erro = True
+                    except:
+                        None
+                    if image.mode != 'RGB':
+                        messages.error(request, 'Imagem inválida, a imagem não pode ser CYMK.')
+                        erro = True
+
+                    elif image.width >= 3500 and image.heigth >= 2400:
+                        messages.error(request, 'Imagem inválida, a imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
+                        erro = True
+
+                    elif instance.arquivo.size > 3145728:
+                        messages.error(request, 'Imagem inválida, a imagem deve ser até 3 MB.')
+                        erro = True
         if erro:
             form.instance.status = 'A'
         else:
             form.instance.status = 'V'
         form.save()
-        formset.save()
 
     def response_change(self, request, obj):
         opts = self.model._meta
