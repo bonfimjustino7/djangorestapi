@@ -3,6 +3,7 @@ import io
 import urllib
 import zipfile
 import datetime
+import requests
 
 from collections import Counter
 
@@ -13,7 +14,6 @@ from django.utils.encoding import force_text
 from django.utils.html import format_html
 from django.utils.http import urlquote
 
-from util.stdlib import upper_first
 from django.contrib import admin
 from django.http import HttpResponse, HttpResponseRedirect
 from tabbed_admin import TabbedModelAdmin
@@ -21,11 +21,10 @@ from tabbed_admin import TabbedModelAdmin
 from base.models import *
 from inscricao.models import *
 
-from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerStackedInline,
-                              PowerTabularInline)
-from django.contrib import messages
+from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerTabularInline)
 
 from base.views import *
+from inscricao.apps import valida_youtube
 
 from PIL import Image
 
@@ -225,7 +224,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     tab_materiais = (
         MaterialInline,
-        MateriaisAdicionais
+        ("Materiais Adicionais", {'fields': ('videocase', 'apresentacao')}),
     )
 
     tab_ficha_agencia = (
@@ -545,11 +544,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         # Se for um dos prefixos acima, deve haver pelo menos uma apresentação ou videocase
         if regra1:
-            if totais['Apresentação'] + totais['Video Case'] < 1:
+            if not form.cleaned_data['videocase'] and not form.cleaned_data['apresentacao']:
                 messages.error(request,
-                                 "Nesta Área e nesta Categoria é obrigatório apresentar uma apresentação (como PPT) ou um videocase. Veja no site em ‘Como preparar os seus materiais'.")
+                               "Nesta Área e nesta Categoria é obrigatório incluir uma apresentação (como PPT) ou um videocase. Veja no site em ‘Como preparar os seus materiais'.")
                 erro = True
 
+        # regra 2
         if form.cleaned_data['premiacao'].codigo == 'FIL':
             if totais['10'] + totais['9'] >= 1:
                 messages.error(request,
@@ -720,7 +720,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         elif 'TEC30' in codigo:
             if 'Jornal' not in lista and 'Revista' not in lista and 'Exterior' not in lista and 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter o um dos desses materiais  Jornal, Revista, Exterior ou Promo para essa categoria.')
+                messages.error(request, 'É obrigatório ter um desses materiais: Jornal, Revista, Exterior ou Promo para essa categoria.')
                 erro = True
 
         # Checagem adicional
@@ -738,7 +738,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 error = True
 
         # Validação de URL
-        import requests
         instances = formset.save(commit=False)
         for instance in instances:
             if instance.tipo.descricao == 'Rádio':
@@ -755,28 +754,10 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                         erro = True
 
             elif instance.tipo.youtube and instance.url:
-                url = instance.url.split('//')
-                if 'www' in url[1]:
-                    url = url[1].split('.')
-                    url = url[1] + '.' + url[2]
-                else:
-                    url = url[1]
-
-                r = requests.get('http://' + url)
-                if not r.ok:
-                    messages.error(request, 'Link %s inválido. Vídeo não encontrado.' % url)
+                youtube_error = valida_youtube(instance.url)
+                if youtube_error:
                     erro = True
-                else:
-                    soup = BeautifulSoup(r.content, 'html.parser')
-                    title = soup.title.text
-                    if title == 'YouTube':
-                        messages.error(request, 'Link inválido. O vídeo não existe no servidor especificado.')
-                        erro = True
-
-                url = url.split('/')[0]
-                if not 'youtube.com' == url and not 'youtu.be' == url and not 'vimeo.com' == url:
-                    messages.error(request, 'O filme ou vídeo deve estar hospedado no YouTube ou no Vimeo!')
-                    erro = True
+                    messages.error(request, youtube_error)
             formset.save()
 
             if instance.arquivo:
@@ -801,6 +782,13 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                     elif instance.arquivo.size > 3145728:
                         messages.error(request, 'Imagem inválida, a imagem deve ser até 3 MB.')
                         erro = True
+
+        if form.instance.videocase:
+            youtube_error = valida_youtube(form.instance.videocase)
+            if youtube_error:
+                erro = True
+                messages.error(request, youtube_error)
+
         if erro:
             form.instance.status = 'A'
         else:

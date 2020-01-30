@@ -164,6 +164,8 @@ class Inscricao(models.Model):
     dtinclusao = models.DateTimeField('Dt.Inclusão', auto_now_add=True, null=True, blank=True)
     dtexportacao = models.DateField('Dt.Exportação', null=True, blank=True)
     status = models.CharField(max_length=1, default='A', choices=STATUS_INSCRICAO)
+    videocase = models.URLField('Videocase', max_length=512, null=True, blank=True)
+    apresentacao = models.URLField('Apresentação', max_length=512, null=True, blank=True)
 
     def __str__(self):
         return u'%s' % self.seq
@@ -200,7 +202,7 @@ def path(self, filename):
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
-    arquivo = FileField(upload_to=path, null=True, blank=True)
+    arquivo = FileField(upload_to=path, max_length=512, null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
 
@@ -210,6 +212,7 @@ class Material(models.Model):
     class Meta:
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
+
 
 @receiver(post_delete, sender=Material)
 def handler_file(sender, **kwargs):

@@ -43,7 +43,7 @@ class TipoMaterial(models.Model):
     arquivo = models.BooleanField('Permite anexar arquivo', default=False)
     url = models.BooleanField('Permite URL', default=False)
     youtube = models.BooleanField('Youtube/Vimeo obrigatórios', default=False)
-    dicas = models.TextField('Dicas para preenchimento', null=True)
+    dicas = models.TextField('Dicas para preenchimento', blank=True, null=True)
 
     def __str__(self):
         return u'%s' % self.descricao
