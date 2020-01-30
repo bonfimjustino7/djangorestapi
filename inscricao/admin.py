@@ -495,7 +495,16 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         empresa = Empresa.objects.get(id=request.POST['empresa'])
 
         if not obj.usuario:
-            usuario = EmpresaUsuario.objects.filter(empresa=empresa)[0]
+            usuarios = EmpresaUsuario.objects.filter(empresa=empresa)
+            if usuarios.count() == 0:
+                usuarios = Usuario.objects.filter(user=request.user)
+                if usuarios.count() == 0:
+                    usuario = Usuario.objects.create(nome_completo=request.user.first_name, user=request.user)
+                else:
+                    usuario = usuarios[0]
+                EmpresaUsuario.objects.create(empresa=empresa,usuario=usuario)
+            else:
+                usuario = usuarios[0]
             obj.usuario = Usuario.objects.get(id=usuario.usuario_id)
 
         if not obj.premio:
