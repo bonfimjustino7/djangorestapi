@@ -15,6 +15,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
          <script src="{% static "inscricao/js/dicas.js" %}"></script>
+         <script src="{% static "inscricao/js/btn-upload.js" %}"></script>
         <script>
             function verificarCombo(){
                 //console.log(document.getElementById('id_empresa').length);
@@ -52,10 +53,7 @@
 
 {% endblock %}
 <div id="content-main">
-      <div id="mensagem" class="modal" >
-          <p>Teste do Modal</p>
-          <a href="#" rel="modal:close">Close</a>
-      </div>
+
   {% block object-tools %}{{ block.super }}{% endblock %}
     <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
         <div>

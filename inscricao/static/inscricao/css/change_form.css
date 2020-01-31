@@ -83,3 +83,26 @@ strong#dicas p{
     font-size: 11px;
     color: #333 !important;
 }
+a.view-file{
+    display: inline-block;
+    float: left;
+    margin: 5px 5px;
+    color: #387aac;
+    font-weight: 500;
+    font-size: 12px;
+
+}
+.clear-file{
+    float: left;
+    margin: 5px 5px;
+}
+.clear-file label{
+    font-size: 11px;
+    font-weight: 500;
+    color: #333;
+    margin-left: 4px;
+}
+
+.dynamic-material_set .field-arquivo input[type=file]{
+    float: left;
+}
