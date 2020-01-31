@@ -270,14 +270,15 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                         'OutrosAgencia3','OutrosAgencia4','Midia','Atendimento','Aprovacao','ProdutoraFilme',
                         'DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo',
                         'EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1',
-                        'OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',)
+                        'OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',
+                        'videocase', 'apresentacao')
         return super(InscricaoAdmin, self).get_readonly_fields(request, obj)
 
     def get_queryset(self, request):
         qs = super(InscricaoAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
             usuario = Usuario.objects.filter(user=request.user)
-            qs = qs.filter(usuario=usuario, premio__status__in=('A', 'E'))
+            qs = qs.filter(usuario=usuario)
 
         return qs
 
@@ -494,7 +495,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         empresa = Empresa.objects.get(id=request.POST['empresa'])
 
-        if not obj.usuario:
+        if not hasattr(obj, 'usuario'):
             usuarios = EmpresaUsuario.objects.filter(empresa=empresa)
             if usuarios.count() == 0:
                 usuarios = Usuario.objects.filter(user=request.user)
@@ -507,7 +508,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 usuario = usuarios[0]
             obj.usuario = Usuario.objects.get(id=usuario.usuario_id)
 
-        if not obj.premio:
+        if not hasattr(obj, 'premio') or not obj.premio:
             regional = Regional.objects.get(id=empresa.regional.id)
             try:
                 obj.premio = Premio.objects.get(regional=regional, status='A')
@@ -800,7 +801,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         }
         if obj.status == 'A':
             msg = format_html(
-                ('{name} "{obj}" foi alterado mas contém erros.'),
+                '{name} "{obj}" foi alterado mas contém erros.',
                 **msg_dict
             )
             self.message_user(request, msg, messages.WARNING)
