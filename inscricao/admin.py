@@ -162,10 +162,6 @@ class MaterialInline(admin.TabularInline):
                 return list(super().get_fields(request, obj))
         return super(MaterialInline, self).get_readonly_fields(request, obj)
 
-class MateriaisAdicionais(admin.TabularInline):
-    model = Material
-    max_num = 1
-    fields = ('tipo', 'arquivo', 'url',)
 
 class AnoFilter(admin.SimpleListFilter):
     title = 'ano'

@@ -43,6 +43,7 @@ urlpatterns = [
 	url(r'^tipos_materiais/(?P<id>\d+)/$', views.tipo_materiais),
 	url(r'^filtrar_estados/(?P<id>\d+)/$', views.filtrar_estados),
 	url(r'^dica_material/(?P<id>\d+)/$', views.dica_materiais),
+	url(r'^dica_material/name/(?P<name>\w+)/$', views.dica_materiais_by_name),
 ]
 
 if settings.LOCAL:

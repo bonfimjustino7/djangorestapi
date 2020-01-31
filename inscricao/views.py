@@ -22,6 +22,11 @@ def dica_materiais(request, id):
     material = TipoMaterial.objects.get(id=id)
     return HttpResponse(json.dumps({'dica': material.dicas}), content_type='application/json')
 
+def dica_materiais_by_name(request, name):
+    material = TipoMaterial.objects.get(descricao=name)
+    return HttpResponse(json.dumps({'dica': material.dicas}), content_type='application/json')
+
+
 def filtrar_estados(request, id):
     regional = Regional.objects.get(id=id)
     estados = regional.estados.split(',')
