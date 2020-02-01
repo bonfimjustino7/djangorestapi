@@ -24,7 +24,7 @@ SECRET_KEY = 'lb)gvnos2w+y0ii)l7-sn2v6(ky-q4a+0cv-9n1*e%-bwh5l5z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-LOCAL = False
+LOCAL = True
 SEND_MAIL = False
 
 # Application definition
