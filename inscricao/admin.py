@@ -126,6 +126,8 @@ class EmpresaAdmin(PowerModelAdmin):
     def save_model(self, request, obj, form, change):
         area = form.cleaned_data['area'].pk
         obj.save()
+
+        # se a empresa for uma agência de publicidade, já incluir automaticamente a agência no inline
         if not request.user.is_superuser:
             if area == 1 or area == 3 or area == 27:
                 if not EmpresaAgencia.objects.filter(agencia=obj.nome).exists():
@@ -137,6 +139,7 @@ class EmpresaAdmin(PowerModelAdmin):
         duplicidade = 0
         instances = formset.save(commit=False)
         existentes = formset.cleaned_data
+
         for instance in instances:
             for agencia in existentes:
                 if instance.agencia == agencia['agencia']:
@@ -146,6 +149,19 @@ class EmpresaAdmin(PowerModelAdmin):
                 formset.save_m2m()
             else:
                 messages.warning(request, 'Não é permitido agências com mesmo nome. A agência duplicada foi excluída')
+
+        # Verifica se a regional é a mesma da premiação
+        ufs_da_regional = []
+        regional = form.cleaned_data['regional']
+        for estado in regional.estados.split(','):
+            ufs_da_regional.append(estado.strip())
+
+        for instance in instances:
+            if instance.uf not in ufs_da_regional:
+                messages.warning(request,
+                'Trabalhos da Agência %s que não está sediada na regional %s só podem concorrer '
+                'ao Colunistas Técnica, inscritos por produtoras, estúdios, etc.' %
+                                 (instance.agencia, form.cleaned_data['regional']))
 
         for obj in formset.deleted_objects:
             obj.delete()
@@ -495,7 +511,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         empresa = Empresa.objects.get(id=request.POST['empresa'])
 
-        if not hasattr(obj, 'usuario'):
+        if not hasattr(obj, 'usuario') or not obj.usuario:
             usuarios = EmpresaUsuario.objects.filter(empresa=empresa)
             if usuarios.count() == 0:
                 usuarios = Usuario.objects.filter(user=request.user)
@@ -595,8 +611,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         elif 'DIG1' in codigo:
             # Obs: No doc está peças digitais, não encontrei e coloquei esse.
-            if 'Peças de Design' not in lista or len(lista) > 1:
-                messages.error(request, 'É obrigatório ter somente o material Peças de Design para essa categoria.')
+            if 'Peças de Digitais' not in lista:
+                messages.error(request, 'É obrigatório ter somente o material Peças Digitais para essa categoria.')
                 erro = True
 
         # Regra 8
