@@ -106,11 +106,3 @@ a.view-file{
 .dynamic-material_set .field-arquivo input[type=file]{
     float: left;
 }
-#imagelightbox
-{
-    position: fixed;
-    z-index: 9999;
-
-    -ms-touch-action: none;
-    touch-action: none;
-}

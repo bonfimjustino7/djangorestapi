@@ -7,25 +7,24 @@
 {% block extrastyle %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/change_form.css' %}" />
-    <link rel="stylesheet" href=" {% static 'inscricao/css/swipebox.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/lightcase.css' %}" />
+
 
 {% endblock %}
 {% block js %}
 
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="{% static 'inscricao/js/dicas.js' %}"></script>
         <script src="{% static 'inscricao/js/btn-upload.js' %}"></script>
-        <script src="{% static 'inscricao/js/jquery.swipebox.js' %}"></script>
+        <script src="{% static 'inscricao/js/lightcase.js' %}"></script>
+
         <script type="text/javascript">
-            ;( function( $ ) {
+            jQuery(document).ready(function($) {
+                $('a[data-rel^=lightcase]').lightcase();
+            });
+        </script>
 
-                $( '.swipebox' ).swipebox();
-
-            } )( jQuery );
-            </script>
         <script>
             function verificarCombo(){
                 //console.log(document.getElementById('id_empresa').length);

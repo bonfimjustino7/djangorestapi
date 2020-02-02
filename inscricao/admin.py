@@ -724,11 +724,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             check = False
             url = ''
             for mat in formset.cleaned_data:
-                if not mat.get('url', False) == url:
-                    url = mat.get('url', False)
-                else:
-                    check = True
-                    break
+                if mat.get('url', False):
+                    if not mat.get('url', False) == url:
+                        url = mat.get('url', False)
+                    else:
+                        check = True
+                        break
             if check:
                 messages.error(request, 'Não podem haver urls iguais.')
                 error = True
