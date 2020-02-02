@@ -228,17 +228,6 @@
                            $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', false)
                             console.log(value.arquivo)
                         }
-                        // if(value.roteiro == false){
-                        //     $(`table tbody tr#${classe} td.btn-editar input[type=button]`).css('display', 'none')
-                        //     console.log('Desabililar')
-                        //     console.log(`tr#${classe} td.btn-editar input`)
-                        // }
-                        // else{
-                        //      $(`table tbody tr#${classe} td.btn-editar input[type=button]`).css('display', 'inline-block')
-                        //     console.log('habiliar')
-                        //     console.log(`tr#${classe} .btn-editar input`)
-                        //
-                        // }
                     }
                  })
             })
@@ -254,106 +243,27 @@
                     })
             })
         }
-        // function carregarEstados(cont) {
-        //
-        //         $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
-        //             for (var i = 0; i < cont; i++) {
-        //                 var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
-        //                 var val_select = $(select).val()
-        //                 $(select).empty()
-        //                 $(select).append($('<option></option>').attr("value", '').text('------'))
-        //                 $.each(res, function (id, value) {
-        //                     if (val_select == value) {
-        //                         $(select).append($('<option value="'+ value +'" selected="selected">'+ value +'</option>'))
-        //                     } else {
-        //                         $(select).append($('<option value="'+ value +'">'+ value +'</option>'))
-        //                     }
-        //                 })
-        //             }
-        //         }).fail(function () {
-        //             //console.log('erro')
-        //             limparEstados(contarAgencias())
-        //         })
-        //
-        // }
-        // function limparEstados(cont) {
-        //     if(!$('#id_regional').val()){
-        //         for (var i = 0; i < cont; i++) {
-        //             var select = document.getElementById(`id_empresaagencia_set-${i}-uf`)
-        //             $(select).empty()
-        //             $(select).append($('<option></option>').attr("value", '').text('------'))
-        //         }
-        //     }
-        // }
-        // function carregarEstado(cont) {
-        //     $.get(`/filtrar_estados/${$('#id_regional').val()}`, function (res) {
-        //
-        //             var select = document.getElementById(`id_empresaagencia_set-${cont-1}-uf`)
-        //             var val_select = $(select).val()
-        //             $(select).empty()
-        //             $(select).append($('<option></option>').attr("value", '').text('------'))
-        //             $.each(res, function (id, value) {
-        //                 if(val_select == value){
-        //                     $(select).append($('<option value="'+value+'" selected="selected">'+ value+'</option>'))
-        //                 }
-        //                 else{
-        //                     $(select).append($('<option value="'+value+'">'+ value+'</option>'))
-        //                 }
-        //             })
-        //
-        //     })
-        // }
-
-
         function contarSelects(){
             return document.querySelectorAll('.dynamic-material_set .field-tipo select').length
         }
-        // function contarLinhas(){
-        //     return document.querySelectorAll('table tbody tr.dynamic-material_set').length
-        // }
         function contarAgencias(){
             return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
         }
         $(document).ready(function () {
              carregar(contarSelects())
-            // limparEstados(contarAgencias())
-            // carregarEstados(contarAgencias())
-
              $('#id_premiacao').change(function () {
-            //      limparEstados(contarAgencias())
                  carregar(contarSelects())
              })
 
             $('.add-row').click(function () {
-               carregarUm(contarSelects())
-                // $('.btn-editar a.inline-deletelink').css('display', 'none')
-                //  $('.btn-editar input').click(function () {
-                //     $('#mensagem').modal()
-                //  })
+               carregarUm(contarSelects());
                  $('.dynamic-material_set  td.field-tipo select').change(function (event) {
                     var campo = event.target.id
                     var classe = event.target.name
                     habilarCampos($(this).val(), campo, classe)
                 })
-            })
-            // Logica da filtragem de estados
-            // $('#id_regional').change(function () {
-            //     carregarEstados(contarAgencias())
-            // })
-            // $('.add-row').click(function () {
-            //     carregarEstado(contarAgencias())
-            //     limparEstados(contarAgencias())
-            // })
+            });
 
-            // Iniciar com a logica dos materiais.
-            // var d = document.querySelector('.dynamic-material_set  td.field-tipo select');
-            // for(var i = 0; i < contarSelects(); i++){
-            //     var elemento = d.id;
-            //     var novo_elemento_id = `${elemento.split('-')[0]}-${i}-${elemento.split('-')[2]}`;
-            //     habilarCampos(d.value, novo_elemento_id);
-            //     console.log(novo_elemento_id)
-            // }
-            // //
             $('.dynamic-material_set  td.field-tipo select').change(function (event) {
                 //console.log($(this).val())
                 console.log(event.target.id)
@@ -363,6 +273,32 @@
                 console.log($(this).val())
                  habilarCampos($(this).val(), campo, classe)
             })
+
+            // Ao carregar a página execulta a validação dos materiais
+            $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
+                for(var i = 0; i < document.querySelectorAll('.has_original').length; i++) {
+                    const valor = $(`select#id_material_set-${i}-tipo`).val();
+                    $.each(res, function (id, value) {
+                        if (valor == value.id) {
+                            if (value.arquivo != true) {
+                                $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', true)
+                                console.log(value.arquivo)
+                            } else {
+                                $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', false)
+                                console.log(value.arquivo)
+                            }
+                            if(value.url != true){
+                                $(`.dynamic-material_set .field-url input#id_material_set-${i}-url`).prop('disabled', true);
+                                console.log(value.url)
+                            }
+                            else{
+                                $(`.dynamic-material_set .field-url input#id_material_set-${i}-url`).prop('disabled', false);
+                                console.log(value.url)
+                            }
+                        }
+                    });
+                }
+            });
         })
 
 </script>

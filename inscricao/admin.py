@@ -754,7 +754,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         # Validação de URL
         instances = formset.save(commit=False)
         for instance in instances:
-            if instance.tipo.descricao == 'Rádio':
+            if instance.tipo.descricao == 'Rádio' and instance.url is not None:
                 request_radio = requests.get(instance.url)
 
                 if not request_radio.ok:
