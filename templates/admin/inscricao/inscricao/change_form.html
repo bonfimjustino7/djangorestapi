@@ -153,18 +153,14 @@
 <!--            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}-->
              <div class="submit-row">
 
-            <!-- Se for add-->
-                {% if not original %}
-                    <input type="submit" value="Salvar" name="_continue" class="default" disabled>
             <!-- Se for change -->
-                {% else %}
+                {% if original %}
                      <p class="deletelink-box">
                         <a href="" class="deletelink">Apagar</a>
                     </p>
-                 <input type="submit" value="Salvar" name="_save" class="default">
                 {% endif %}
-                 <input type="submit" value="Salvar e adicionar outro(a)" name="_addanother">
-                <input type="submit" value="Salvar e continuar editando" name="_continue">
+                <input type="submit" value="Salvar e adicionar outro(a)" {% if original.status == 'A' %} disabled {% endif %} name="_addanother">
+                <input type="submit" class="default" value="Salvar" name="_continue">
 
             </div>
 
