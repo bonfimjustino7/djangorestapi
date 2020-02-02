@@ -126,6 +126,8 @@ class EmpresaAdmin(PowerModelAdmin):
     def save_model(self, request, obj, form, change):
         area = form.cleaned_data['area'].pk
         obj.save()
+
+        # se a empresa for uma agência de publicidade, já incluir automaticamente a agência no inline
         if not request.user.is_superuser:
             if area == 1 or area == 3 or area == 27:
                 if not EmpresaAgencia.objects.filter(agencia=obj.nome).exists():
@@ -137,6 +139,7 @@ class EmpresaAdmin(PowerModelAdmin):
         duplicidade = 0
         instances = formset.save(commit=False)
         existentes = formset.cleaned_data
+
         for instance in instances:
             for agencia in existentes:
                 if instance.agencia == agencia['agencia']:
@@ -146,6 +149,19 @@ class EmpresaAdmin(PowerModelAdmin):
                 formset.save_m2m()
             else:
                 messages.warning(request, 'Não é permitido agências com mesmo nome. A agência duplicada foi excluída')
+
+        # Verifica se a regional é a mesma da premiação
+        ufs_da_regional = []
+        regional = form.cleaned_data['regional']
+        for estado in regional.estados.split(','):
+            ufs_da_regional.append(estado.strip())
+
+        for instance in instances:
+            if instance.uf not in ufs_da_regional:
+                messages.warning(request,
+                'Trabalhos da Agência %s que não está sediada na regional %s só podem concorrer '
+                'ao Colunistas Técnica, inscritos por produtoras, estúdios, etc.' %
+                                 (instance.agencia, form.cleaned_data['regional']))
 
         for obj in formset.deleted_objects:
             obj.delete()
@@ -270,14 +286,15 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                         'OutrosAgencia3','OutrosAgencia4','Midia','Atendimento','Aprovacao','ProdutoraFilme',
                         'DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo',
                         'EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1',
-                        'OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',)
+                        'OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',
+                        'videocase', 'apresentacao')
         return super(InscricaoAdmin, self).get_readonly_fields(request, obj)
 
     def get_queryset(self, request):
         qs = super(InscricaoAdmin, self).get_queryset(request)
         if request.user.groups.filter(name='Agência'):
             usuario = Usuario.objects.filter(user=request.user)
-            qs = qs.filter(usuario=usuario, premio__status__in=('A', 'E'))
+            qs = qs.filter(usuario=usuario)
 
         return qs
 
@@ -494,7 +511,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         empresa = Empresa.objects.get(id=request.POST['empresa'])
 
-        if not obj.usuario:
+        if not hasattr(obj, 'usuario') or not obj.usuario:
             usuarios = EmpresaUsuario.objects.filter(empresa=empresa)
             if usuarios.count() == 0:
                 usuarios = Usuario.objects.filter(user=request.user)
@@ -507,7 +524,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 usuario = usuarios[0]
             obj.usuario = Usuario.objects.get(id=usuario.usuario_id)
 
-        if not obj.premio:
+        if not hasattr(obj, 'premio') or not obj.premio:
             regional = Regional.objects.get(id=empresa.regional.id)
             try:
                 obj.premio = Premio.objects.get(regional=regional, status='A')
@@ -594,8 +611,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         elif 'DIG1' in codigo:
             # Obs: No doc está peças digitais, não encontrei e coloquei esse.
-            if 'Peças de Design' not in lista or len(lista) > 1:
-                messages.error(request, 'É obrigatório ter somente o material Peças de Design para essa categoria.')
+            if 'Peças de Digitais' not in lista:
+                messages.error(request, 'É obrigatório ter somente o material Peças Digitais para essa categoria.')
                 erro = True
 
         # Regra 8
@@ -801,7 +818,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         }
         if obj.status == 'A':
             msg = format_html(
-                ('{name} "{obj}" foi alterado mas contém erros.'),
+                '{name} "{obj}" foi alterado mas contém erros.',
                 **msg_dict
             )
             self.message_user(request, msg, messages.WARNING)
