@@ -54,6 +54,7 @@ $(document).ready(function () {
                     <span class="label" id="id_material_set-${qtd-1}-arquivo-label">Nenhum arquivo selecionado</span>
                 </label>`).appendTo(`#material_set-${qtd-1} td.field-arquivo`);
 
+       // Mudando nome do arquivo selecionado
          $('.botao').click(function (e) {
             const input = e.target.id.split('-cpy')[0];
             //console.log(id)
@@ -63,20 +64,21 @@ $(document).ready(function () {
                 if (val)
                     document.getElementById(`${input}-label`).innerHTML = val ;
                 else
-                    document.getElementById(`${input}-label`).innerHTML = 'Nenhum arquivo selecionado.' ;
+                    document.getElementById(`${input}-label`).innerHTML = 'Nenhum arquivo selecionado' ;
             })
         })
      });
+    // Mudando nome do arquivo selecionado
     $('.botao').click(function (e) {
         const input = e.target.id.split('-cpy')[0];
         //console.log(id)
        $(`#${input}`).change(function () {
-            console.log($(this).val().split('\\')[2]);
+            //console.log($(this).val().split('\\')[2]);
             var val = $(this).val().split('\\')[2];
             if (val)
                 document.getElementById(`${input}-label`).innerHTML = val ;
             else
-                document.getElementById(`${input}-label`).innerHTML = 'Nenhum arquivo selecionado.' ;
+                document.getElementById(`${input}-label`).innerHTML = 'Nenhum arquivo selecionado' ;
         })
     })
 
