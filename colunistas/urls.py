@@ -29,6 +29,7 @@ from filebrowser.sites import site
 # 	path('admin_tools/', include('admin_tools.urls')),
 # 	path('', include('base.urls')),
 # ]
+from util.views import montar_nome
 
 admin.site.site_header = settings.SITE_NAME
 
@@ -44,6 +45,7 @@ urlpatterns = [
 	url(r'^filtrar_estados/(?P<id>\d+)/$', views.filtrar_estados),
 	url(r'^dica_material/(?P<id>\d+)/$', views.dica_materiais),
 	url(r'^dica_material/name/(?P<name>\w+)/$', views.dica_materiais_by_name),
+	url(r'^baixar_material/(?P<id>\d+)/$', montar_nome),
 ]
 
 if settings.LOCAL:

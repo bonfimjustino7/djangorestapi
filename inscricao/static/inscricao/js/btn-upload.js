@@ -13,6 +13,7 @@ function alterarURL(){
 
 $(document).ready(function () {
     const qtd = document.querySelectorAll('.dynamic-material_set').length;
+    const formatos_img = ['jpg', 'jpeg', 'png', 'gif']
     console.log(qtd)
     for(var i = 0; i < qtd; i++){
         var a = $(`#material_set-${i} .field-arquivo .file-upload`).length
@@ -27,9 +28,16 @@ $(document).ready(function () {
                 </label>`).appendTo(`#material_set-${i} td.field-arquivo`);
 
             var a = $(`#id_material_set-${i}-arquivo`);
-            console.log(a);
 
-            $(`<a href="${ref_img}" class="view-file" id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
+            var id = ref_img.split('.')[1]
+            console.log(id);
+            if(formatos_img.indexOf(id) > -1){
+                $(`<a href="${ref_img}" class="view-file" id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
+            }
+            else{
+                $(`<a href="/baixar_material/${ref_img.split('/')[5].split('.')[0]}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
+            }
+
             //$(`#view-file-set-${i}`).attr('href', ref_img);
             $(`<span class="clear-file" id="clear-${i}"><input type="checkbox" id="id_material_set-${i}-arquivo-clear_id" name="material_set-${i}-arquivo-clear"><label for="id_material_set-${i}-arquivo-clear_id">Excluir</label></span>`).appendTo(`#material_set-${i} td.field-arquivo`);
         }
