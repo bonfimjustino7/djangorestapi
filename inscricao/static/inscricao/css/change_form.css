@@ -106,3 +106,32 @@ a.view-file{
 .dynamic-material_set .field-arquivo input[type=file]{
     float: left;
 }
+.file{
+    margin-top: 5px;
+    width: 170px;
+    float: left;
+}
+.file .botao{
+    display: inline-block;
+    width: 90px;
+    border: 1px solid #488bc4;
+    background-color: #4393c8;
+    color: #fff;
+    text-align: center;
+    padding: 1px;
+    cursor: pointer;
+}
+.file .botao:hover{
+    background-color: #27516d;
+    cursor: pointer;
+}
+.file-disabled{
+    background-color: rgba(67,147,200, 0.5) !important;
+    border: 1px solid #5fb3fc;
+}
+.file-disabled:hover{
+    cursor: default !important;
+}
+.file .label{
+    font-size: 11px;
+}

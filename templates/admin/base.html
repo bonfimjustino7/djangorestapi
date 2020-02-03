@@ -205,6 +205,7 @@
         function habilarCampos(valor, campo, classe){
             campo = campo.split('tipo')
             var arquivo = campo[0] + 'arquivo'
+            var arquivo_cpy = campo[0] + 'arquivo-cpy'
             var url = campo[0] + 'url'
             classe = classe.split('-')
             classe = classe[0] +'-'+ classe[1]
@@ -221,11 +222,13 @@
                             console.log(value.url)
                         }
                         if(value.arquivo != true){
-                            $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', true)
+                            $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', true);
+                           $(`.dynamic-material_set .field-arquivo #${arquivo_cpy}`).addClass('file-disabled');
                             console.log(value.arquivo)
                         }
                         else{
-                           $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', false)
+                           $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', false);
+                           $(`.dynamic-material_set .field-arquivo #${arquivo_cpy}`).removeClass('file-disabled');
                             console.log(value.arquivo)
                         }
                     }
@@ -281,10 +284,12 @@
                     $.each(res, function (id, value) {
                         if (valor == value.id) {
                             if (value.arquivo != true) {
-                                $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', true)
+                                $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', true);
+                                $(`.dynamic-material_set .field-arquivo #id_material_set-${i}-arquivo-cpy`).addClass('file-disabled');
                                 console.log(value.arquivo)
                             } else {
-                                $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', false)
+                                $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', false);
+                                $(`.dynamic-material_set .field-arquivo #id_material_set-${i}-arquivo-cpy`).removeClass('file-disabled');
                                 console.log(value.arquivo)
                             }
                             if(value.url != true){
