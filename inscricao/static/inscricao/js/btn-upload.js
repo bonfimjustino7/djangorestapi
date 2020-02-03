@@ -23,7 +23,7 @@ $(document).ready(function () {
             $(`<input type="file" name="material_set-${i}-arquivo" id="id_material_set-${i}-arquivo" style="display: none"/>`).appendTo(`#material_set-${i} td.field-arquivo`);
             $(`<label for="id_material_set-${i}-arquivo"class="file">
                     <span class="botao" id="id_material_set-${i}-arquivo-cpy">Selecione</span>
-                    <span class="label">Arquivo Ok</span>
+                    <span class="label" id="id_material_set-${i}-arquivo-label">Arquivo Ok</span>
                 </label>`).appendTo(`#material_set-${i} td.field-arquivo`);
 
             var a = $(`#id_material_set-${i}-arquivo`);
@@ -38,7 +38,7 @@ $(document).ready(function () {
             $(`<input type="file" name="material_set-${i}-arquivo" id="id_material_set-${i}-arquivo" style="display: none"/>`).appendTo(`#material_set-${i} td.field-arquivo`);
             $(`<label for="id_material_set-${i}-arquivo"class="file" style="width: 250px !important;">
                     <span class="botao" id="id_material_set-${i}-arquivo-cpy">Selecione</span>
-                    <span class="label">Nenhum arquivo selecionado</span>
+                    <span class="label" id="id_material_set-${i}-arquivo-label">Nenhum arquivo selecionado</span>
                 </label>`).appendTo(`#material_set-${i} td.field-arquivo`);
         }
 
@@ -51,7 +51,20 @@ $(document).ready(function () {
             $(`<input type="file" name="material_set-${qtd-1}-arquivo" id="id_material_set-${qtd-1}-arquivo" style="display: none"/>`).appendTo(`#material_set-${qtd-1} td.field-arquivo`);
             $(`<label for="id_material_set-${qtd-1}-arquivo"class="file" style="width: 250px !important;">
                     <span class="botao" id="id_material_set-${qtd-1}-arquivo-cpy">Selecione</span>
-                    <span class="label">Nenhum arquivo selecionado</span>
+                    <span class="label" id="id_material_set-${qtd-1}-arquivo-label">Nenhum arquivo selecionado</span>
                 </label>`).appendTo(`#material_set-${qtd-1} td.field-arquivo`);
-     })
+     });
+    $('.botao').click(function (e) {
+        const input = e.target.id.split('-cpy')[0];
+        //console.log(id)
+       $(`#${input}`).change(function () {
+            console.log($(this).val().split('\\')[2]);
+            var val = $(this).val().split('\\')[2];
+            if (val)
+                document.getElementById(`${input}-label`).innerHTML = val ;
+            else
+                document.getElementById(`${input}-label`).innerHTML = 'Nenhum arquivo selecionado.' ;
+        })
+    })
+
 });
