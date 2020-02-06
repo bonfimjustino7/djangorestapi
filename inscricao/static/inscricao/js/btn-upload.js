@@ -7,6 +7,7 @@ function alterarURL(){
              var ref_url = document.querySelector(`#material_set-${i} td.field-url p.url a`).href;
              $(`#material_set-${i} td.field-url p.url`).remove(); //apaga a div atual
              $(`<input type="url" name="material_set-${i}-url" value="${ref_url}" class="vURLField" maxlength="200" id="id_material_set-${i}-url">`).appendTo(`#material_set-${i} td.field-url`);
+             $(`<a href="${ref_url}" class="view-file" id="view-file-set-${i}">Visualizar</a>`).appendTo(`#material_set-${i} td.field-url`);
         }
     }
 }
@@ -27,9 +28,9 @@ $(document).ready(function () {
                     <span class="label" id="id_material_set-${i}-arquivo-label">Arquivo Ok</span>
                 </label>`).appendTo(`#material_set-${i} td.field-arquivo`);
 
-            var a = $(`#id_material_set-${i}-arquivo`);
+            // var a = $(`#id_material_set-${i}-arquivo`);
 
-            var id = ref_img.split('.')[1]
+            var id = ref_img.split('/')[5].split('.')[1]
             console.log(id);
             if(formatos_img.indexOf(id) > -1){
                 $(`<a href="${ref_img}" class="view-file" id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
