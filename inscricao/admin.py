@@ -780,8 +780,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 if extension in extension_list:
                     image = Image.open(instance.arquivo.path)
                     try:
-                        if image.info['dpi'][0] != 300:
-                            messages.error(request, 'Imagem inválida, a imagem deve possuir 300dpi.')
+                        if image.info['dpi'][0] > 300:
+                            messages.error(request, 'Imagem inválida, a imagem deve ter menos de 300dpi.')
                             erro = True
                     except:
                         None
@@ -789,12 +789,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                         messages.error(request, 'Imagem inválida, a imagem não pode ser CYMK.')
                         erro = True
 
-                    elif image.width >= 3500 and image.heigth >= 2400:
-                        messages.error(request, 'Imagem inválida, a imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
+                    elif image.width >= 3500 or image.heigth >= 2400:
+                        messages.error(request, 'Atenção: a imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
                         erro = True
 
                     elif instance.arquivo.size > 3145728:
-                        messages.error(request, 'Imagem inválida, a imagem deve ser até 3 MB.')
+                        messages.error(request, 'Imagem inválida: a imagem deve ter até 3 MB.')
                         erro = True
 
         if form.instance.videocase:
