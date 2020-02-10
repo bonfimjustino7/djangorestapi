@@ -46,6 +46,7 @@ urlpatterns = [
 	url(r'^dica_material/(?P<id>\d+)/$', views.dica_materiais),
 	url(r'^dica_material/name/(?P<name>\w+)/$', views.dica_materiais_by_name),
 	url(r'^baixar_material/(?P<id>\d+)/$', montar_nome),
+	url(r'^get_tipo_materiais/(?P<id>\d+)/$', views.get_tipo_materiais),
 ]
 
 if settings.LOCAL:

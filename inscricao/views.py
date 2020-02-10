@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import json
 from base.models import Premio, Premiacao, Regional, TipoMaterial
+from inscricao.models import Material
 
 
 def tipo_materiais(request, id):
@@ -32,3 +33,7 @@ def filtrar_estados(request, id):
     estados = regional.estados.split(',')
     estados = [estado.strip(' ') for estado in estados]
     return HttpResponse(json.dumps(estados), content_type='application/json')
+
+def get_tipo_materiais(request, id):
+    lista_materiais = list(Material.objects.filter(inscricao=id).values('tipo'))
+    return HttpResponse(json.dumps(lista_materiais), content_type='application/json')

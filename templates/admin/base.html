@@ -253,7 +253,8 @@
             return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
         }
         $(document).ready(function () {
-             carregar(contarSelects())
+             //get_tipo(contarSelects());
+             carregar(contarSelects());
              $('#id_premiacao').change(function () {
                  carregar(contarSelects())
              })
@@ -273,7 +274,7 @@
                  var campo = event.target.id
                 // //document.querySelector('.dynamic-material_set .field-tipo select').className;
                 var classe = event.target.name
-                console.log($(this).val())
+                //console.log($(this).val())
                  habilarCampos($(this).val(), campo, classe)
             })
 
@@ -304,7 +305,36 @@
                     });
                 }
             });
+
         })
+        function get_tipo(cont){
+            var id = window.location.href.split('/')[6];
+            console.log(id);
+             $.get(`/get_tipo_materiais/${id}/`, function (res) {
+                 console.log(res);
+                for(var i = 0; i < cont; i++){
+                    var select = document.getElementById(`id_material_set-${i}-tipo`); // pega o select
+                    var c = document.querySelectorAll(`#id_material_set-${i}-tipo option`).length; // conta quantos options existe
+                    for(var j = 0; j < c; j++){
+                        //console.log(res[i]);
+                        if(res[i]){
+                            var id_request = res[i].tipo;
+                             if(id_request == select.options[j].value){
+                                //console.log(select.options[j].value);
+                                 $(select.options[j]).attr('selected', '');
+                                 //console.log(id_request);
+                             }
+                        }
+
+                    }
+
+                }
+            })
+        }
+    $(window).on('pageshow', function(){
+        console.info('Entered the page!');
+         get_tipo(contarSelects())
+    });
 
 </script>
 
