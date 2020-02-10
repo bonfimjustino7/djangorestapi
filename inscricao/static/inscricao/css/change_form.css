@@ -99,6 +99,10 @@ a.view-file{
     padding: 1px;
     cursor: pointer;
 }
+.vURLField{
+    float: left;
+    margin-right: 10px;
+}
 a.view-file:hover{
     background-color: #406080;
 }

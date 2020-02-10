@@ -7,7 +7,7 @@ function alterarURL(){
              var ref_url = document.querySelector(`#material_set-${i} td.field-url p.url a`).href;
              $(`#material_set-${i} td.field-url p.url`).remove(); //apaga a div atual
              $(`<input type="url" name="material_set-${i}-url" value="${ref_url}" class="vURLField" maxlength="200" id="id_material_set-${i}-url">`).appendTo(`#material_set-${i} td.field-url`);
-             $(`<a href="${ref_url}" class="view-file" id="view-file-set-${i}">Visualizar</a>`).appendTo(`#material_set-${i} td.field-url`);
+             $(`<a href="${ref_url}" class="view-file" target="_blank" id="view-file-set-${i}">Visualizar</a>`).appendTo(`#material_set-${i} td.field-url`);
         }
     }
 }
@@ -33,7 +33,7 @@ $(document).ready(function () {
             var id = ref_img.split('/')[5].split('.')[1]
             console.log(id);
             if(formatos_img.indexOf(id) > -1){
-                $(`<a href="${ref_img}" class="view-file" id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
+                $(`<a href="${ref_img}" class="view-file"  id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
             }
             else{
                 $(`<a href="/baixar_material/${ref_img.split('/')[5].split('.')[0]}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
@@ -89,6 +89,22 @@ $(document).ready(function () {
             else
                 document.getElementById(`${input}-label`).innerHTML = 'Nenhum arquivo selecionado' ;
         })
-    })
+    });
+
+    if($('.field-videocase p.url').length){
+         var refUrlVideoCase = document.querySelector(`.field-videocase p.url a`).href;
+         $('.field-videocase p.url').remove();
+         $(`<input type="url" name="videocase" value="${refUrlVideoCase}" class="vURLField" maxlength="512">`).appendTo(`.field-videocase`);
+         $(`<a href="${refUrlVideoCase}" target="_blank" class="view-file">Visualizar</a>`).appendTo('.field-videocase');
+    }
+    if($('.field-apresentacao p.url').length){
+        var refUrlApresentacao = document.querySelector(`.field-apresentacao p.url a`).href;
+        $('.field-apresentacao p.url').remove();
+        $(`<input type="url" name="apresentacao" value="${refUrlApresentacao}" class="vURLField" maxlength="512">`).appendTo(`.field-apresentacao`);
+        $(`<a href="${refUrlApresentacao}" target="_blank" class="view-file">Visualizar</a>`).appendTo('.field-apresentacao');
+    }
+
+
+
 
 });
