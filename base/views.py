@@ -46,8 +46,9 @@ class LoginView(View):
 
             login_str = self.dados['formulario_login'].cleaned_data['usuario']
             if '@' in login_str:
-                messages.warning(request, 'Entre com o seu login e não com o email')
-                return render(request, self.template, self.dados)
+                user = User.objects.filter(email=login_str)
+                if user:
+                    login_str = user.get()
 
             usuario = authenticate(
                     username=login_str,
