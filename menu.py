@@ -29,13 +29,27 @@ class CustomMenu(Menu):
         Menu.__init__(self, **kwargs)
         self.children += [
             items.MenuItem('Tela Inicial', reverse('admin:index')),
-            items.Bookmarks(u'Favoritos'),
-            CustomAppList(
-                u'Inscrição',
-                models=('inscricao.models.Inscricao', 'inscricao.models.Empresa',)
+            items.MenuItem('Empresas',
+                children=[
+                    items.MenuItem('Nova Empresa', '/admin/inscricao/empresa/add'),
+                    items.MenuItem('Empresa Cadastradas', '/admin/inscricao/empresa/')
+                ]
             ),
+            items.MenuItem('Inscricões',
+                children=[
+                    items.MenuItem('Nova Inscrição', '/admin/inscricao/inscricao/add'),
+                    items.MenuItem('Inscrições Cadastradas', '/admin/inscricao/inscricao/'),
+                ]
+            ),
+            items.MenuItem('Impressões',
+                children=[
+                    items.MenuItem('Formulário de Custos', '/fomulario_custos/'),
+                    items.MenuItem('Inscrições Cadastradas', '/inscricoes_cadastradas/'),
+                ]
+            ),
+            items.MenuItem('Impressões'),
             CustomAppList(
                 u'Adminstração',
-                models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences', ),
+                models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
             ),
         ]
