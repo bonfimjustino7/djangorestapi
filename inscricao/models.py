@@ -1,5 +1,6 @@
 import os
 import uuid
+from collections import Counter
 
 from django.db import models
 from django.dispatch import receiver
@@ -184,7 +185,16 @@ class Inscricao(models.Model):
 
     @property
     def resumo(self):
-        return 'Jornais (3), Revistas (4), etc'
+        totais = Counter()
+        for item in self.material_set.all():
+            totais[item.tipo.descricao] += 1
+
+        resumo = ''
+        for k, v in totais.items():
+            resumo += '%s (%s)\n' % (k, v)
+
+        return resumo
+
 
     def save(self, *args, **kwargs):
         if not self.seq:

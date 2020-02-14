@@ -228,7 +228,7 @@ class RegionalFilter(admin.SimpleListFilter):
 @admin.register(Inscricao)
 class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     list_filter = ('premiacao', RegionalFilter, AnoFilter)
-    readonly_fields = ('seq',)
+    readonly_fields = ('seq', 'resumo')
     tab_info = (
         (None, {'fields': (('premiacao', 'empresa', 'agencia',), 'categoria',
                            'titulo', 'cliente', 'parcerias', 'produto', 'dtinicio',)}),
@@ -238,6 +238,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         MaterialInline,
         ("Materiais Adicionais", {'fields': ('videocase', 'apresentacao')}),
         ("Resumo", {'fields': ('resumo',)}),
+
     )
 
     tab_ficha_agencia = (
