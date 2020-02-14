@@ -39,8 +39,6 @@ $(document).ready(function () {
                 $(`<a href="/baixar_material/${ref_img.split('/')[5].split('.')[0]}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
             }
 
-            //$(`#view-file-set-${i}`).attr('href', ref_img);
-            $(`<span class="clear-file" id="clear-${i}"><input type="checkbox" id="id_material_set-${i}-arquivo-clear_id" name="material_set-${i}-arquivo-clear"><label for="id_material_set-${i}-arquivo-clear_id">Excluir</label></span>`).appendTo(`#material_set-${i} td.field-arquivo`);
         }
         else{
             $(`#id_material_set-${i}-arquivo`).remove(); //apaga a div atual
