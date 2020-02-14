@@ -785,12 +785,12 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                             erro = True
                     except:
                         None
-                    if image.mode != 'RGB':
-                        messages.error(request, 'Imagem inválida, a imagem não pode ser CYMK.')
+                    if not 'RGB' in image.mode:
+                        messages.error(request, 'Imagem inválida (%s). A imagem deve estar no formato RGB.' % image.mode)
                         erro = True
 
-                    elif image.width >= 3500 or image.heigth >= 2400:
-                        messages.error(request, 'Atenção: a imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
+                    elif image.width >= 3500 or image.height >= 2400:
+                        messages.error(request, 'A imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
                         erro = True
 
                     elif instance.arquivo.size > 3145728:

@@ -212,6 +212,7 @@ class Material(models.Model):
     class Meta:
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
+        ordering = ('tipo', 'id',)
 
 
 @receiver(post_delete, sender=Material)
