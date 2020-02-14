@@ -546,6 +546,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             if mat:
                 totais[ mat['tipo'].descricao ] += 1
 
+        erros = []
+
         # Regra 1
         regra1 = False
         codigo = form.cleaned_data['categoria'].codigo
@@ -557,41 +559,34 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         # Se for um dos prefixos acima, deve haver pelo menos uma apresentação ou videocase
         if regra1:
             if not form.cleaned_data['videocase'] and not form.cleaned_data['apresentacao']:
-                messages.error(request,
-                               "Nesta Área e nesta Categoria é obrigatório incluir uma apresentação (como PPT) ou um videocase. Veja no site em ‘Como preparar os seus materiais'.")
-                erro = True
+                erros.append(
+                     "Nesta Área e nesta Categoria é obrigatório incluir uma apresentação (como PPT) ou um videocase. "
+                     "Veja no site em ‘Como preparar os seus materiais'.")
 
         # regra 2
         if form.cleaned_data['premiacao'].codigo == 'FIL':
             if totais['10'] + totais['9'] >= 1:
-                messages.error(request,
-                                 "Nesta Área e nesta Categoria, não basta apresentar o videocase ou a apresentação. Indique a quantidade e o tipo de peça referente ao trabalho")
-                erro = True
+                erros.append("Nesta Área e nesta Categoria, não basta apresentar o videocase ou a apresentação. "
+                             "Indique a quantidade e o tipo de peça referente ao trabalho")
 
         # Regra 3
         if 'INT1' in codigo:
             if len(totais.keys()) < 2:
-                messages.error(request, 'Deve haver pelo menos 2 tipos de materiais diferentes para esta categoria.')
-                erro = True
+                erros.append('Deve haver pelo menos 2 tipos de materiais diferentes para esta categoria.')
 
         # Regra 4
         lista = list(totais.keys())
         if 'BRC101' == codigo or 'BRC103' == codigo:
             if 'Filme' not in lista:
-                messages.error(request, 'O Tipo de material "Filme" é obrigatório para essa categoria.')
-                erro = True
+                erros.append('O Tipo de material "Filme" é obrigatório para essa categoria.')
 
         elif 'BRC102' == codigo or 'BRC104' == codigo:
             if 'Mídia Digital' not in lista and 'Filme' not in lista:
-                messages.warning(request,
-                                 'Os Tipos de materiais "Filme ou Mídias Digitais" são obrigatórios para essa categoria.')
-                erro = True
+                erros.append('Os Tipos de materiais "Filme ou Mídias Digitais" são obrigatórios para essa categoria.')
 
         elif 'BRC105' == codigo:
             if 'Jornal' not in lista and 'Revista' not in lista:
-                messages.warning(request,
-                                 'Os Tipos de materiais "Jornal ou Revista" são obrigatórios para essa categoria.')
-                erro = True
+                erros.append('Os Tipos de materiais "Jornal ou Revista" são obrigatórios para essa categoria.')
 
         # Regra 5
         if form.cleaned_data['premiacao'].codigo == 'IMP':
@@ -599,141 +594,115 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 c = 'IMP%d' % imp
                 if c in codigo:
                     if 'Jornal' not in lista or 'Revista' not in lista:
-                        messages.error(request, 'É obrigatório ter os materiais Jornal e Revista para essa categoria.')
-                        erro = True
+                        erros.append('É obrigatório ter os materiais Jornal e Revista para essa categoria.')
                     break
+
         #Regra 7
         if 'DIG30' in codigo:
             if 'Web Sites' not in lista or len(lista) > 1:
-                messages.error(request, 'É obrigatório ter somente o material Web Sites para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter somente Web Sites para essa categoria.')
 
         elif 'DIG1' in codigo:
-            # Obs: No doc está peças digitais, não encontrei e coloquei esse.
-            if 'Peças de Digitais' not in lista:
-                messages.error(request, 'É obrigatório ter somente o material Peças Digitais para essa categoria.')
-                erro = True
+            if 'Mídia Digital' not in lista:
+                erros.append('É obrigatório ter somente Mídias Digitais para essa categoria.')
 
         # Regra 8
         if 'FIL1' in codigo or 'FIL20' in codigo:
             if 'Filme' not in lista:
-                messages.error(request, 'É obrigatório ter o material Filme para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Filme para essa categoria.')
 
         # Regra 9
         if 'DIR201' == codigo:
             if 'Filme' not in lista and 'Rádio' not in lista: #Se nenhum dois dois estiver na lista
-                messages.error(request, 'É obrigatório ter um dos materiais Filme ou Rádio para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter um dos materiais Filme ou Rádio para essa categoria.')
 
         elif 'DIR202' == codigo:
             if 'Jornal' not in lista and 'Revista' not in lista and 'Promo' not in lista: #Se nenhum dois três estiver na lista
-                messages.error(request, 'É obrigatório ter um materiais de Jornal, Revista e Promo para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter um materiais de Jornal, Revista e Promo para essa categoria.')
 
         elif 'DIR203' == codigo:
             if 'Digital' not in lista:
-                messages.error(request, 'É obrigatório ter o material Digital para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Digital para essa categoria.')
 
         elif 'DIR204' == codigo or 'DIR205' == codigo:
             if 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter o material Promo para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Promo para essa categoria.')
 
         elif 'DIR206' == codigo:
             if 'Digital' not in lista and 'Web Sites' not in lista and 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter um desses materiais "Digital, Web Sites ou Promo" para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter um desses materiais "Digital, Web Sites ou Promo" para essa categoria.')
 
         elif 'DIR207' == codigo:
             if 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter o material Promo para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Promo para essa categoria.')
 
         # Regra 10
         if 'MID101' == codigo or 'MID102' == codigo:
             if 'Filme' not in lista:
-                messages.error(request, 'É obrigatório ter o material Filme para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Filme para essa categoria.')
 
         elif 'MID103' == codigo:
             if 'Rádio' not in lista:
-                messages.error(request, 'É obrigatório ter o material Rádio para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Rádio para essa categoria.')
 
         elif 'MID104' == codigo:
             if 'Jornal' not in lista:
-                messages.error(request, 'É obrigatório ter o material Jornal para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Jornal para essa categoria.')
 
         elif 'MID105' == codigo:
             if 'Revista' not in lista:
-                messages.error(request, 'É obrigatório ter o material Revista para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Revista para essa categoria.')
 
         elif 'MID106' == codigo:
             if 'Exterior' not in lista:
-                messages.error(request, 'É obrigatório ter o material Exterior para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Exterior para essa categoria.')
 
         elif 'MID107' == codigo or 'MID108' == codigo:
             if 'Digital' not in lista:
-                messages.error(request, 'É obrigatório ter o material Digital para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Digital para essa categoria.')
 
         # Regra 11
         if 'EXT1' in codigo or 'EXT20' in codigo:
             if 'Exterior' not in lista:
-                messages.error(request, 'É obrigatório ter o material Exterior para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Exterior para essa categoria.')
 
         # Regra 13
         if 'PRM1' in codigo or 'PRM2' in codigo or 'PRM3' in codigo:
             if 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter o material Promo para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Promo para essa categoria.')
 
         elif 'PRM404' == codigo:
             if 'Web Sites' not in lista and 'Digital' not in lista:
-                messages.error(request, 'É obrigatório ter o um dos desses materiais Web Sites, Digital para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o um dos desses materiais Web Sites, Digital para essa categoria.')
 
         elif 'PRM4' in codigo:
             if 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter o material Promo para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Promo para essa categoria.')
 
         elif 'RAD1' in codigo or 'RAD20' in codigo:
             if 'Rádio' not in lista:
-                messages.error(request, 'É obrigatório ter o material Rádio para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Rádio para essa categoria.')
 
         # Regra 16
         if 'TEC10' in codigo:
             if 'Filme' not in lista:
-                messages.error(request, 'É obrigatório ter o material Filme para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Filme para essa categoria.')
 
         elif 'TEC206' == codigo:
             if 'Rádio' not in lista and 'Filme' not in lista:
-                messages.error(request, 'É obrigatório ter o material Rádio ou Filme para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Rádio ou Filme para essa categoria.')
 
         elif 'TEC201' == codigo or 'TEC202' == codigo or 'TEC204' == codigo:
             if 'Rádio' not in lista:
-                messages.error(request, 'É obrigatório ter o material Rádio para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Rádio para essa categoria.')
 
         elif 'TEC203' == codigo or 'TEC205' == codigo or 'TEC206' == codigo:
             if 'Filme' not in lista:
-                messages.error(request, 'É obrigatório ter o material Filme para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter o material Filme para essa categoria.')
 
         elif 'TEC30' in codigo:
             if 'Jornal' not in lista and 'Revista' not in lista and 'Exterior' not in lista and 'Promo' not in lista:
-                messages.error(request, 'É obrigatório ter um desses materiais: Jornal, Revista, Exterior ou Promo para essa categoria.')
-                erro = True
+                erros.append('É obrigatório ter um desses materiais: Jornal, Revista, Exterior ou Promo para essa categoria.')
 
         # Checagem adicional
         if 'Filme' in lista or 'Videocase' in lista:
@@ -747,8 +716,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                         check = True
                         break
             if check:
-                messages.error(request, 'Não podem haver urls iguais.')
-                error = True
+                erros.append('Não podem haver urls iguais.')
 
         # Validação de URL
         instances = formset.save(commit=False)
@@ -757,24 +725,19 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 request_radio = requests.get(instance.url)
 
                 if not request_radio.ok:
-                    messages.error(request,
-                                   'Link %s inválido. Fonogramas devem estar hospedados no site SoundCloud' %
-                                   instance.url)
-                    erro = True
+                    erros.append('Link %s inválido. Fonogramas devem estar hospedados no site SoundCloud' %
+                                 instance.url)
                 else:
                     response_html = BeautifulSoup(request_radio.text, 'html.parser')
                     link = response_html.find('link', attrs={'href': '/sc-opensearch.xml', 'rel': 'search', 'title': 'SoundCloud search', 'type': 'application/opensearchdescription+xml'})
                     if not link:
-                        messages.error(request,
-                                       'Link %s inválido. Fonogramas devem estar hospedados no site SoundCloud' %
-                                       instance.url)
-                        erro = True
+                        erros.append('Link %s inválido. Fonogramas devem estar hospedados no site SoundCloud' %
+                                     instance.url)
 
             elif instance.tipo.youtube and instance.url:
                 youtube_error = valida_youtube(instance.url)
                 if youtube_error:
-                    erro = True
-                    messages.error(request, youtube_error)
+                    erros.append(youtube_error)
             formset.save()
 
             if instance.arquivo:
@@ -784,30 +747,30 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                     image = Image.open(instance.arquivo.path)
                     try:
                         if image.info['dpi'][0] > 300:
-                            messages.error(request, 'Imagem inválida, a imagem deve ter menos de 300dpi.')
+                            erros.append('Imagem inválida, a imagem deve ter menos de 300dpi.')
                             erro = True
                     except:
                         None
                     if not 'RGB' in image.mode:
-                        messages.error(request, 'Imagem inválida (%s). A imagem deve estar no formato RGB.' % image.mode)
-                        erro = True
+                        erros.append('Imagem inválida (%s). A imagem deve estar no formato RGB.' % image.mode)
 
                     elif image.width >= 3500 or image.height >= 2400:
-                        messages.error(request, 'A imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
-                        erro = True
+                        erros.append('A imagem não pode ter as dimensões maiores que 3500 pixels X 2400 pixels.')
 
                     elif instance.arquivo.size > 3145728:
-                        messages.error(request, 'Imagem inválida: a imagem deve ter até 3 MB.')
-                        erro = True
+                        erros.append('Imagem inválida: a imagem deve ter até 3 MB.')
 
         if form.instance.videocase:
             youtube_error = valida_youtube(form.instance.videocase)
             if youtube_error:
-                erro = True
-                messages.error(request, youtube_error)
+                erros.append(youtube_error)
 
-        if erro:
+        if len(erros) > 0:
             form.instance.status = 'A'
+            messages.warning(request, 'Inscrição foi alterada, mas contém os seguintes erros:')
+            for erro in erros:
+                messages.error(request, erro)
+
         else:
             form.instance.status = 'V'
         form.save()
@@ -815,16 +778,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def response_change(self, request, obj):
         opts = self.model._meta
         preserved_filters = self.get_preserved_filters(request)
-        msg_dict = {
-            'name': force_text(opts.verbose_name),
-            'obj': format_html('<a href="{}">{}</a>', urlquote(request.path), obj),
-        }
         if obj.status == 'A':
-            msg = format_html(
-                '{name} "{obj}" foi alterado mas contém erros.',
-                **msg_dict
-            )
-            self.message_user(request, msg, messages.WARNING)
             redirect_url = request.path
             redirect_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, redirect_url)
             return HttpResponseRedirect(redirect_url)

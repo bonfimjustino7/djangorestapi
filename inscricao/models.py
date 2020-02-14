@@ -12,6 +12,9 @@ from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
 from django.db.models.signals import m2m_changed, post_save, post_delete
 
 
+STATUS_ENVIO = (('A', 'Em aberto'), ('F', 'Finalizado'))
+
+
 class FileField(models.FileField):
     def save_form_data(self, instance, data):
         if data is not None:
@@ -19,6 +22,7 @@ class FileField(models.FileField):
             if file != data:
                 file.delete(save=False)
         super(FileField, self).save_form_data(instance, data)
+
 
 class Usuario(models.Model):
     nome_completo = models.CharField('Nome', max_length=80)
@@ -63,6 +67,7 @@ class Empresa(models.Model):
     C2_Email = models.EmailField(u'E-Mail', blank=True, null=True)
     C2_DDD = models.CharField('DDD', max_length=2, null=True, blank=True)
     C2_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
+    status = models.CharField('Situação', max_length=1, choices=STATUS_ENVIO, default='A')
 
     def __str__(self):
         return u'%s' % self.nome
