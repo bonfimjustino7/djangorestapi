@@ -140,7 +140,9 @@
                         $('.errornote').addClass('tabbed-errornote');
                     }
 
-
+                    {% if not request.user.is_superuser %}
+                        $('.historylink').remove();
+                    {% endif %}
 
                 })(django.jQuery);
             </script>
