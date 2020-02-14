@@ -368,10 +368,10 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def gravar_materiais(self, queryset):
         output = io.StringIO()
         writer = csv.writer(output, dialect='excel', delimiter=';')
-        writer.writerow(['Inscricao', 'Tipo', 'Arquivo', 'URL', 'IDSoundCloud'])
+        writer.writerow(['Inscricao', 'Tipo', 'Arquivo', 'URL', ])
         for query in queryset:
             for mat in query.material_set.all():
-                writer.writerow([mat.inscricao_id, mat.tipo_id, mat.arquivo, mat.url, mat.idsoundcloud])
+                writer.writerow([mat.inscricao_id, mat.tipo_id, mat.arquivo, mat.url, ])
         return output
 
     def gravar_empresas(self, queryset, lista_empresas):
@@ -383,7 +383,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return output
 
     def exportar(self, request, queryset):
-
         response = HttpResponse(content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename=backup %s.zip' % datetime.date.today()
         z = zipfile.ZipFile(response, 'w')  ## write zip to response
@@ -758,13 +757,17 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                 request_radio = requests.get(instance.url)
 
                 if not request_radio.ok:
-                    messages.error(request, 'Link %s inválido. Soundcloud não encontrado.' % instance.url)
+                    messages.error(request,
+                                   'Link %s inválido. Fonogramas devem estar hospedados no site SoundCloud' %
+                                   instance.url)
                     erro = True
                 else:
                     response_html = BeautifulSoup(request_radio.text, 'html.parser')
                     link = response_html.find('link', attrs={'href': '/sc-opensearch.xml', 'rel': 'search', 'title': 'SoundCloud search', 'type': 'application/opensearchdescription+xml'})
                     if not link:
-                        messages.error(request, 'Link inválido. O Áudio não existe no servidor especificado.')
+                        messages.error(request,
+                                       'Link %s inválido. Fonogramas devem estar hospedados no site SoundCloud' %
+                                       instance.url)
                         erro = True
 
             elif instance.tipo.youtube and instance.url:

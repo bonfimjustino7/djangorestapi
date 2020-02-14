@@ -46,7 +46,8 @@ class Empresa(models.Model):
     telefone = models.CharField(u'Telefone', max_length=10, blank=True, null=True, help_text=u'XXXXX-XXXX')
     celular = models.CharField(u'Celular', max_length=10, blank=True, null=True, help_text=u'XXXXX-XXXX')
     homepage = models.URLField(u'Home Page da Empresa', blank=True, null=True)
-    email = models.EmailField(u'E-Mail da Empresa', blank=True, null=True, help_text='Apenas se a empresa tiver um email central')
+    email = models.EmailField(u'E-Mail da Empresa', blank=True, null=True,
+                              help_text='Apenas se a empresa tiver um email central')
     VP_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100)
     VP_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60)
     VP_Email = models.EmailField(u'E-Mail', blank=True, null=True)
@@ -68,7 +69,7 @@ class Empresa(models.Model):
 
     def save(self, request=False, *args, **kwargs):
         self.nome = self.nome.upper()
-        self.cep = self.cep.replace('-','')
+        self.cep = self.cep.replace('-', '')
         self.VP_Nome = upper_first(self.VP_Nome)
         self.VP_Cargo = upper_first(self.VP_Cargo)
         self.C1_Nome = upper_first(self.C1_Nome)
