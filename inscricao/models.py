@@ -182,6 +182,10 @@ class Inscricao(models.Model):
         verbose_name_plural = u'Inscrições'
         indexes = [models.Index(fields=['usuario', 'empresa', 'seq']),]
 
+    @property
+    def resumo(self):
+        return 'Jornais (3), Revistas (4), etc'
+
     def save(self, *args, **kwargs):
         if not self.seq:
             ultima = Inscricao.objects.filter(empresa=self.empresa).last()

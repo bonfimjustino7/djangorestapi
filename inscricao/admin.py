@@ -237,6 +237,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     tab_materiais = (
         MaterialInline,
         ("Materiais Adicionais", {'fields': ('videocase', 'apresentacao')}),
+        ("Resumo", {'fields': ('resumo',)}),
     )
 
     tab_ficha_agencia = (
@@ -287,7 +288,10 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
                         'DiretorFilme','ProdutoraAudio','DiretorAudio', 'EstudioFotografia','Fotografo',
                         'EstudioIlustracao','Ilustrador','ManipulacaoDigital','Finalizacao','OutrosFornecedor1',
                         'OutrosFornecedor2','OutrosFornecedor3','OutrosFornecedor4','dtinclusao','dtexportacao',
-                        'videocase', 'apresentacao')
+                        'videocase', 'apresentacao', 'resumo')
+            else:
+                return ('resumo',)
+
         return super(InscricaoAdmin, self).get_readonly_fields(request, obj)
 
     def get_queryset(self, request):
