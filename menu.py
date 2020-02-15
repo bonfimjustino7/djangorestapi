@@ -32,7 +32,7 @@ class CustomMenu(Menu):
             items.MenuItem('Empresas',
                 children=[
                     items.MenuItem('Nova Empresa', '/admin/inscricao/empresa/add'),
-                    items.MenuItem('Empresa Cadastradas', '/admin/inscricao/empresa/')
+                    items.MenuItem('Empresas Cadastradas', '/admin/inscricao/empresa/')
                 ]
             ),
             items.MenuItem('Inscricões',
@@ -47,7 +47,7 @@ class CustomMenu(Menu):
                     items.MenuItem('Inscrições Cadastradas', '/inscricoes_cadastradas/'),
                 ]
             ),
-            items.MenuItem('Impressões'),
+            items.MenuItem('Informações'),
             CustomAppList(
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
