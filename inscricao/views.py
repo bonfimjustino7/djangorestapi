@@ -1,5 +1,6 @@
+from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import json
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from inscricao.models import Material
@@ -37,3 +38,11 @@ def filtrar_estados(request, id):
 def get_tipo_materiais(request, id):
     lista_materiais = list(Material.objects.filter(inscricao=id).values('tipo'))
     return HttpResponse(json.dumps(lista_materiais), content_type='application/json')
+
+def formularios_custos(request):
+    messages.warning(request, 'Rotina ainda não foi implementada.')
+    return redirect('/')
+
+def inscricoes_cadastradas(request):
+    messages.warning(request, 'Rotina ainda não foi implementada.')
+    return redirect('/')
