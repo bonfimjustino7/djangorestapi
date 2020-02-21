@@ -11,6 +11,8 @@ from django.utils.text import capfirst
 from admin_tools.menu import items, Menu
 from admin_tools.menu.items import MenuItem
 
+from base.models import Premiacao
+
 
 class CustomAppList(items.AppList):
 
@@ -47,7 +49,9 @@ class CustomMenu(Menu):
                     items.MenuItem('Inscrições Cadastradas', '/inscricoes_cadastradas/'),
                 ]
             ),
-            items.MenuItem('Informações'),
+            items.MenuItem('Informações',
+                children = [items.MenuItem(premiacao, premiacao.URLApoio) for premiacao in Premiacao.objects.all()]
+            ),
             CustomAppList(
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
