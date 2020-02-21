@@ -59,6 +59,7 @@ class Premiacao(models.Model):
     codigo = models.CharField(max_length=3)
     ordem = models.SmallIntegerField()
     materiais = models.ManyToManyField(TipoMaterial)
+    URLApoio = models.URLField('URL Apoio', blank=True, null=True)
 
     def __str__(self):
         return self.nome
