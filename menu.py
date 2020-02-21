@@ -56,7 +56,4 @@ class CustomMenu(Menu):
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
             ),
-            items.MenuItem('Teste', '/', )
         ]
-    def init_with_context(self, context):
-        pass
