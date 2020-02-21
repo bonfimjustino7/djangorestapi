@@ -50,10 +50,13 @@ class CustomMenu(Menu):
                 ]
             ),
             items.MenuItem('Informações',
-                children = [items.MenuItem(premiacao, premiacao.URLApoio) for premiacao in Premiacao.objects.all()]
+                children = [items.MenuItem(premiacao, premiacao.url_nova_aba()) for premiacao in Premiacao.objects.all()]
             ),
             CustomAppList(
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
             ),
+            items.MenuItem('Teste', '/', )
         ]
+    def init_with_context(self, context):
+        pass
