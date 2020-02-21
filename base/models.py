@@ -65,7 +65,7 @@ class Premiacao(models.Model):
         return self.nome
 
     def url_nova_aba(self):
-        return mark_safe('%s"target="blank"' % self.URLApoio if self.URLApoio else '')
+        return mark_safe('%s"target="_blank"' % self.URLApoio if self.URLApoio else '')
 
     class Meta:
         ordering = ('ordem', )
