@@ -144,6 +144,10 @@ a.view-file:hover{
 .file-disabled{
     background-color: rgba(67,147,200, 0.5) !important;
     border: 1px solid #5fb3fc;
+    display: none !important;
+}
+.label-disabled{
+    display: none!important;
 }
 .file-disabled:hover{
     cursor: default !important;
@@ -153,4 +157,7 @@ a.view-file:hover{
 }
 .aligned label + p, .aligned label + div.help, .aligned label + div.readonly{
     margin-left: 120px !important;
+}
+#tabs-4 .module h2{
+    background: none;
 }

@@ -452,7 +452,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         form = super(InscricaoAdmin, self).get_form(request, obj, **kwargs)
         try:
-            form.base_fields['DiretorCriacao'].widget.attrs['placeholder'] = texto_outros_autores
             form.base_fields['OutrosAgencia1'].widget.attrs['placeholder'] = texto_outros_autores
             form.base_fields['OutrosAgencia2'].widget.attrs['placeholder'] = texto_outros_autores
             form.base_fields['OutrosAgencia3'].widget.attrs['placeholder'] = texto_outros_autores
@@ -726,6 +725,9 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         # Validação de URL
         instances = formset.save(commit=False)
         for instance in instances:
+            if not instance.url and instance.tipo.url:
+                erros.append('A URL de %s deve ser informada.' %instance.tipo.descricao)
+
             if instance.tipo.descricao == 'Rádio' and instance.url is not None:
                 request_radio = requests.get(instance.url)
 

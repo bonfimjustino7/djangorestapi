@@ -209,13 +209,14 @@
                         }
                         if(value.arquivo != true){
                             $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', true);
-                           $(`.dynamic-material_set .field-arquivo #${arquivo_cpy}`).addClass('file-disabled');
-                            console.log(value.arquivo)
+                            $(`.dynamic-material_set .field-arquivo #${arquivo_cpy}`).addClass('file-disabled');
+                            $(`.dynamic-material_set .field-arquivo #${arquivo}-label`).addClass('label-disabled');
+
                         }
                         else{
                            $(`.dynamic-material_set .field-arquivo input#${arquivo}`).prop('disabled', false);
                            $(`.dynamic-material_set .field-arquivo #${arquivo_cpy}`).removeClass('file-disabled');
-                            console.log(value.arquivo)
+                           $(`.dynamic-material_set .field-arquivo #${arquivo}-label`).removeClass('label-disabled');
                         }
                     }
                  })
@@ -273,10 +274,12 @@
                             if (value.arquivo != true) {
                                 $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', true);
                                 $(`.dynamic-material_set .field-arquivo #id_material_set-${i}-arquivo-cpy`).addClass('file-disabled');
+                                $(`.dynamic-material_set .field-arquivo #id_material_set-${i}-arquivo-label`).addClass('label-disabled');
                                 console.log(value.arquivo)
                             } else {
                                 $(`.dynamic-material_set .field-arquivo input#id_material_set-${i}-arquivo`).prop('disabled', false);
                                 $(`.dynamic-material_set .field-arquivo #id_material_set-${i}-arquivo-cpy`).removeClass('file-disabled');
+                                $(`.dynamic-material_set .field-arquivo #id_material_set-${i}-arquivo-label`).removeClass('label-disabled');
                                 console.log(value.arquivo)
                             }
                             if(value.url != true){
