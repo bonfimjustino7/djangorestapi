@@ -781,6 +781,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         else:
             form.instance.status = 'V'
         form.save()
+        return super(InscricaoAdmin, self).save_formset(request, form, formset, change)
 
     def response_change(self, request, obj):
         opts = self.model._meta

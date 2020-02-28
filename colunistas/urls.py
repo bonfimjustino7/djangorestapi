@@ -49,6 +49,7 @@ urlpatterns = [
 	url(r'^get_tipo_materiais/(?P<id>\d+)/$', views.get_tipo_materiais),
 	url(r'^fomulario_custos/$', views.formularios_custos),
 	url(r'^inscricoes_cadastradas/$', views.inscricoes_cadastradas),
+	url(r'^admin/inscricao/finalizar/$', views.finalizar),
 ]
 
 if settings.LOCAL:

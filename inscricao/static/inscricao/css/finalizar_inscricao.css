@@ -1,0 +1,41 @@
+.selecionar-empresa  h2{
+    margin: 0 auto !important;
+}
+.selecionar-empresa{
+    width: 500px;
+    margin: 0 auto;
+}
+.selecionar-empresa-body{
+    padding: 12px 14px;
+    background-color: #f8f8f8;
+    border: 1px solid #eee;
+}
+.aligned label#empresa_selected, .aligned label.check{
+    width: 60px !important;
+}
+.aligned label.id{
+    width: 90px !important;
+}
+.aligned label.only{
+    width: 120px !important;
+}
+label.required .declaracao{
+    width: 100px !important;
+}
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], textarea, select, .vTextField{
+    width: 100% !important;
+}
+.readonly{
+    margin-left: 50px !important;
+}
+.box-input{
+    overflow: hidden;
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+}
+
+.aligned label.declaracao{
+    width: 600px !important;
+    float: left;
+}

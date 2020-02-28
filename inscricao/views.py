@@ -1,9 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import json
 from base.models import Premio, Premiacao, Regional, TipoMaterial
-from inscricao.models import Material
+from colunistas import settings
+from inscricao.models import Material, Empresa, EmpresaUsuario, Usuario, Inscricao
 
 
 def tipo_materiais(request, id):
@@ -46,3 +49,70 @@ def formularios_custos(request):
 def inscricoes_cadastradas(request):
     messages.warning(request, 'Rotina ainda não foi implementada.')
     return redirect('/')
+
+def custos_total(empresa):
+    total = 0
+    inscricoes = Inscricao.objects.filter(empresa=empresa)
+    for inscricao in inscricoes:
+        total += inscricao.material_set.all().count() * 100
+
+    return total
+
+def finalizar2(request, *args, **kwargs):
+    context = {}
+    context['finalizar'] = True
+    erros = 0
+    if request.POST.get('_send'):
+        file = request.FILES.get('comprovante')
+        filename = settings.COMPROVANTE_URL + '/' + file.name
+        default_storage.save(filename, file) # salvando comprovante
+        empresa = Empresa.objects.get(id=request.POST['empresa'])
+        empresa.status = 'F'
+        empresa.save()
+        messages.success(request, 'Inscrição Finalizada.')
+        return redirect('/')
+    else:
+        empresa_id = request.POST.get('empresa')
+        if empresa_id:
+            empresa = Empresa.objects.get(id=empresa_id)
+        else:
+            empresa = args[0]
+
+        context['empresa'] = empresa
+        context['custo_total'] = '%.2f' % float(custos_total(empresa))
+        for inscricao in empresa.inscricao_set.all():
+            if inscricao.status == 'A':
+                erros += 1
+            if erros > 0:
+                context['finalizar'] = False
+                messages.warning(request, 'Existem %d inscrições com erro.' % erros)
+
+        return render(request, 'finalizar.html', {'context': context})
+
+@login_required
+def finalizar(request):
+    context = {}
+
+    if request.POST:
+        return finalizar2(request)
+    else:
+        if request.user.is_active:
+            usuario = Usuario.objects.filter(user=request.user)
+            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='A')
+            if len(empresa_usuario) > 1:
+                empresas = list(empresa_usuario.values_list('empresa', 'empresa__nome'))
+                empresas_aux = []
+                for empresa in empresas:
+                    empresas_aux.append({
+                        'id': empresa[0],
+                        'nome': empresa[1]
+                    })
+                context['empresas'] = empresas_aux
+                return render(request, 'escolher_empresa.html', {'context': context})
+
+            elif len(empresa_usuario) == 1:
+                return finalizar2(request, empresa_usuario.get().empresa)
+
+            else:
+                messages.error(request, 'Você não tem nenhuma empresa inscrita.')
+                return redirect('/')

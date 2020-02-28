@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+{% block title %}Finalizar Inscrição{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}" />
+{% endblock %}
+{% block content %}
+    <h1>Finalizar Inscrição</h1>
+    <div id="content-main">
+        <form action="" method="POST" id="finalizar_form">
+            {% csrf_token %}
+            <fieldset class="module aligned selecionar-empresa">
+                <h2>Selecionar Empresa</h2>
+                <div class="selecionar-empresa-body">
+                    <p>Você possui mais de uma empresa cadastrada, por favor escolha uma delas para finalizar a inscrição.</p>
+                    <div class="form-row" style="margin: 0 auto">
+                        <label for="id_selecionar_empresa" id="empresa_selected">Empresa:</label>
+                        <select name="empresa" id="id_selecionar_empresa">
+                            {% for empresa in context.empresas %}
+                                <option value="{{empresa.id}}">{{empresa.nome}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input type="submit" value="Escolher" class="default">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -56,4 +56,5 @@ class CustomMenu(Menu):
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
             ),
+            items.MenuItem('Finalizar Inscrição', '/admin/inscricao/finalizar')
         ]
