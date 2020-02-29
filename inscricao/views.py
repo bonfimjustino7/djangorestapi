@@ -1,9 +1,12 @@
+import json
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-import json
+
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from colunistas import settings
 from inscricao.models import Material, Empresa, EmpresaUsuario, Usuario, Inscricao
@@ -23,9 +26,11 @@ def tipo_materiais(request, id):
         })
     return HttpResponse(json.dumps(result), content_type='application/json')
 
+
 def dica_materiais(request, id):
     material = TipoMaterial.objects.get(id=id)
     return HttpResponse(json.dumps({'dica': material.dicas}), content_type='application/json')
+
 
 def dica_materiais_by_name(request, name):
     material = TipoMaterial.objects.get(descricao=name)
@@ -50,6 +55,7 @@ def inscricoes_cadastradas(request):
     messages.warning(request, 'Rotina ainda não foi implementada.')
     return redirect('/')
 
+
 def custos_total(empresa):
     total = 0
     inscricoes = Inscricao.objects.filter(empresa=empresa)
@@ -58,9 +64,9 @@ def custos_total(empresa):
 
     return total
 
+
 def finalizar2(request, *args, **kwargs):
-    context = {}
-    context['finalizar'] = True
+    context = {'finalizar': True}
     erros = 0
     if request.POST.get('_send'):
         file = request.FILES.get('comprovante')
@@ -68,6 +74,7 @@ def finalizar2(request, *args, **kwargs):
         default_storage.save(filename, file) # salvando comprovante
         empresa = Empresa.objects.get(id=request.POST['empresa'])
         empresa.status = 'F'
+        empresa.dtfinalizacao = datetime.now()
         empresa.save()
         messages.success(request, 'Inscrição Finalizada.')
         return redirect('/')
