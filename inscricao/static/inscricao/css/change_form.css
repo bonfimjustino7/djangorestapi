@@ -161,3 +161,6 @@ a.view-file:hover{
 #tabs-4 .module h2{
     background: none;
 }
+#tabs-4 .module{
+    margin-bottom: 5px !important;
+}
