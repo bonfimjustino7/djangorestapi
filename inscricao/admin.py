@@ -792,3 +792,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             return HttpResponseRedirect(redirect_url)
 
         return super(InscricaoAdmin, self).response_change(request, obj)
+
+@admin.register(Finalizadas)
+class FinalizadasAdmin(PowerModelAdmin):
+    list_display = ('nome',)
