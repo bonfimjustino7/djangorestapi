@@ -41,6 +41,7 @@ class CustomMenu(Menu):
                 children=[
                     items.MenuItem('Nova Inscrição', '/admin/inscricao/inscricao/add'),
                     items.MenuItem('Inscrições Cadastradas', '/admin/inscricao/inscricao/'),
+                    items.MenuItem('Finalizar Inscrição', '/admin/inscricao/finalizar'),
                 ]
             ),
             items.MenuItem('Impressões',
@@ -56,5 +57,5 @@ class CustomMenu(Menu):
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
             ),
-            items.MenuItem('Finalizar Inscrição', '/admin/inscricao/finalizar')
+
         ]
