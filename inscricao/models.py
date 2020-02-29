@@ -69,6 +69,8 @@ class Empresa(models.Model):
     C2_DDD = models.CharField('DDD', max_length=2, null=True, blank=True)
     C2_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
     status = models.CharField('Situação', max_length=1, choices=STATUS_ENVIO, default='A')
+    dtfinalizacao = models.DateTimeField('Dt.Finalização', blank=True, null=True)
+    dtexportacao = models.DateTimeField('Dt.Exportação', blank=True, null=True)
 
     def __str__(self):
         return u'%s' % self.nome
