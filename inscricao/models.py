@@ -257,3 +257,6 @@ class Finalizadas(Empresa):
         proxy = True
         verbose_name = 'Finalizada'
         verbose_name_plural = 'Finalizadas'
+
+    def download_inscricao(self):
+        return mark_safe('<a href="/empresa_download/%s">Download das Inscrições</a>' % self.pk)

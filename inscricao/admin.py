@@ -794,5 +794,5 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         return super(InscricaoAdmin, self).response_change(request, obj)
 
 @admin.register(Finalizadas)
-class FinalizadasAdmin(PowerModelAdmin):
-    list_display = ('nome',)
+class FinalizadasAdmin(EmpresaAdmin):
+    list_display = ('nome', 'dtexportacao', 'download_inscricao')

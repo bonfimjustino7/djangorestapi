@@ -1,4 +1,8 @@
+import csv
+import io
 import json
+import os
+import zipfile
 from datetime import datetime
 
 from django.contrib import messages
@@ -123,3 +127,41 @@ def finalizar(request):
             else:
                 messages.error(request, 'Você não tem nenhuma empresa inscrita.')
                 return redirect('/')
+
+def make_zipfile(output_filename, source_dir):
+    relroot = os.path.abspath(os.path.join(source_dir, os.pardir))
+    with zipfile.ZipFile(output_filename, "w", zipfile.ZIP_DEFLATED) as zip:
+        for root, dirs, files in os.walk(source_dir):
+            # add directory (needed for empty dirs)
+            zip.write(root, os.path.relpath(root, relroot))
+            for file in files:
+                filename = os.path.join(root, file)
+                if os.path.isfile(filename): # regular files only
+                    arcname = os.path.join(os.path.relpath(root, relroot), file)
+                    zip.write(filename, arcname)
+
+def empresa_download(request, id):
+    empresa = Empresa.objects.get(id=id)
+    path = settings.EXPORTACAO + '/%s_2020.csv' % empresa
+    if not os.path.exists(path):
+        with open(path, 'w', newline='') as file:
+            writer = csv.writer(file)
+            # writer.writerow(["SN", "Name", "Contribution"])
+            # writer.writerow([1, "Linus Torvalds", "Linux Kernel"])
+            # writer.writerow([2, "Tim Berners-Lee", "World Wide Web"])
+            # writer.writerow([3, "Guido van Rossum", "Python Programming"])
+
+    response = HttpResponse(content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=exportacao_%s.zip' % datetime.today()
+    z = zipfile.ZipFile(response, 'w', zipfile.ZIP_DEFLATED )  ## write zip to response
+    p = os.path.relpath(os.path.join(path), os.path.join(path, '..'))
+    z.write(path, p)
+    for incricao in empresa.inscricao_set.all():
+        for material in incricao.material_set.all():
+            if material.arquivo:
+                caminho = os.path.relpath(os.path.join(material.arquivo.path), os.path.join(material.arquivo.path, '..'))
+                z.write(material.arquivo.path, caminho)
+    z.close()
+    empresa.dtexportacao = datetime.now()
+    empresa.save()
+    return response
