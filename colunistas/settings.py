@@ -164,6 +164,8 @@ ADMIN_MEDIA_ROOT = os.path.join(STATIC_ROOT, 'admin')
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 COMPROVANTE_URL = os.path.join(MEDIA_ROOT, 'comprovantes')
+
+EXPORTACAO = os.path.join(MEDIA_ROOT, 'exportacoes')
 # django-admin-tools
 ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'

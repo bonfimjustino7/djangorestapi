@@ -1,6 +1,7 @@
 import os
 import uuid
 from collections import Counter
+from datetime import datetime
 
 from django.db import models
 from django.dispatch import receiver
@@ -244,3 +245,18 @@ def handler_file(sender, **kwargs):
         path = os.path.join(settings.MEDIA_ROOT, filename.name)
         if os.path.exists(path):
             os.remove(path)
+
+class FinalizadasManager(models.Manager):
+    def get_queryset(self):
+        return super(FinalizadasManager, self).get_queryset().filter(status='F')
+
+class Finalizadas(Empresa):
+    objects = FinalizadasManager()
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Finalizada'
+        verbose_name_plural = 'Finalizadas'
+
+    def download_inscricao(self):
+        return mark_safe('<a href="/empresa_download/%s">Download das Inscrições</a>' % self.pk)
