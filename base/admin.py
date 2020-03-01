@@ -1,14 +1,20 @@
 from django.contrib import admin
 from django import forms
-from poweradmin.admin import PowerModelAdmin
+from poweradmin.admin import PowerModelAdmin, PowerTabularInline
 
 from base.models import *
+
+
+class PrecoInline(PowerTabularInline):
+    model = Preco
+    extra = 0
 
 
 @admin.register(Premiacao)
 class PremiacaoAdmin(admin.ModelAdmin):
     list_display = ['nome', 'codigo', 'ordem']
     ordering = ['ordem']
+    inlines = (PrecoInline,)
 
 
 @admin.register(Categoria)

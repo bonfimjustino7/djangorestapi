@@ -21,7 +21,7 @@ from tabbed_admin import TabbedModelAdmin
 from base.models import *
 from inscricao.models import *
 
-from poweradmin.admin import (PowerButton, PowerModelAdmin, PowerTabularInline)
+from poweradmin.admin import PowerButton, PowerModelAdmin
 
 from base.views import *
 from inscricao.apps import valida_youtube

@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
-
+from smart_selects.db_fields import ChainedForeignKey
 
 def ano_corrente():
     import datetime
@@ -112,6 +112,25 @@ class Categoria(models.Model):
 
     def __str__(self):
         return u'%s' % self.nome
+
+
+class Preco(models.Model):
+    premiacao = models.ForeignKey(Premiacao, verbose_name='Premiação')
+    categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
+                                  blank=True, null=True, help_text='Deixe em branco para o caso geral',
+                                  show_all=False, on_delete=models.PROTECT)
+    preco = models.DecimalField('Preço Regular', max_digits=16, decimal_places=2)
+    preco_serie = models.DecimalField('Preço para Série', blank=True, null=True, max_digits=16, decimal_places=2)
+
+    class Meta:
+        ordering = ('premiacao', 'categoria', )
+        verbose_name = 'Preço'
+
+    def __str__(self):
+        if self.categoria:
+            return u'%s - %s' % (self.premiacao, self.categoria)
+        else:
+            return u'%s' % self.premiacao
 
 
 PREMIO_STATUS = (
