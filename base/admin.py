@@ -1,14 +1,20 @@
 from django.contrib import admin
 from django import forms
+
+from inscricao.forms import PrecoForm
+from smart_selects import form_fields
+
 from poweradmin.admin import PowerModelAdmin, PowerTabularInline
 
 from base.models import *
 
 
+
+
 class PrecoInline(PowerTabularInline):
     model = Preco
     extra = 0
-
+    form = PrecoForm
 
 @admin.register(Premiacao)
 class PremiacaoAdmin(admin.ModelAdmin):

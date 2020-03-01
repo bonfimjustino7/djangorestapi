@@ -1,11 +1,25 @@
 #coding: utf-8
 from django import forms
+from django.forms import ModelForm, ModelChoiceField
+
 from inscricao.models import *
 from util.fields import BRPhoneNumberField, BRZipCodeField
 from localflavor.br.forms import BRCNPJField
 from base.forms import CAMPO_TEXTO_PADRAO
 from .models import *
 
+
+class PrecoForm(ModelForm):
+    categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
+                                  blank=True, null=True, help_text='Deixe em branco para o caso geral',
+                                  show_all=False, on_delete=models.PROTECT)
+    class Meta:
+        model = Preco
+        exclude = ('premiacao',)
+
+    def __init__(self, *args, **kwargs):
+        super(PrecoForm, self).__init__(*args, **kwargs)
+        self.fields['categoria'].empty_label = "Qualquer categoria"
 
 class RegistroEmpresaForm(forms.ModelForm):
     regional = forms.ModelChoiceField(queryset=Regional.objects.all(), help_text='Consulte o regulamento para saber em qual delas a sua região se enquadra.', required=True)
