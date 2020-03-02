@@ -1,7 +1,9 @@
 # coding:utf-8
 #import datetime
 import os
+from itertools import chain
 
+from django.db.models import ManyToManyField, ForeignKey
 from django.forms import model_to_dict
 from django.utils.text import capfirst
 
@@ -66,17 +68,63 @@ def server_status():
             json[memory.split()[0]] = dict(zip(header, data))
     return json
 
+
+def model_to_dict_verbose(instance, fields=None, exclude=None):
+    """
+    Returns a dict containing the data in ``instance`` suitable for passing as
+    a Form's ``initial`` keyword argument. Keys in dict are exchanged for
+    verbose names contained in the model.
+    ``fields`` is an optional list of field names. If provided, only the named
+    fields will be included in the returned dict.
+    ``exclude`` is an optional list of field names. If provided, the named
+    fields will be excluded from the returned dict, even if they are listed in
+    the ``fields`` argument.
+    """
+    opts = instance._meta
+    data = {}
+    for f in chain(opts.concrete_fields, opts.virtual_fields, opts.many_to_many):
+        if not getattr(f, 'editable', False):
+            continue
+        if fields and f.name not in fields:
+            continue
+        if exclude and f.name in exclude:
+            continue
+        verbose_name = opts.get_field(f.name).verbose_name
+        if isinstance(f, ManyToManyField):
+            # If the object doesn't have a primary key yet, just use an empty
+            # list for its m2m fields. Calling f.value_from_object will raise
+            # an exception.
+            if instance.pk is None:
+                data[verbose_name] = []
+            else:
+                # MultipleChoiceWidget needs a list of pks, not object instances.
+                qs = f.value_from_object(instance)
+                if qs._result_cache is not None:
+                    data[verbose_name] = [item.pk for item in qs]
+                else:
+                    data[verbose_name] = list(qs.values_list('pk', flat=True))
+        #TODO falta fazer com que o obj retorne a descricao do model em vez da id
+        else:
+            data[verbose_name] = f.value_from_object(instance)
+    return data
+
+
 def get_model_values(obj):
     lista = []
-    try:
-        valores = model_to_dict(obj)
-    except:
-        valores = []
+    valores = model_to_dict_verbose(obj)
     for key, item in valores.items():
         lista.append(str(item))
     return lista
 
-
+def get_model_labels(obj):
+    lista = []
+    try:
+        labels = model_to_dict(obj)
+    except:
+        labels = []
+    for key, item in labels.items():
+        lista.append(str(key))
+    return lista
 '''
 def encode_utf8(text):
     m = magic.Magic(mime_encoding=True)

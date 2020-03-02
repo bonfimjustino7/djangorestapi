@@ -14,6 +14,7 @@ from django.shortcuts import render, redirect
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from colunistas import settings
 from inscricao.models import Material, Empresa, EmpresaUsuario, Usuario, Inscricao
+from util.stdlib import get_model_values, get_model_labels
 
 
 def tipo_materiais(request, id):
@@ -134,10 +135,8 @@ def empresa_download(request, id):
     if not os.path.exists(path):
         with open(path, 'w', newline='') as file:
             writer = csv.writer(file)
-            # writer.writerow(["SN", "Name", "Contribution"])
-            # writer.writerow([1, "Linus Torvalds", "Linux Kernel"])
-            # writer.writerow([2, "Tim Berners-Lee", "World Wide Web"])
-            # writer.writerow([3, "Guido van Rossum", "Python Programming"])
+            writer.writerow(get_model_labels(empresa))
+            writer.writerow(get_model_values(empresa))
 
     response = HttpResponse(content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=exportacao_%s.zip' % datetime.today()
