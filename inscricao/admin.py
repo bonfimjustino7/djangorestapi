@@ -9,6 +9,7 @@ from collections import Counter
 
 from bs4 import BeautifulSoup
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+from django.forms import model_to_dict
 from django.urls import reverse
 from django.utils.encoding import force_text
 from django.utils.html import format_html
@@ -124,6 +125,7 @@ class EmpresaAdmin(PowerModelAdmin):
         return qs
 
     def save_model(self, request, obj, form, change):
+        res = get_values(obj)
         area = form.cleaned_data['area'].pk
         obj.save()
 
@@ -139,7 +141,6 @@ class EmpresaAdmin(PowerModelAdmin):
         duplicidade = 0
         instances = formset.save(commit=False)
         existentes = formset.cleaned_data
-
         for instance in instances:
             for agencia in existentes:
                 if instance.agencia == agencia['agencia']:

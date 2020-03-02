@@ -1,6 +1,8 @@
 # coding:utf-8
 #import datetime
 import os
+
+from django.forms import model_to_dict
 from django.utils.text import capfirst
 
 
@@ -64,6 +66,15 @@ def server_status():
             json[memory.split()[0]] = dict(zip(header, data))
     return json
 
+def get_model_values(obj):
+    lista = []
+    try:
+        valores = model_to_dict(obj)
+    except:
+        valores = []
+    for key, item in valores.items():
+        lista.append(str(item))
+    return lista
 
 
 '''
