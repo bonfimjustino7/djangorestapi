@@ -109,19 +109,40 @@ def model_to_dict_verbose(instance, fields=None, exclude=None):
     return data
 
 
-def get_model_values(obj):
-    lista = []
-    valores = model_to_dict_verbose(obj)
-    for key, item in valores.items():
-        lista.append(str(item))
-    return lista
+def get_model_values_labels(obj, fields=None):
+    '''
+    :param obj: instancia do model.
+    :param fields:  tupla ou lista de campos a serem retornados pela a função.
+    :return: lista de labels e de values.
+    '''
+    values = []
+    if fields is None:
+        for field in get_model_labels(obj, fields):
+            values.append(obj._meta.model.objects.values_list(field,  flat=True).get(id=obj.id))
+    else:
+        for field in fields:
+            values.append(obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id))
 
-def get_model_labels(obj):
+    labels = get_model_labels(obj, fields=fields)
+
+    return [labels] + [values]
+
+def get_model_labels(obj, fields=None):
+    '''
+
+    :param obj: instancia do model.
+    :param fields: tupla ou lista de campos a serem retornados pela a função.
+    :return: lista de labels.
+    '''
+
     lista = []
-    try:
+    labels = {}
+    if fields is None:
         labels = model_to_dict(obj)
-    except:
-        labels = []
+    else:
+        for field in fields:
+            labels[field] = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
+
     for key, item in labels.items():
         lista.append(str(key))
     return lista
