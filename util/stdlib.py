@@ -1,5 +1,6 @@
 # coding:utf-8
 #import datetime
+import datetime
 import os
 from itertools import chain
 
@@ -69,79 +70,61 @@ def server_status():
     return json
 
 
-def model_to_dict_verbose(instance, fields=None, exclude=None):
-    """
-    Returns a dict containing the data in ``instance`` suitable for passing as
-    a Form's ``initial`` keyword argument. Keys in dict are exchanged for
-    verbose names contained in the model.
-    ``fields`` is an optional list of field names. If provided, only the named
-    fields will be included in the returned dict.
-    ``exclude`` is an optional list of field names. If provided, the named
-    fields will be excluded from the returned dict, even if they are listed in
-    the ``fields`` argument.
-    """
-    opts = instance._meta
-    data = {}
-    for f in chain(opts.concrete_fields, opts.virtual_fields, opts.many_to_many):
-        if not getattr(f, 'editable', False):
-            continue
-        if fields and f.name not in fields:
-            continue
-        if exclude and f.name in exclude:
-            continue
-        verbose_name = opts.get_field(f.name).verbose_name
-        if isinstance(f, ManyToManyField):
-            # If the object doesn't have a primary key yet, just use an empty
-            # list for its m2m fields. Calling f.value_from_object will raise
-            # an exception.
-            if instance.pk is None:
-                data[verbose_name] = []
-            else:
-                # MultipleChoiceWidget needs a list of pks, not object instances.
-                qs = f.value_from_object(instance)
-                if qs._result_cache is not None:
-                    data[verbose_name] = [item.pk for item in qs]
-                else:
-                    data[verbose_name] = list(qs.values_list('pk', flat=True))
-        #TODO falta fazer com que o obj retorne a descricao do model em vez da id
-        else:
-            data[verbose_name] = f.value_from_object(instance)
-    return data
-
-
-def get_model_values_labels(obj, fields=None):
+def get_model_values(obj, fields=None, exclude=[], extras=[]):
     '''
-    :param obj: instancia do model.
-    :param fields:  tupla ou lista de campos a serem retornados pela a função.
-    :return: lista de labels e de values.
+
+    :param obj: instancia do objeto.
+    :param fields: lista de campos do model.
+    :param exclude: lista de campos que não vão ser retornados.
+    :param extras: lista de campos adicionais.
+    :return: lista de valores de cada campo.
     '''
+
     values = []
-    if fields is None:
-        for field in get_model_labels(obj, fields):
-            values.append(obj._meta.model.objects.values_list(field,  flat=True).get(id=obj.id))
+    if not fields:
+        fields = get_model_labels(obj) #pega todos os campos
     else:
-        for field in fields:
-            values.append(obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id))
+        fields += extras  # colocando os campos extras
 
-    labels = get_model_labels(obj, fields=fields)
+    for e in exclude:
+        fields.remove(e)  # removendo os campos exclude
 
-    return [labels] + [values]
+    for field in fields:
+        instance = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
+        if type(instance) is datetime.datetime:
+            values.append(instance.strftime('%d/%m/%y %H:%M:%S'))
 
-def get_model_labels(obj, fields=None):
+        elif type(instance) is datetime.date:
+            values.append(
+                instance.strftime('%d/%m/%y'))
+        else:
+            values.append(instance)
+
+    return values
+
+def get_model_labels(obj, fields=None, exclude=[], extras=[]):
     '''
 
-    :param obj: instancia do model.
-    :param fields: tupla ou lista de campos a serem retornados pela a função.
-    :return: lista de labels.
+        :param obj: instancia do objeto.
+        :param fields: lista de campos do model.
+        :param exclude: lista de campos que não vão ser retornados.
+        :param extras: lista de campos adicionais.
+        :return: lista de valores de cada campo.
     '''
 
     lista = []
     labels = {}
-    if fields is None:
+    if not fields:
         labels = model_to_dict(obj)
     else:
-        for field in fields:
+        for field in fields + extras:
             labels[field] = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
+
+    for e in exclude:
+        try:
+            del labels[e]
+        except KeyError:
+            None
 
     for key, item in labels.items():
         lista.append(str(key))

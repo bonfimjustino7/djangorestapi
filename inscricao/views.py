@@ -16,7 +16,7 @@ from django.utils.html import strip_tags
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from colunistas import settings
 from inscricao.models import Material, Empresa, EmpresaUsuario, Usuario, Inscricao
-from util.stdlib import get_model_values_labels
+from util.stdlib import get_model_values, get_model_labels
 from django.db import models
 
 def tipo_materiais(request, id):
@@ -134,12 +134,14 @@ def finalizar(request):
 def empresa_download(request, id):
     empresa = Empresa.objects.get(id=id)
     path = settings.EXPORTACAO + '/%s_2020.csv' % empresa
-    labels, values = get_model_values_labels(empresa, ('id', 'nome', 'area__descricao', 'regional__nome'))
+    exclude = ['area', 'regional']
+    extras = ['area__descricao', 'regional__nome']
+
     if not os.path.exists(path):
         with open(path, 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(labels)
-            writer.writerow(values)
+            writer.writerow(get_model_labels(empresa, None, exclude, extras))
+            writer.writerow(get_model_values(empresa, None, exclude, extras))
 
     response = HttpResponse(content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=exportacao_%s.zip' % datetime.today()
