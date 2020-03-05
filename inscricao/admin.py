@@ -187,7 +187,7 @@ class AnoFilter(admin.SimpleListFilter):
     parameter_name = 'ano'
 
     def lookups(self, request, model_admin):
-        if is_admin(request.user.is_superuser):
+        if is_admin(request.user):
             q = Premio.objects.values('ano').distinct().order_by('ano')
             regs = []
             for ano in q:
@@ -205,7 +205,7 @@ class RegionalFilter(admin.SimpleListFilter):
     parameter_name = 'regional'
 
     def lookups(self, request, model_admin):
-        if is_admin(request.user.is_superuser):
+        if is_admin(request.user):
             regionais = Regional.objects.values('nome', 'id').all()
             regs = []
             for reg in regionais:
@@ -315,7 +315,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
     def get_actions(self, request):
         actions = super(InscricaoAdmin, self).get_actions(request)
         del actions['export_as_csv']
-        if not is_admin(request.user.is_superuser):
+        if not is_admin(request.user):
             del actions['exportar']
         return actions
 
