@@ -24,7 +24,7 @@ SECRET_KEY = 'lb)gvnos2w+y0ii)l7-sn2v6(ky-q4a+0cv-9n1*e%-bwh5l5z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LOCAL = True
 SEND_MAIL = False
 
 # Application definition
@@ -32,6 +32,7 @@ SITE_NAME = 'Premio Colunistas'
 
 INSTALLED_APPS = [
     'admin_tools',
+    'admin_tools.menu',
     'admin_tools.dashboard',
     'poweradmin',
     'django.contrib.admin',
@@ -51,6 +52,8 @@ INSTALLED_APPS = [
     'inscricao',
     'smart_selects',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 # Install theme
 themedir = os.path.join(BASE_DIR, '../theme')
@@ -160,7 +163,9 @@ ADMIN_MEDIA_ROOT = os.path.join(STATIC_ROOT, 'admin')
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
+COMPROVANTE_URL = os.path.join(MEDIA_ROOT, 'comprovantes')
 
+EXPORTACAO = os.path.join(MEDIA_ROOT, 'exportacoes')
 # django-admin-tools
 ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'

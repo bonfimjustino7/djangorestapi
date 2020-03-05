@@ -1,0 +1,180 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_modify admin_urls tabbed_admin_tags %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block content %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/change_form.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/lightcase.css' %}" />
+
+
+{% endblock %}
+{% block js %}
+
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="{% static 'inscricao/js/dicas.js' %}"></script>
+        <script src="{% static 'inscricao/js/btn-upload.js' %}"></script>
+        <script src="{% static 'inscricao/js/lightcase.js' %}"></script>
+        <script src="{% static 'inscricao/js/outros.js' %}"></script>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $('a[data-rel^=lightcase]').lightcase();
+            });
+        </script>
+
+        <script>
+            function verificarCombo(){
+                //console.log(document.getElementById('id_empresa').length);
+                var qtd = document.getElementById('id_empresa').length;
+                var empresa = document.getElementById('id_empresa');
+                var valid = empresa.value ? empresa.value : false;
+                if (!valid && qtd == 1){
+                   $('<ul class="messagelist">' +
+                       '<li class="error">Inscrições encerradas para as empresas registradas</li></ul>').insertAfter('.breadcrumbs');
+                }
+            }
+            $(document).ready(function () {
+                verificarCombo();
+                var a = document.querySelector('a.deletelink');
+                var ref = window.location.href;
+                var ref = ref.split('change')[0] + 'delete';
+                $(a).prop('href', ref)
+           });
+
+            var input = document.querySelectorAll('.form-row input');
+
+           $('.help').click(function (e) {
+                $(this).css('display', 'none');
+           })
+            // $('fieldset.module table thead tr').append('<th>Roteiro</th>')
+            // $('fieldset.module table tbody tr.form-row').append('<td class="btn-editar"><input type="button" class="" value="Editar"></td>')
+            // $('.delete').append('<a class="inline-deletelink" href="#">Remover</a>')
+            // $('.btn-editar a.inline-deletelink').css('display', 'none')
+            // $('.add-row td').prop('colspan', '6')
+            //
+            // $('.btn-editar input').click(function () {
+            //     $('#mensagem').modal()
+            // })
+        </script>
+
+{% endblock %}
+<div id="content-main">
+
+  {% block object-tools %}{{ block.super }}{% endblock %}
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
+        <div>
+            {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1" />{% endif %}
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}" />{% endif %}
+            {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+            {% if errors %}
+                <p class="errornote">
+                {% if errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+                </p>
+                {{ adminform.form.non_field_errors }}
+            {% endif %}
+
+            <!-- start admin_tabs stuff -->
+            <div id="tabs">
+                <ul>
+                    {% for tab in tabs.fields %}
+                      <li><a href="#tabs-{{ forloop.counter }}" id="for_tabs-{{ forloop.counter }}">{{ tab.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% for tab in tabs.fields %}
+                    <div id="tabs-{{ forloop.counter }}" class="{{ tab.name }}">
+                        {% for entry in tab.entries %}
+                            {% render_tab_fieldsets_inlines entry %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <script type="text/javascript">
+                (function($) {
+                    $(window).scrollTop()
+                    $('#tabs').tabs({
+                        {% if add %}
+                        // when adding, don't select a tab by default, we'll do it ourselves
+                        // by finding the first available tab.
+                        selected: -1
+                        {% endif %}
+                    });
+
+                    // disable tabs marked as such in page_config
+                    var enabled_tabs = [];
+                    var disabled_tabs = [];
+
+                    {% for tab in page_config %}
+                        {% if tab.enabled %}
+                            enabled_tabs.push({{ forloop.counter0 }});
+                        {% else %}
+                            disabled_tabs.push({{ forloop.counter0 }});
+                        {% endif %}
+                    {% endfor %}
+
+                    for (var i = 0; i < disabled_tabs.length; i++) {
+                        $('#tabs').tabs("disable", disabled_tabs[i]);
+                    }
+                    // enable the first non-disabled tab in add view
+                    {% if add %}
+                        $('#tabs').tabs("option", "active", enabled_tabs[0]);
+                    {% endif %}
+
+                    // Hightlight tabs with errors inside
+                    $('#tabs > div').each(function() {
+                        if($(this).find('.errorlist').length) {
+                            $('#tabs #for_' +  this.id).addClass("errortab");
+                        }
+                    });
+
+                    $("#tabs").on('tabsactivate', function(event, ui) {
+                        var scrollPos = $(window).scrollTop();
+                        var hash = ui.newTab.children("li a").attr("href");
+                        window.location.hash = hash;
+                        $(window).scrollTop(scrollPos);
+                    });
+
+                    if ($('.errornote').length) {
+                        $('.errornote').addClass('tabbed-errornote');
+                    }
+
+                    {% if not request.user.is_superuser %}
+                        $('.historylink').remove();
+                    {% endif %}
+
+                })(django.jQuery);
+            </script>
+            <!-- end admin_tabs stuff -->
+
+            {% block after_field_sets %}{% endblock %}
+
+            {% block after_related_objects %}{% endblock %}
+
+<!--            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}-->
+             <div class="submit-row">
+
+            <!-- Se for change -->
+                {% if original %}
+                     <p class="deletelink-box">
+                        <a href="" class="deletelink">Excluir Inscrição</a>
+                    </p>
+                {% endif %}
+                <input type="submit" value="Salvar e adicionar outro(a)" {% if original.status == 'A' %} disabled {% endif %} name="_addanother">
+                <input type="submit" class="default" value="Salvar" name="_continue">
+
+            </div>
+
+            {% if adminform and add and adminform.first_field and adminform.first_field.id_for_label %}
+               <script type="text/javascript">document.getElementById("{{ adminform.first_field.id_for_label }}").focus();</script>
+            {% endif %}
+
+            {% prepopulated_fields_js %}
+
+        </div>
+    </form>
+
+</div>
+{% endblock %}

@@ -46,8 +46,9 @@ class LoginView(View):
 
             login_str = self.dados['formulario_login'].cleaned_data['usuario']
             if '@' in login_str:
-                messages.warning(request, 'Entre com o seu login e não com o email')
-                return render(request, self.template, self.dados)
+                user = User.objects.filter(email=login_str)
+                if user:
+                    login_str = user.get()
 
             usuario = authenticate(
                     username=login_str,
@@ -150,7 +151,7 @@ class Registro2View(View):
                     login(request, user)
 
                     messages.success(request, 'Usuário cadastrado com sucesso.')
-                    return redirect('nova-empresa')
+                    return redirect('/admin/inscricao/empresa/add')
                 else:
                     messages.error(request, 'Token inválido ou desativado. Realize seu pré-cadastro novamente.')
                     return redirect('start')
@@ -241,164 +242,6 @@ class ReiniciaSenha2View(View):
         return render(request, self.template, self.dados)
 
 
-class InicioView(LoginRequiredMixin, View):
-    template = 'base/base.html'
-    dados = {}
-
-    def get(self, request, **kwargs):
-        return render(request, self.template, self.dados)
-
-
-class NovaEmpresaView(LoginRequiredMixin, View):
-    template = 'base/nova-empresa-2.html'
-    dados = {}
-
-    def get(self, request, **kwargs):
-        id = request.GET.get('id', None)
-        if id:
-            empresa = Empresa.objects.get(id=id)
-            request.session['empresa'] = empresa.id
-            empresa_agencia = EmpresaAgencia.objects.filter(empresa__id=id)
-            self.dados['id_empresa'] = empresa.id
-            self.dados['formulario_cadastro'] = RegistroEmpresaForm(instance=empresa)
-            self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
-            self.dados['formset_agencias'] = RegistroEmpresaAgenciaForm(instance=empresa)
-        else:  
-            self.dados['formulario_cadastro'] = RegistroEmpresaForm()
-            self.dados['formulario_fiscal'] = DadosFiscaisEmpresaForm()
-            self.dados['formset_agencias'] = formset_factory(RegistroEmpresaAgenciaForm, extra=0)
-            self.dados['id_empresa'] = 0
-        return render(request, self.template, self.dados)
-
-    def post(self, request, **kwargs):
-        resposta = {}
-        agencia_exists = False
-        if request.POST.get('id') is None:
-            formulario = RegistroEmpresaForm(request.POST)
-            emp = None
-        else:
-            emp = Empresa.objects.get(pk=int(request.POST.get('id')))
-            formulario = RegistroEmpresaForm(request.POST, instance=emp)
-        formset_agencias = formset_factory(RegistroEmpresaAgenciaForm)(request.POST)
-        email = request.POST.get('email')
-        vp_email = request.POST.get('vp_email')
-        c1_email = request.POST.get('c1_email')
-        c2_email = request.POST.get('c2_email')
-
-        if (email == vp_email and email != '' and vp_email != ''):
-            formulario.add_error('email', 'E-mails devem ser diferentes')
-
-        if (email == c1_email and email != '' and c1_email != ''):
-            formulario.add_error('email', 'E-mails devem ser diferentes')
-
-        if (email == c2_email and email != '' and c2_email != ''):
-            formulario.add_error('email', 'E-mails devem ser diferentes')
-
-        if (vp_email == c1_email and vp_email != '' and c1_email != ''):
-            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
-
-        if (vp_email == c2_email and vp_email != '' and c2_email != ''):
-            formulario.add_error('VP_Email', 'E-mails devem ser diferentes')
-
-        if (c1_email == c2_email and c1_email != '' and c2_email != ''):
-            formulario.add_error('C1_Email', 'E-mails devem ser diferentes')
-
-        nome_empresa = request.POST.get('nome').strip().upper()
-        email = request.POST.get('email')
-        vp_email = request.POST.get('VP_Email')
-        c1_email = request.POST.get('C1_Email')
-        c2_email = request.POST.get('C2_Email')
-
-        if email == vp_email and email != '' and vp_email != '':
-            formulario.add_error('email', 'E-mail do VP deve ser diferentes')
-
-        if email == c1_email and email != '' and c1_email != '':
-            formulario.add_error('email', 'E-mail do Contato 1 devem ser diferentes')
-
-        if email == c2_email and email != '' and c2_email != '':
-            formulario.add_error('email', 'E-mail do Contato 2 devem ser diferentes')
-
-        if vp_email == c1_email and vp_email != '' and c1_email != '':
-            formulario.add_error('VP_Email', 'E-mails do VP e do Contato 1 devem ser diferentes')
-
-        if vp_email == c2_email and vp_email != '' and c2_email != '':
-            formulario.add_error('VP_Email', 'E-mails do VP e do Contato 2 devem ser diferentes')
-
-        if c1_email == c2_email and c1_email != '' and c2_email != '':
-            formulario.add_error('C1_Email', 'E-mails do contato 1 e 2 devem ser diferentes')
-
-        if emp:
-            emp_id = emp.id
-        else:
-            emp_id = 0
-
-        if Empresa.objects.filter(nome=nome_empresa).exclude(pk=emp_id).exists():
-            formulario.add_error('nome', 'Já existe uma empresa cadastrada com esse nome. Por favor, utilize outro.')
-
-        if formulario.is_valid():
-            try:
-                # Salvando Empresa
-
-                empresa = formulario.save()
-                resposta['pk'] = empresa.pk
-
-                # Salvando EmpresaUsuario
-                usuario = Usuario.objects.get(user=request.user)
-                EmpresaUsuario.objects.get_or_create(empresa=empresa, usuario=usuario)
-
-                # Salvando primeira agencia
-                area = request.POST.get('area')
-                agencia=EmpresaAgencia.objects.filter(empresa_id=empresa.pk)
-                if not agencia.exists():
-                    if (area == '1') or (area == '3') or (area == '27'):
-                        empresa.empresaagencia_set.create(
-                            agencia=request.POST.get('nome'),
-                            uf=UF.objects.get(sigla=request.POST.get('uf')) 
-                        )    
-                        agencia_exists = True    
-                # Salvando objetos EmpresaAgencia
-               
-                for i in range(0, int(request.POST.get('form-TOTAL_FORMS'))):
-                    print(request.POST.get('form-{}-nome'.format(i)), request.POST.get('form-{}-uf'.format(i)))
-                    if request.POST.get('form-{}-nome'.format(i)) == '' or request.POST.get('form-{}-uf'.format(i)) == '':
-                        pass
-                    else:
-                        agencia_full=EmpresaAgencia.objects.filter(empresa_id=empresa.pk, agencia=request.POST.get('form-{}-nome'.format(i)))
-                        if not agencia_full.exists() : 
-                            uf= UF.objects.get(sigla=request.POST.get('form-{}-uf'.format(i)))
-                            empresa.empresaagencia_set.create(
-                            agencia=request.POST.get('form-{}-nome'.format(i)),
-                            uf=uf
-                            )
-                            agencia_exists = True
-                             
-                resposta['agencia_full'] = agencia_exists          
-                request.session['empresa'] = empresa.id
-                resposta['status'] = 200
-
-            except Exception as erro:
-                if empresa:
-                    request.session['empresa'] = empresa.id
-                resposta['status'] = 500
-                resposta['texto'] = erro.__str__()
-        else:
-            print(formulario.cleaned_data)
-            print(formulario.errors)
-            resposta['status'] = 500
-            erros = formulario.errors.items()
-            texto = formulario.errors.as_text()
-            for e in erros:
-                label = Empresa._meta.get_field(e[0]).verbose_name
-                if label is not None:
-                    texto = texto.replace(e[0], label)
-                else:
-                    pass
-                print(e[0], e[1], Empresa._meta.get_field(e[0]).verbose_name)
-
-            resposta['texto'] = texto
-        return JsonResponse(resposta)
-
-
 def logoutview(request):
     logout(request)
     return redirect('login')
@@ -406,61 +249,3 @@ def logoutview(request):
 ####################
 #### Auxiliares ####
 ####################
-
-
-def consulta_empresa(request, nome):
-    resposta = {}
-    if Empresa.objects.filter(nome__icontains = nome).exists():
-        resposta['existe'] = True
-    else:
-        resposta['existe'] = False
-    return JsonResponse(resposta)
-
-
-def consulta_agencia(request, empresa):
-    resposta = {}
-    if EmpresaAgencia.objects.filter(empresa_id = empresa.pk).exists():
-        resposta['agencia'] = True
-    else:
-        resposta['agencia'] = False
-    return JsonResponse(resposta)
-
-
-def estados_regional(request):
-    id_regional = request.GET.get('regional')
-    if int(id_regional) > 0:
-        resposta = {
-            'estados': Regional.objects.get(id = id_regional).estados.split(','),
-        }
-    else:
-        lista = []
-        regionais = Regional.objects.all()
-        for r in regionais:
-            estados = r.estados.split(',')
-            for e in estados:
-                lista.append(e)
-        resposta = {
-                'estados': lista,
-        }
-    return JsonResponse(resposta)
-
-
-def cadastro_fiscal(request):
-    # TODO: Desenvolver cadastros fiscais
-    resposta = {}
-    if request.POST:
-        formulario = DadosFiscaisEmpresaForm(request.POST)
-        if formulario.is_valid():
-            try:
-                empresa = Empresa.objects.get(id = request.session['empresa'])
-                resposta['status'] = 200
-            except Exception as erro:
-                resposta['status'] = 500
-                resposta['texto'] = erro.__str__()
-        else:
-            resposta['status'] = 500
-            resposta['texto'] = 'Dados incorretos. Por favor, tente novamente.'
-    else:
-        resposta['status'] = 500
-        resposta['texto'] = 'Método de requisição inválido.'
-    return JsonResponse(resposta)

@@ -1,14 +1,44 @@
 {% load i18n static %}<!DOCTYPE html>
+{% load staticfiles %}
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" />
-{% block extrastyle %}{% endblock %}
+{% block extrastyle %}{{ block.super }}{% endblock %}
 {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
 {% block extrahead %}{% endblock %}
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+
 </head>
+<style>
+    ul.messagelist li.danger {
+        background: #ffefef url('../../../../static/admin/img/icon-no.svg') 40px 12px no-repeat;
+        background-size: 16px auto;
+    }
+     .related-widget-wrapper-link {
+            display: none !important;
+     }
+     .form-row{
+         border-bottom: none !important;
+     }
+    .vForeignKeyRawIdAdminField, .inline-group .tabular td.original p {
+        display: none;
+    }
+    .inline-group .tabular tr.has_original td {
+        padding-top: 1em !important;
+    }
+   .help{
+       padding-left: 1px !important;
+   }
+   div.breadcrumbs {
+       clear: both;
+       margin-top: 32px;
+   }
+    div.branding img.logo {
+        padding-top: 5px !important;
+    }
+</style>
 {% load i18n %}
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
@@ -22,7 +52,7 @@
     <div id="header" style="height: 60px; padding-bottom: 15px; padding-left: 50px; background-color: #8cc3de; color: #5a5a48">
         <div id="branding" >
             <!--{% block branding %}{% endblock %} -->
-            <img class="logo" src="{% static 'base/img/logo.png' %}" alt="" height="70" width="120">
+            <img class="logo" src="{% static 'base/img/logo.png' %}" alt="" style="padding-top:5px" height="70" width="120">
         </div>
         {% block usertools %}
         {% if has_permission %}
@@ -49,7 +79,7 @@
         </div>
         {% endif %}
         {% endblock %}
-        {% block nav-global %}{% endblock %}
+        {% block nav-global %}{{ block.super }}{% endblock %}
     </div>
     <!-- END Header -->
     {% block breadcrumbs %}
@@ -82,11 +112,72 @@
 
         <br class="clear" />
     </div>
+
     <!-- END Content -->
 
     {% block footer %}<div id="footer"></div>{% endblock %}
 </div>
 <!-- END Container -->
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script type='text/javascript' src='//code.jquery.com/jquery-compat-git.js'></script>
+<script type='text/javascript' src='//igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js'></script>
+<script>
+
+        function pesquisaCep() {
+            var entrada = document.getElementById('id_cep').value.replace('-', '')
+            $.get(`https://viacep.com.br/ws/${entrada}/json/`, function(endereco, status) {
+                if (status == 'success') {
+                    //console.log(endereco)
+                    $('#id_endereco').val(endereco.logradouro)
+                    $('#id_bairro').val(endereco.bairro)
+                    $('#id_uf').val(endereco.uf)
+                    $('#id_cidade').val(endereco.localidade)
+                }
+            });
+        }
+
+        $('#id_cep').blur(pesquisaCep);
+        
+        function remover(arg){
+            return arg.replace('-', '')
+        }
+
+        $('body').on("submit", function(){
+            $('#id_telefone').val(remover($('#id_telefone').val()))
+            $('#id_celular').val(remover($('#id_celular').val()))
+            $('#id_VP_Telefone').val(remover($('#id_VP_Telefone').val()))
+            $('#id_C1_Telefone').val(remover($('#id_C1_Telefone').val()))
+            $('#id_C2_Telefone').val(remover($('#id_C2_Telefone').val()))
+        });
+
+       var behavior = function (val) {
+            return val.replace(/\D/g, '').length === 9 ? '00000-0000' : '0000-00009';
+        },
+        options = {
+            onKeyPress: function (val, e, field, options) {
+                field.mask(behavior.apply({}, arguments), options);
+            }
+        };
+         $('#id_VP_Telefone').mask(behavior, options);
+        $('#id_telefone').mask(behavior, options);
+        $('#id_celular').mask(behavior, options);
+
+        $('#id_C1_Telefone').mask(behavior, options);
+        $('#id_C2_Telefone').mask(behavior, options);
+
+
+
+
+
+</script>
 
 </body>
+
 </html>

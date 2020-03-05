@@ -9,6 +9,9 @@ django-smart-selects
 django-tabbed-admin
 gunicorn
 html5lib
+beautifulsoup4
 
 django-mptt==0.10.0
 easy-thumbnails==2.6
+requests==2.22.0
+Pillow==6.2.0

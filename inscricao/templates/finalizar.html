@@ -1,0 +1,95 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+{% block title %}Finalizar Inscrição{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}" />
+{% endblock %}
+{% block content %}
+    <h1>Finalizar Inscrição</h1>
+    <div id="content-main">
+        <fieldset class="module aligned">
+            <p>À Secretaria da Abracomp,</p>
+            <p>A empresa abaixo identificada confirma a inscrição de seus trabalhos no Prêmio Colunistas 2019, dentro das seguintes condições:</p>
+            <p>1 - Concordamos integralmente com os termos do regulamento da premiação, conforme definidos no documento <a href="http://www.colunistas.com.br/pc2019-info-gerais" target="_blank">Informações Gerais</a>.</p>
+            <p>2 - Concordamos em ceder os direitos de reprodução das peças inscritas em materiais de objetivo cultural e/ou informativo ligados à Abracomp ou ao Prêmio Colunistas (sites, CDs/DVDs, publicações impressas ou audiovisuais, exposições etc.), sem qualquer compensação financeira.</p>
+            <p>3 - Comprometemo-nos a fornecer um vídeo sobre o conjunto dos trabalhos premiados, de acordo com orientação determinada pela Abracomp, até 15 (quinze) dias após a divulgação dos resultados.</p>
+            <p>4 - Confirmamos que todos os trabalhos inscritos foram criados e/ou produzidos por empresas sediadas no Brasil.</p>
+            <p>5 - Confirmamos que a aceitação dos prêmios eventualmente concedidos pelo júri será confirmada através de nossa adesão à Cerimônia de Premiação, nos termos do regulamento da premiação.</p>
+            <p>6 - Estamos enviando, para o e-mail da regional definido no documento <a href="http://www.colunistas.com.br/pc2019-regionais" target="_blank">"Prêmio Colunistas 2019 - As Regionais"</a> o link para acesso aos dados e materiais inscritos.</p>
+            <p></p>
+        </fieldset>
+        <form action="" method="POST" id="finalizar_form" enctype="multipart/form-data">
+            <input type="hidden" name="empresa" value="{{context.empresa.id}}">
+            {% csrf_token %}
+            <fieldset class="module aligned">
+                <h2>Dados Gerais</h2>
+                <div class="box-input">
+                    <label for="empresa_nome" class="only required">Nome da Empresa:</label>
+                    <div class="readonly" id="empresa_nome">{{context.empresa.nome}}</div>
+                </div>
+                <div class="box-input">
+                    <label for="regional" class="only required">Regional:</label>
+                    <div class="readonly" id="regional">{{context.empresa.regional}}</div>
+                </div>
+                <div class="box-input">
+                    <label for="inscricoes_empresa" class="only required">Total de Inscrições:</label>
+                    <div class="readonly" id="inscricoes_empresa">{{context.empresa.inscricao_set.all.count}}</div>
+                </div>
+                <div class="box-input">
+                    <label for="custo_total" class="only required">Custo Total:</label>
+                    <div class="readonly" id="custo_total">R$ {{context.custo_total}}</div>
+                </div>
+            </fieldset>
+            <fieldset class="aligned module">
+                <h2>Identificação do Responsável</h2>
+                <div class="box-input">
+                    <label class="required id">Nome:</label>
+                    <div class="readonly">{{context.empresa.VP_Nome}}</div>
+                </div>
+                <div class="box-input">
+                    <label class="required id">Cargo:</label>
+                    <div class="readonly">{{context.empresa.VP_Cargo}}</div>
+                </div>
+                <div class="box-input">
+                    <label class="required id">Telefone Fixo:</label>
+                    <div class="readonly">({{context.empresa.VP_DDD}}) {{context.empresa.VP_Telefone}}</div>
+                </div>
+                <div class="box-input">
+                    <label class="required id">Email:</label>
+                    <div class="readonly">{{context.empresa.VP_Email}}</div>
+                </div>
+            </fieldset>
+             <fieldset class="module aligned">
+                 <h2>Comprovante de Pagamento</h2>
+                  <div class="box-input">
+                      <label for="upload" class="required">Comprovante:</label>
+                      <input type="file" id="upload" required name="comprovante">
+                  </div>
+             </fieldset>
+            <fieldset class="module aligned">
+                <div class="box-input">
+                    <label class="check"><input type="checkbox" id="check" required></label>
+                    <label for="check" class="required declaracao">Declaro conhecer o Regulamento da premiação e concordar integralmente com os seus termos</label>
+                </div>
+            </fieldset>
+            <fieldset class="module aligned">
+                <div class="box-input">
+                    <a href="https://colunistas.com.br/pc2019-como-participar/" target="_blank">Clique aqui para acessar os Regulamentos em PDF.</a>
+                </div>
+            </fieldset>
+            <div class="submit-row">
+                <p style="float: left; font-weight: bold; color: red">Antes de enviar, tenha a certeza de ter salvado e lido o Regulamento, especialmente o item V - Outras Informações.</p>
+                <input type="submit" {% if not context.finalizar %}disabled{% endif %} class="default" name="_send">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

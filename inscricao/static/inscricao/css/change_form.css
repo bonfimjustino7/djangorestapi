@@ -1,0 +1,166 @@
+
+#id_titulo, #id_parcerias, #id_produto{
+    width: 400px;
+}
+
+.form-row{
+    position: relative;
+    padding: 0 !important;
+    padding-top: 5px !important;
+}
+div.help{
+    display: none;
+}
+/*div.help{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    left: 125px;*/
+/*    z-index: 2;*/
+/*}*/
+/*#tabs-4  div.help{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    left: 215px;*/
+/*    z-index: 2;*/
+/*}*/
+
+/*div.form-row input{*/
+/*    z-index: 100;*/
+/*}*/
+/*form .aligned div.help{*/
+/*    margin-left: 0px !important;*/
+/*}*/
+.aligned label{
+    width: 110px !important;
+}
+#tabs-4  label{
+    width: 200px !important;
+}
+.field-OutrosFornecedor1 label, .field-OutrosFornecedor2 label, .field-OutrosFornecedor3 label, .field-OutrosFornecedor4 label{
+    width: 200px !important;
+}
+
+.timezonewarning {
+  display: none; !important;
+}
+
+#id_DiretorCriacao, #id_Atendimento, #id_Aprovacao{
+    width: 660px !important;
+}
+#id_OutrosAgencia1,#id_OutrosAgencia2, #id_OutrosAgencia3, #id_OutrosAgencia4, #id_Midia, #id_Planejamento, #id_ProducaoGrafica, #id_ProducaoRTVC, #id_OutrosFornecedor1, #id_OutrosFornecedor2, #id_OutrosFornecedor3, #id_OutrosFornecedor4, #id_TecnologiaDigital{
+    width: 580px !important;
+}
+#id_Redacao, #id_DiretorArte{
+    width: 920px !important;
+}
+#id_ProdutoraFilme, #id_DiretorFilme, #id_ProdutoraAudio, #id_DiretorAudio, #id_EstudioFotografia, #id_Fotografo, #id_EstudioIlustracao, #id_Ilustrador, #id_ManipulacaoDigital, #id_Finalizacao{
+    width: 370px !important;
+}
+
+div.field-agencia label.inline{
+    width: 70px !important;
+    padding-right: 0 !important;
+}
+
+a#calendarlink0 {
+    display: inline !important;
+}
+span.datetimeshortcuts a{
+    display: none;
+}
+.inline-related fieldset.module h2{
+    display: none;
+}
+ul.messagelist li.danger {
+    background: #ffefef url('../../../../static/admin/img/icon-no.svg') 40px 12px no-repeat;
+    background-size: 16px auto;
+}
+strong#dicas{
+    font-size: 12px;
+    color: #930b3a;
+}
+strong#dicas p{
+    font-size: 11px;
+    color: #333 !important;
+}
+a.view-file{
+    display: inline-block;
+    float: left;
+    margin: 5px 15px 5px 0px;
+    color: #ffff;
+    font-weight: 500;
+    font-size: 12px;
+    border: 1px solid #488bc4;
+    background-color: #6f99c8;
+    width: 90px;
+    text-align: center;
+    width: 90px;
+    text-align: center;
+    padding: 1px;
+    cursor: pointer;
+}
+.vURLField{
+    float: left;
+    margin-right: 10px;
+}
+a.view-file:hover{
+    background-color: #406080;
+}
+
+.clear-file{
+    float: left;
+    margin: 5px 5px;
+}
+.clear-file label{
+    font-size: 11px;
+    font-weight: 500;
+    color: #333;
+    margin-left: 4px;
+}
+
+.dynamic-material_set .field-arquivo input[type=file]{
+    float: left;
+}
+.file{
+    margin-top: 3px;
+    width: 170px;
+    float: left;
+}
+.file .botao{
+    display: inline-block;
+    width: 90px;
+    border: 1px solid #488bc4;
+    background-color: #4393c8;
+    color: #fff;
+    text-align: center;
+    padding: 1px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+.file .botao:hover{
+    background-color: #27516d;
+    cursor: pointer;
+}
+.file-disabled{
+    background-color: rgba(67,147,200, 0.5) !important;
+    border: 1px solid #5fb3fc;
+    display: none !important;
+}
+.label-disabled{
+    display: none!important;
+}
+.file-disabled:hover{
+    cursor: default !important;
+}
+.file .label{
+    font-size: 11px;
+}
+.aligned label + p, .aligned label + div.help, .aligned label + div.readonly{
+    margin-left: 120px !important;
+}
+#tabs-4 .module h2{
+    background: none;
+}
+#tabs-4 .module{
+    margin-bottom: 5px !important;
+}

@@ -1,8 +1,29 @@
+import os
+import uuid
+from collections import Counter
+from datetime import datetime
+
 from django.db import models
+from django.dispatch import receiver
 from localflavor.br.forms import BRCNPJField
 from django.contrib.auth.models import User
 from base.models import *
-from smart_selects.db_fields import ChainedForeignKey
+from colunistas import settings
+from util.stdlib import upper_first
+from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
+from django.db.models.signals import m2m_changed, post_save, post_delete
+
+
+STATUS_ENVIO = (('A', 'Em aberto'), ('F', 'Finalizado'))
+
+
+class FileField(models.FileField):
+    def save_form_data(self, instance, data):
+        if data is not None:
+            file = getattr(instance, self.attname)
+            if file != data:
+                file.delete(save=False)
+        super(FileField, self).save_form_data(instance, data)
 
 
 class Usuario(models.Model):
@@ -15,17 +36,6 @@ class Usuario(models.Model):
 
     def __str__(self):
         return u'%s (%s)' % (self.nome_completo, self.user)
-
-
-def letra_maiuscula(name):
-    items = []
-    if name != None:
-        for item in name.lower().split():
-            if len(item)>2:
-                item = item.capitalize()
-
-            items.append(item)
-        return ' '.join(items)
 
 
 class Empresa(models.Model):
@@ -42,7 +52,8 @@ class Empresa(models.Model):
     telefone = models.CharField(u'Telefone', max_length=10, blank=True, null=True, help_text=u'XXXXX-XXXX')
     celular = models.CharField(u'Celular', max_length=10, blank=True, null=True, help_text=u'XXXXX-XXXX')
     homepage = models.URLField(u'Home Page da Empresa', blank=True, null=True)
-    email = models.EmailField(u'E-Mail da Empresa', blank=True, null=True, help_text='Apenas se a empresa tiver um email central')
+    email = models.EmailField(u'E-Mail da Empresa', blank=True, null=True,
+                              help_text='Apenas se a empresa tiver um email central')
     VP_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100)
     VP_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60)
     VP_Email = models.EmailField(u'E-Mail', blank=True, null=True)
@@ -56,21 +67,26 @@ class Empresa(models.Model):
     C2_Nome = models.CharField('VP ou Diretor da Empresa', max_length=100, null = True, blank = True)
     C2_Cargo = models.CharField('Cargo VP ou Diretor', max_length=60, null = True, blank = True)
     C2_Email = models.EmailField(u'E-Mail', blank=True, null=True)
-    C2_DDD = models.CharField('DDD', max_length=2, null = True, blank = True)
+    C2_DDD = models.CharField('DDD', max_length=2, null=True, blank=True)
     C2_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
+    status = models.CharField('Situação', max_length=1, choices=STATUS_ENVIO, default='A')
+    dtfinalizacao = models.DateTimeField('Dt.Finalização', blank=True, null=True)
+    dtexportacao = models.DateTimeField('Dt.Exportação', blank=True, null=True)
 
     def __str__(self):
         return u'%s' % self.nome
 
     def save(self, request=False, *args, **kwargs):
         self.nome = self.nome.upper()
-        self.cep = self.cep.replace('-','')
-        self.VP_Nome = letra_maiuscula(self.VP_Nome)
-        self.VP_Cargo = letra_maiuscula(self.VP_Cargo)
-        self.C1_Nome = letra_maiuscula(self.C1_Nome)
-        self.C1_Cargo = letra_maiuscula(self.C1_Cargo)
-        self.C2_Nome = letra_maiuscula(self.C2_Nome)
-        self.C2_Cargo = letra_maiuscula(self.C2_Cargo)
+        self.cep = self.cep.replace('-', '')
+        self.VP_Nome = upper_first(self.VP_Nome)
+        self.VP_Cargo = upper_first(self.VP_Cargo)
+        self.C1_Nome = upper_first(self.C1_Nome)
+        self.C1_Cargo = upper_first(self.C1_Cargo)
+        self.C2_Nome = upper_first(self.C2_Nome)
+        self.C2_Cargo = upper_first(self.C2_Cargo)
+        self.bairro = upper_first(self.bairro)
+        self.endereco = upper_first(self.endereco)
         super(Empresa, self).save(*args, **kwargs)
 
 
@@ -88,27 +104,33 @@ class EmpresaAgencia(models.Model):
 
 
 class EmpresaUsuario(models.Model):
-    empresa = models.ForeignKey(Empresa,on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     dtinclusao = models.DateTimeField(auto_now_add=True)
 
 
 texto_outros_autores = 'Utilize o formato: "Função, Fulano, Beltrano e Sicrano'
 texto_outros_creditos = 'Outros Créditos de Fornecedores'
 
+STATUS_INSCRICAO = (
+    ('A', 'Em edição'),
+    ('V', 'Validada'),
+)
+
 
 class Inscricao(models.Model):
-    premio = models.ForeignKey(Premio,on_delete=models.PROTECT)
-    usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
-    empresa = models.ForeignKey(Empresa,on_delete=models.PROTECT)
+    premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT, verbose_name='Premiação')
+    premio = models.ForeignKey(Premio, on_delete=models.PROTECT, null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
     seq = models.IntegerField('Seq')
-    titulo = models.CharField(max_length=60)
-    #agencia = models.ForeignKey(EmpresaAgencia,on_delete=models.PROTECT)
-    agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa', show_all=False)
-    categoria = models.ForeignKey(Categoria,on_delete=models.PROTECT)
-    parcerias = models.CharField(max_length=50, null=True, blank=True)
-    formato = models.ForeignKey(Formato,on_delete=models.PROTECT, null=True, blank=True)
+    titulo = models.CharField('Título', max_length=60)
+    agencia = ChainedForeignKey(EmpresaAgencia, chained_field='empresa', chained_model_field='empresa',
+                                show_all=False, verbose_name='Agência')
+    categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
+                                show_all=False, on_delete=models.PROTECT)
     cliente = models.CharField(max_length=60, null=True, blank=True)
+    parcerias = models.CharField(max_length=50, null=True, blank=True)
     produto = models.CharField(max_length=30, null=True, blank=True)
     dtinicio = models.DateField('Veiculação ou Início')
     isolada = models.BooleanField(default=False)
@@ -149,10 +171,14 @@ class Inscricao(models.Model):
                                          help_text=texto_outros_autores, null=True, blank=True)
     OutrosFornecedor4 = models.CharField(texto_outros_creditos, max_length=80,
                                          help_text=texto_outros_autores, null=True, blank=True)
-    roteiro = models.TextField('Roteiro de Rádio', null=True, blank=True)
+    dtinclusao = models.DateTimeField('Dt.Inclusão', auto_now_add=True, null=True, blank=True)
+    dtexportacao = models.DateField('Dt.Exportação', null=True, blank=True)
+    status = models.CharField(max_length=1, default='A', choices=STATUS_INSCRICAO)
+    videocase = models.URLField('Videocase', max_length=512, null=True, blank=True)
+    apresentacao = models.URLField('Apresentação', max_length=512, null=True, blank=True)
 
     def __str__(self):
-        return u'%s' % (self.seq)
+        return u'%s' % self.seq
 
     class Meta:
         ordering = ('seq', )
@@ -161,26 +187,76 @@ class Inscricao(models.Model):
         indexes = [models.Index(fields=['usuario', 'empresa', 'seq']),]
 
     @property
-    def total_inscricoes(self):
-        return u'%d' % self.inscricao_set.count()
+    def resumo(self):
+        totais = Counter()
+        for item in self.material_set.all():
+            totais[item.tipo.descricao] += 1
+
+        resumo = ''
+        for k, v in totais.items():
+            resumo += '%s (%s)\n' % (k, v)
+
+        return resumo
+
 
     def save(self, *args, **kwargs):
-        self.seq = 1
+        if not self.seq:
+            ultima = Inscricao.objects.filter(empresa=self.empresa).last()
+            if ultima:
+                seq_ant = ultima.seq
+            else:
+                seq_ant = 0
+            self.seq = seq_ant + 1
         super(Inscricao, self).save(*args, **kwargs)
+
+
+def path(self, filename):
+    extension = os.path.splitext(filename)[-1]
+    if self.id:
+        filename = '%s' % self.id
+    else:
+        last_material = Material.objects.values('id').last()
+        filename = '%s' % str(last_material['id']+1)
+
+    new_filename = '%s/%s%s' % ('uploads', filename, extension)
+    return new_filename
 
 
 class Material(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT)
-    arquivo = models.FileField(null=True, blank=True)
+    arquivo = FileField(upload_to=path, max_length=512, null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     idsoundcloud = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
-        return u'%s (%s)' % (self.formato, self.id)
+        return u'%s (%s)' % (self.tipo, self.id)
 
     class Meta:
-        ordering = ('tipo', )
         verbose_name = u'Material'
         verbose_name_plural = u'Materiais'
+        ordering = ('tipo', 'id',)
 
+
+@receiver(post_delete, sender=Material)
+def handler_file(sender, **kwargs):
+    filename = kwargs['instance'].arquivo
+    if filename:
+        path = os.path.join(settings.MEDIA_ROOT, filename.name)
+        if os.path.exists(path):
+            os.remove(path)
+
+class FinalizadasManager(models.Manager):
+    def get_queryset(self):
+        return super(FinalizadasManager, self).get_queryset().filter(status='F')
+
+class Finalizadas(Empresa):
+    objects = FinalizadasManager()
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Finalizada'
+        verbose_name_plural = 'Finalizadas'
+
+    def download_inscricao(self):
+        return mark_safe('<a href="/empresa_download/%s">Download das Inscrições</a>' % self.pk)

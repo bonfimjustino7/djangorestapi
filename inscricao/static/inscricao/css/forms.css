@@ -1,0 +1,120 @@
+.aligned label {
+    display: block;
+    padding: 4px 10px 0 0;
+    float: none !important;
+    width: 160px;
+    word-wrap: break-word;
+    line-height: 1;
+}
+.aligned label {
+    width: 200px !important;
+}
+label {
+    text-align: left;
+}
+field-VP_DDD label.inline{
+    width: 60px !important;
+}
+div.help{
+    position: relative;
+    top: 0px;
+    margin-left: -10px;
+}
+.field-VP_DDD label {
+      width: 100px !important;
+
+}
+
+.field-area div.help{
+    margin-bottom: 20px;
+    margin-top: -10px;
+}
+.field-box.field-cep div.help{
+    width: 90px;
+    margin-bottom: -10px !important;
+    margin-top: 0px !important;
+    padding-bottom: 10px;
+}
+.field-box.field-cidade div.help, .field-box.field-uf div.help{
+    margin-top: 10px !important;
+}
+.field-box.field-homepage div.help{
+    width: 200px;
+}
+.field-box.field-email div.help{
+    margin-bottom: 26px !important;
+}
+.field-box.field-area div.help{
+    margin-top: 5px !important;
+}
+.field-box.field-VP_Telefone div.help, .field-box.field-C1_Telefone div.help, .field-box.field-C2_Telefone div.help{
+    margin-top: 5px !important;
+}
+div.help{
+    color: #807b7b !important;
+}
+form .aligned ul{
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+    margin-top: -15px !important;
+}
+
+.field-regional div.campos{
+    float: left;
+    position: relative;
+}
+.field-regional div.help{
+    display: inline-block;
+    position: relative;
+    left: -70px;
+    top: 15px;
+    width: 220px !important;
+}
+.campos{
+    display: block;
+    margin-top: -10px;
+}
+ul.errorlist li {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    margin-top: 20px !important;
+}
+#id_homepage, #id_email{
+    width: 390px;
+}
+.field-ddd .campos .required{
+    width: 60px !important;
+}
+#id_telefone, #id_celular, #id_VP_Telefone, #id_C1_Telefone, #id_C2_Telefone{
+    width: 75px;
+}
+.field-ddd{
+    margin-right: 0px !important;
+}
+.field-VP_DDD .required{
+    width: 60px !important;
+    padding-right: 0px !important;
+}
+.field-VP_DDD, .field-C1_DDD, .field-C2_DDD{
+    margin-right: 0px !important;
+}
+.field-VP_Email{
+    margin-right: 21px !important;
+}
+.field-C1_DDD .inline, .field-C2_DDD .inline{
+    width: 120px !important;
+    padding-right: 0px;
+}
+#id_VP_Email{
+    width: 260px !important;
+}
+.field-cep .campos .required{
+    width: 153px !important;
+}
+#id_nome{
+    width: 445px !important;
+}
+.field-telefone .campos label{
+    width: 90px !important;
+}

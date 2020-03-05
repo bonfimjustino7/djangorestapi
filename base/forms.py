@@ -22,7 +22,7 @@ class LoginForm(forms.Form):
     )
 
 
-class Registro1Form(forms.Form):  # TODO: Incluir o captcha do Google
+class Registro1Form(forms.Form):
     nome = forms.CharField(
         required=True,
         widget=forms.widgets.TextInput(attrs={'class': 'input', 'placeholder': 'Nome'}),

@@ -1,17 +1,25 @@
 # coding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
+from smart_selects.db_fields import ChainedForeignKey
+
+def ano_corrente():
+    import datetime
+    now = datetime.datetime.now()
+    return str(now.year)
 
 
 class Regional(models.Model):
     codigo = models.CharField('Código', max_length=2)
     nome = models.CharField(max_length=30)
-    estados = models.CharField(max_length=100, help_text='Separe os estados com vírgula',null=True)
+    estados = models.CharField(max_length=100, help_text='Separe os estados com vírgula', null=True)
 
     class Meta:
         ordering = ('nome', )
         verbose_name_plural = 'Regionais'
 
+    # TODO: Na hora de salvar, verificar se não existe um estado em mais de uma regional
     def __str__(self):
         return self.nome
 
@@ -34,7 +42,8 @@ class TipoMaterial(models.Model):
     descricao = models.CharField('Descrição', max_length=40)
     arquivo = models.BooleanField('Permite anexar arquivo', default=False)
     url = models.BooleanField('Permite URL', default=False)
-    roteiro = models.BooleanField('Permite registro de roteiros', default=False)
+    youtube = models.BooleanField('Youtube/Vimeo obrigatórios', default=False)
+    dicas = models.TextField('Dicas para preenchimento', blank=True, null=True)
 
     def __str__(self):
         return u'%s' % self.descricao
@@ -50,9 +59,13 @@ class Premiacao(models.Model):
     codigo = models.CharField(max_length=3)
     ordem = models.SmallIntegerField()
     materiais = models.ManyToManyField(TipoMaterial)
+    URLApoio = models.URLField('URL Apoio', blank=True, null=True)
 
     def __str__(self):
         return self.nome
+
+    def url_nova_aba(self):
+        return mark_safe('%s"target="_blank"' % self.URLApoio if self.URLApoio else '')
 
     class Meta:
         ordering = ('ordem', )
@@ -90,16 +103,34 @@ class Area(models.Model):
 # Categorias da Inscrição
 class Categoria(models.Model):
     codigo = models.CharField('Código', max_length=6)
-    nome = models.CharField(max_length=40)
+    nome = models.CharField(max_length=100)
     descricao = models.TextField('Texto explicativo')
-    grupo = models.BooleanField(default=False)
-    premiacao = models.ForeignKey(Premiacao)
+    premiacao = models.ForeignKey(Premiacao, verbose_name='Premiação')
 
     class Meta:
         ordering = ('codigo', )
 
     def __str__(self):
         return u'%s' % self.nome
+
+
+class Preco(models.Model):
+    premiacao = models.ForeignKey(Premiacao, verbose_name='Premiação')
+    categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
+                                  blank=True, null=True, help_text='Deixe em branco para o caso geral',
+                                  show_all=False, on_delete=models.PROTECT)
+    preco = models.DecimalField('Preço Regular', max_digits=16, decimal_places=2)
+    preco_serie = models.DecimalField('Preço para Série', blank=True, null=True, max_digits=16, decimal_places=2)
+
+    class Meta:
+        ordering = ('premiacao', 'categoria', )
+        verbose_name = 'Preço'
+
+    def __str__(self):
+        if self.categoria:
+            return u'%s - %s' % (self.premiacao, self.categoria)
+        else:
+            return u'%s' % self.premiacao
 
 
 PREMIO_STATUS = (
@@ -110,24 +141,30 @@ PREMIO_STATUS = (
 
 
 class Premio(models.Model):
-    ano = models.SmallIntegerField(default=2019)
-    premiacao = models.ForeignKey(Premiacao, on_delete=models.PROTECT)
+    ano = models.SmallIntegerField()
     regional = models.ForeignKey(Regional, on_delete=models.PROTECT)
     status = models.CharField(max_length=1, choices=PREMIO_STATUS, default='A')
 
     def __str__(self):
-        return '%s' % self.premiacao
+        return '%s' % self.ano
 
     def descricao_completa(self):
-        return '{} ({} - {})'.format(
-            self.premiacao,
+        return '{}/{}'.format(
             self.regional,
             self.ano
         )
 
-    def ano_corrente(self):
-        return 2019
-    ano_corrente.short_description = 'Ano'
+    def total_inscricoes(self):
+        return self.inscricao_set.count()
+    total_inscricoes.short_description = 'Total de Inscrições'
+
+    def total_inscricoes_pendentes(self):
+        count = self.inscricao_set.filter(status='A').count()
+        if count > 0:
+            return mark_safe('<font color="red">%d</font>' % count)
+        else:
+            return '0'
+    total_inscricoes_pendentes.short_description = 'Inscrições Pendentes'
 
     class Meta:
         ordering = ('ano', )

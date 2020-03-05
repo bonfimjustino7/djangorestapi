@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from inscricao import views
 from filebrowser.sites import site
 
 # django 2
@@ -28,6 +29,7 @@ from filebrowser.sites import site
 # 	path('admin_tools/', include('admin_tools.urls')),
 # 	path('', include('base.urls')),
 # ]
+from util.views import montar_nome
 
 admin.site.site_header = settings.SITE_NAME
 
@@ -39,7 +41,22 @@ urlpatterns = [
 	url(r'^chaining/', include('smart_selects.urls')),
 	url(r'^', include('base.urls')),
 	url(r'^', include('util.urls')),
+	url(r'^tipos_materiais/(?P<id>\d+)/$', views.tipo_materiais),
+	url(r'^filtrar_estados/(?P<id>\d+)/$', views.filtrar_estados),
+	url(r'^dica_material/(?P<id>\d+)/$', views.dica_materiais),
+	url(r'^dica_material/name/(?P<name>\w+)/$', views.dica_materiais_by_name),
+	url(r'^baixar_material/(?P<id>\d+)/$', montar_nome),
+	url(r'^get_tipo_materiais/(?P<id>\d+)/$', views.get_tipo_materiais),
+	url(r'^fomulario_custos/$', views.formularios_custos),
+	url(r'^inscricoes_cadastradas/$', views.inscricoes_cadastradas),
+	url(r'^admin/inscricao/finalizar/$', views.finalizar),
+	url(r'^empresa_download/(?P<id>\d+)/$', views.empresa_download),
+
 ]
+
+if settings.LOCAL:
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if 'theme' in settings.INSTALLED_APPS:
 	urlpatterns += [url(r'^/', include('theme.urls')), ]
@@ -49,7 +66,3 @@ if 'theme' in settings.INSTALLED_APPS:
 # url(r'^/', include('cms.urls')), # django 1
 # path('', include('cms.urls')), # django 2
 # ]
-
-if settings.DEBUG:
-	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

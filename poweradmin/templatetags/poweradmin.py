@@ -1,9 +1,13 @@
 # coding: utf-8
+from django.contrib.admin.views.main import PAGE_VAR
 from django.template import Library
 from datetime import datetime
 
-register = Library()
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
+register = Library()
+DOT = '.'
 
 @register.filter(name='strptime')
 def strptime(value, mash):
@@ -35,3 +39,34 @@ def power_date_hierarchy(context, cl):
             'value__lte': value__lte,
             'request': request,
         }
+
+@register.simple_tag
+def power_pagination(cl, i):
+    if cl.multi_search_query:
+        tag = '?'
+        for k, v in cl.multi_search_query.items():
+            tag += '%s=%s&' % (k, v)
+
+        if i == DOT:
+            return '... '
+        elif i == cl.page_num:
+            return format_html('<span class="this-page">{}</span> ', i + 1)
+        else:
+            return format_html('<a href="{}p={}"{}>{}</a> ',
+                               tag,
+                               i,
+                               mark_safe(' class="end"' if i == cl.paginator.num_pages - 1 else ''),
+                               i + 1)
+    else:
+        """
+           Generates an individual page index link in a paginated list.
+           """
+        if i == DOT:
+            return '... '
+        elif i == cl.page_num:
+            return format_html('<span class="this-page">{}</span> ', i + 1)
+        else:
+            return format_html('<a href="{}"{}>{}</a> ',
+                               cl.get_query_string({PAGE_VAR: i}),
+                               mark_safe(' class="end"' if i == cl.paginator.num_pages - 1 else ''),
+                               i + 1)

@@ -1,6 +1,11 @@
 # coding:utf-8
 #import datetime
+import datetime
 import os
+from itertools import chain
+
+from django.db.models import ManyToManyField, ForeignKey
+from django.forms import model_to_dict
 from django.utils.text import capfirst
 
 
@@ -11,21 +16,23 @@ def only_numbers(value):
 
 def nvl(objeto,alternativa):
     # simula a função clássica do Oracle: Retorna uma alternativa caso o objeto esteja vazio
-    if objeto == None:
-        return alternativa
-    else:
+    if objeto:
         return objeto
+    else:
+        return alternativa
 
 
 def upper_first(value):
     # Retorna a string capitalizada, considerando preposições em Português
     result = ''
-    for sentence in value.split(" "):
-        if sentence in ['de','da','do','para','e','entre']:
-            result = result + " " + sentence
-        else:
-            result = result + " " + capfirst(sentence)
+    if value:
+        for sentence in value.lower().split(" "):
+            if sentence in ['de', 'da', 'do', 'para', 'e', 'entre']:
+                result = result + " " + sentence
+            else:
+                result = result + " " + capfirst(sentence)
     return result.lstrip()
+
 
 # Retorna o objeto referenciado no PATH do request
 def get_object_from_path(request, model):
@@ -33,6 +40,7 @@ def get_object_from_path(request, model):
     if object_id.isdigit():
         return model.objects.get(pk=object_id)
     raise model.DoesNotExist()
+
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -61,6 +69,66 @@ def server_status():
             json[memory.split()[0]] = dict(zip(header, data))
     return json
 
+
+def get_model_values(obj, fields=None, exclude=[], extras=[]):
+    '''
+
+    :param obj: instancia do objeto.
+    :param fields: lista de campos do model.
+    :param exclude: lista de campos que não vão ser retornados.
+    :param extras: lista de campos adicionais.
+    :return: lista de valores de cada campo.
+    '''
+
+    values = []
+    if not fields:
+        fields = get_model_labels(obj) #pega todos os campos
+    else:
+        fields += extras  # colocando os campos extras
+
+    for e in exclude:
+        fields.remove(e)  # removendo os campos exclude
+
+    for field in fields:
+        instance = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
+        if type(instance) is datetime.datetime:
+            values.append(instance.strftime('%d/%m/%y %H:%M:%S'))
+
+        elif type(instance) is datetime.date:
+            values.append(
+                instance.strftime('%d/%m/%y'))
+        else:
+            values.append(instance)
+
+    return values
+
+def get_model_labels(obj, fields=None, exclude=[], extras=[]):
+    '''
+
+        :param obj: instancia do objeto.
+        :param fields: lista de campos do model.
+        :param exclude: lista de campos que não vão ser retornados.
+        :param extras: lista de campos adicionais.
+        :return: lista de valores de cada campo.
+    '''
+
+    lista = []
+    labels = {}
+    if not fields:
+        labels = model_to_dict(obj)
+    else:
+        for field in fields + extras:
+            labels[field] = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
+
+    for e in exclude:
+        try:
+            del labels[e]
+        except KeyError:
+            None
+
+    for key, item in labels.items():
+        lista.append(str(key))
+    return lista
 '''
 def encode_utf8(text):
     m = magic.Magic(mime_encoding=True)
