@@ -29,34 +29,34 @@ class CustomIndexDashboard(Dashboard):
         site_name = get_admin_site_name(context)
         request = context.get('request')
 
-        self.children += [
-            modules.ModelList(
-                u'Tabelas de Apoio',
-                models=('base.*',)
-            ),
-            modules.ModelList(
-                u'Cadastro das Inscrições',
-                models=('inscricao.models.Inscricao', 'inscricao.models.Empresa', )
-            ),
-            modules.ModelList(
-                u'Adminstração',
-                models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',
-                        'util.models.EmailAgendado', 'util.models.UserToken', ),
-            ),
+        if request.user.is_superuser:
+            self.children += [
+                modules.ModelList(
+                    u'Tabelas de Apoio',
+                    models=('base.*',)
+                ),
+                modules.ModelList(
+                    u'Cadastro das Inscrições',
+                    models=('inscricao.models.Inscricao', 'inscricao.models.Empresa', )
+                ),
+                modules.ModelList(
+                    u'Adminstração',
+                    models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',
+                            'util.models.EmailAgendado', 'util.models.UserToken', ),
+                ),
 
-            modules.LinkList(
-                'Links Rápidos',
-                layout='inline',
-                draggable=True,
-                deletable=True,
-                collapsible=True,
-                children=[
-                    [_('Ajuda'), '/ajuda/'],
-                    [_('Sair'), '/logout/'],
-                ])
+                modules.LinkList(
+                    'Links Rápidos',
+                    layout='inline',
+                    draggable=True,
+                    deletable=True,
+                    collapsible=True,
+                    children=[
+                        [_('Ajuda'), '/ajuda/'],
+                        [_('Sair'), '/logout/'],
+                    ])
 
-        ]
-
+            ]
 
 class CustomAppIndexDashboard(AppIndexDashboard):
 
