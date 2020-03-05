@@ -226,4 +226,4 @@ CKEDITOR_CONFIGS = {
 }
 
 LOGIN_URL = '/login/'
-LOGOUT_REDIRECT_URL = 'http://www.colunistas.com.br/'
+LOGOUT_REDIRECT_URL = 'http://app.colunistas.com.br/login/'
