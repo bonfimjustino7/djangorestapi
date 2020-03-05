@@ -139,3 +139,8 @@ def encode_utf8(text):
         text = text.decode('iso-8859-1').encode('utf-8')
     return text
 '''
+def is_admin(user):
+    if user.is_superuser or user.groups.filter(name='Admin').exists():
+        return True
+    else:
+        return False

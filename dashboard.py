@@ -17,6 +17,8 @@ from django.urls import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
 
+from util.stdlib import is_admin
+
 
 class CustomIndexDashboard(Dashboard):
     """
@@ -29,7 +31,7 @@ class CustomIndexDashboard(Dashboard):
         site_name = get_admin_site_name(context)
         request = context.get('request')
 
-        if request.user.is_superuser:
+        if is_admin(request.user):
             self.children += [
                 modules.ModelList(
                     u'Tabelas de Apoio',
