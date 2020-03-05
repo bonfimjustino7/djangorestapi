@@ -125,7 +125,6 @@ class EmpresaAdmin(PowerModelAdmin):
         return qs
 
     def save_model(self, request, obj, form, change):
-        res = get_values(obj)
         area = form.cleaned_data['area'].pk
         obj.save()
 
