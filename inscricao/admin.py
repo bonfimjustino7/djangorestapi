@@ -794,10 +794,6 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         return super(InscricaoAdmin, self).response_change(request, obj)
 
-@admin.register(Usuario)
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('user',)
-
 @admin.register(Finalizadas)
 class FinalizadasAdmin(EmpresaAdmin):
     list_display = ('nome', 'dtexportacao', 'download_inscricao')
