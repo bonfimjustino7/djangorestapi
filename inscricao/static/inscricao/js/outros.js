@@ -68,11 +68,22 @@ function carregar(cont){
             return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
         }
         $(document).ready(function () {
+                // modal
+            $('<a href="#" type="button" class="mostrar button default" id="id_mostrar">Adicionar Material</a>').insertBefore(`#tabs-2 .inline-related .module `);
+            $(`.dialog .modal-body .column1 label`).attr({'for': `id_material_set-${contarSelects()-1}-tipo`});
+            $(`.dialog .modal-body .column1 select`).attr({'id':`id_material_set-${contarSelects()-1}-tipo`, 'name': `material_set-${contarSelects()-1}-tipo`});
+            $(`.dialog .modal-body .column2 label`).attr({'for':`id_material_set-${contarSelects()-1}-arquivo`});
+            $(`.dialog .modal-body .column2 label span.botao`).attr({'id':`id_material_set-${contarSelects()-1}-arquivo-cpy`});
+            $(`.dialog .modal-body .column2 label span.label`).attr({'id':`id_material_set-${contarSelects()-1}-arquivo-label`});
+
+            $(`fieldset.module tr#material_set-${contarSelects()-1}`).css('display', 'none'); // removendo o ultimo tr
+
+
              //get_tipo(contarSelects());
              carregar(contarSelects());
              $('#id_premiacao').change(function () {
                  carregar(contarSelects())
-             })
+             });
 
             $('.add-row').click(function () {
                carregarUm(contarSelects());
@@ -92,6 +103,11 @@ function carregar(cont){
                 //console.log($(this).val())
                  habilarCampos($(this).val(), campo, classe)
             })
+            $('.mostrar').click(function () {
+               $('.dialog').css('display', 'block');
+            });
+
+            // $(`<select name="${contarSelects()}"></select>'`).appendTo('.dialog .modal-body .column1')
 
             // Ao carregar a página execulta a validação dos materiais
             $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {

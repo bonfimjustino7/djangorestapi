@@ -175,11 +175,6 @@ class MaterialInline(admin.TabularInline):
     fields = ('tipo', 'arquivo', 'url',)
     extra = 1
 
-    def get_readonly_fields(self, request, obj=None):
-        if obj and obj.premio:
-            if obj.premio.status == 'F':
-                return list(super().get_fields(request, obj))
-        return super(MaterialInline, self).get_readonly_fields(request, obj)
 
 
 class AnoFilter(admin.SimpleListFilter):

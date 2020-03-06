@@ -3,16 +3,38 @@
 {% load i18n admin_urls static admin_modify %}
 
 {% block content %}
-
+<div class="dialog">
+    <form action="/salvar_material" method="POST">
+      <div class="modal-content ">
+          <div class="modal-header">
+            Titulo
+              <a class="close button-cancelar" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
+              <button type="submit" class="button" id="salvar">Salvar</button>
+          </div>
+          <div class="modal-body">
+            <div class="column1">
+                <label class="required">Selecione o tipo de material:</label>
+                <select></select>
+            </div>
+            <div class="column2">
+                <label class="file" style="width: 250px !important;">
+                    <span class="botao">Selecione</span>
+                    <span class="label">Nenhum arquivo selecionado</span>
+                </label>
+            </div>
+          </div>
+      </div>
+        </form>
+</div>
 {% block extrastyle %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/change_form.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/lightcase.css' %}" />
-
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/modal.css' %}" />
+    <!-- css boostrap -->
 
 {% endblock %}
 {% block js %}
-
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="{% static 'inscricao/js/dicas.js' %}"></script>
@@ -27,6 +49,11 @@
         </script>
 
         <script>
+
+            $('#cancelar').click(function () {
+                $('.dialog').css('display', 'none');
+            });
+
             function verificarCombo(){
                 //console.log(document.getElementById('id_empresa').length);
                 var qtd = document.getElementById('id_empresa').length;
@@ -42,11 +69,10 @@
                 var a = document.querySelector('a.deletelink');
                 var ref = window.location.href;
                 var ref = ref.split('change')[0] + 'delete';
-                $(a).prop('href', ref)
+                $(a).prop('href', ref);
            });
 
             var input = document.querySelectorAll('.form-row input');
-
            $('.help').click(function (e) {
                 $(this).css('display', 'none');
            })
@@ -155,7 +181,6 @@
 
 <!--            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}-->
              <div class="submit-row">
-
             <!-- Se for change -->
                 {% if original %}
                      <p class="deletelink-box">
