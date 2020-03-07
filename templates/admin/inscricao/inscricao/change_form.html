@@ -4,24 +4,34 @@
 
 {% block content %}
 <div class="dialog">
-    <form action="/salvar_material" method="POST">
+    <form action="/salvar_material" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" value="{{ original.pk }}" name="inscricao">
       <div class="modal-content ">
           <div class="modal-header">
-            Titulo
-              <a class="close button-cancelar" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
-              <button type="submit" class="button" id="salvar">Salvar</button>
+            <span style="padding-top: 8px; display: inline-block; font-size: 18px">Novo Material</span>
+
           </div>
           <div class="modal-body">
             <div class="column1">
                 <label class="required">Selecione o tipo de material:</label>
-                <select></select>
+                <select name="tipo" required></select>
             </div>
             <div class="column2">
-                <label class="file" style="width: 250px !important;">
+                <input type="file" id="file" name="file">
+                <label class="file" style="width: 250px !important;" for="file">
                     <span class="botao">Selecione</span>
                     <span class="label">Nenhum arquivo selecionado</span>
                 </label>
             </div>
+           <div class="column3">
+               <label for="" class="required" style="display: block">URL:</label>
+               <input type="url" class="vURLField" maxlength="200" name="url">
+           </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="button default" id="salvar">Salvar</button>
+              <a class="close button-cancelar" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
           </div>
       </div>
         </form>

@@ -42,6 +42,7 @@
 a.button-cancelar{
   padding-top: 5px !important;
   font-size: 18px;
+  margin-left: 10px;
 }
 
 /* The Close Button */
@@ -62,22 +63,25 @@ a.button-cancelar{
 .modal-header {
   padding: 2px 16px;
   height: 40px;
-  background-color: white;
+  background-color: #8cc3de;
   color: white;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   border-bottom: 2px solid #f9f9f9 ;
 }
 
-.modal-body {padding: 2px 16px; min-height: 330px; background-color: #f5f5f5}
+.modal-body {padding: 2px 16px; min-height: 230px; background-color: #f5f5f5; overflow: hidden}
 
 .modal-footer {
   padding: 2px 16px;
+  height: 50px;
   background-color: white;
   color: white;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  height: 40px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-top: 2px solid #f9f9f9 ;
+  overflow: auto;
+  position: relative;
 }
 .mostrar{
   float: left;
@@ -106,8 +110,8 @@ a.button-cancelar{
 }
 #salvar{
     float: left;!important;
-    font-size: 18px;
-    padding: 5px;
+    font-size: 15px;
+    padding: 6px 16px;
     background-color: #417690!important;
 }
 p#obs-modal{
@@ -119,6 +123,8 @@ strong#dicas-modal{
   color: #930b3a;
   margin-top: 20px;
   display: inline-block;
+  clear: both;
+  float: left;
 }
 .column2{
   margin-left: 30px;
@@ -126,4 +132,14 @@ strong#dicas-modal{
 }
 .column2 .file .botao {
   margin-top: 30px;
+  padding: 5px !important;
+  border-radius: 2px !important;
+}
+.column3{
+  margin-left: 30px;
+  float: left;
+  padding-top: 15px;
+}
+#file{
+  display: none;!important;
 }

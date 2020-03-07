@@ -157,3 +157,11 @@ def empresa_download(request, id):
     empresa.dtexportacao = datetime.now()
     empresa.save()
     return response
+
+def salvar_material(request):
+    if request.POST:
+        tipo = request.POST.get('tipo')
+        inscricao = request.POST.get('inscricao')
+        file = request.FILES.get('file')
+    messages.success(request, 'Material adicionado com sucesso.')
+    return redirect('/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao)

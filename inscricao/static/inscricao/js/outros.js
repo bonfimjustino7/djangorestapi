@@ -71,8 +71,8 @@ function carregar(cont){
                 // modal
             $('<a href="#" type="button" class="mostrar button default" id="id_mostrar">Adicionar Material</a>').insertBefore(`#tabs-2 .inline-related .module `);
             $(`.dialog .modal-body .column1 label`).attr({'for': `id_material_set-${contarSelects()-1}-tipo`});
-            $(`.dialog .modal-body .column1 select`).attr({'id':`id_material_set-${contarSelects()-1}-tipo`, 'name': `material_set-${contarSelects()-1}-tipo`});
-            $(`.dialog .modal-body .column2 label`).attr({'for':`id_material_set-${contarSelects()-1}-arquivo`});
+            $(`.dialog .modal-body .column1 select`).attr({'id':`id_material_set-${contarSelects()-1}-tipo`});
+            //$(`.dialog .modal-body .column2 label`).attr({'for':`id_material_set-${contarSelects()-1}-arquivo`});
             $(`.dialog .modal-body .column2 label span.botao`).attr({'id':`id_material_set-${contarSelects()-1}-arquivo-cpy`});
             $(`.dialog .modal-body .column2 label span.label`).attr({'id':`id_material_set-${contarSelects()-1}-arquivo-label`});
 
