@@ -173,7 +173,8 @@ class EmpresaAdmin(PowerModelAdmin):
 class MaterialInline(admin.TabularInline):
     model = Material
     fields = ('tipo', 'arquivo', 'url',)
-    extra = 1
+    readonly_fields = ('tipo', 'arquivo', 'url',)
+    extra = 0
 
 
 

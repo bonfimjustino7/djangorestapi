@@ -68,16 +68,66 @@ function carregar(cont){
             return document.querySelectorAll('.dynamic-empresaagencia_set .field-uf select').length
         }
         $(document).ready(function () {
-                // modal
-            $('<a href="#" type="button" class="mostrar button default" id="id_mostrar">Adicionar Material</a>').insertBefore(`#tabs-2 .inline-related .module `);
-            $(`.dialog .modal-body .column1 label`).attr({'for': `id_material_set-${contarSelects()-1}-tipo`});
-            $(`.dialog .modal-body .column1 select`).attr({'id':`id_material_set-${contarSelects()-1}-tipo`});
+
+            // modal
+
+            $('<a href="#" type="button" class="mostrar button default" id="id_mostrar"><img src="../../../../../static/admin/img/icon-addlink.svg" alt=""> Adicionar Material</a>').insertBefore(`#tabs-2 .inline-related .module `);
+            $(`.dialog .modal-body .column1 label`).attr({'for': `id-tipo`});
+            $(`.dialog .modal-body .column1 select`).attr({'id':`id-tipo`});
             //$(`.dialog .modal-body .column2 label`).attr({'for':`id_material_set-${contarSelects()-1}-arquivo`});
-            $(`.dialog .modal-body .column2 label span.botao`).attr({'id':`id_material_set-${contarSelects()-1}-arquivo-cpy`});
-            $(`.dialog .modal-body .column2 label span.label`).attr({'id':`id_material_set-${contarSelects()-1}-arquivo-label`});
+            $(`.dialog .modal-body .column2 label span.botao`).attr({'id':`botao_file`});
+            $(`.dialog .modal-body .column2 label span.label`).attr({'id':`label-file`});
 
             $(`fieldset.module tr#material_set-${contarSelects()-1}`).css('display', 'none'); // removendo o ultimo tr
 
+
+            $('.dialog .modal-body .column1 select').change(function () {
+                $('.dialog .modal-content .modal-footer button').removeAttr('disabled');
+                var valor = $(this).val();
+                $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res){
+                    $.each(res, function (id, value) {
+                        if (valor == value.id) {
+                            if (!value.arquivo) {
+                                $('.dialog .modal-body .column2').hide();
+                                $('.dialog .modal-body .column3').show();
+                            }
+                            else{
+                                $('.dialog .modal-body .column2').show();
+                                $('.dialog .modal-body .column3').hide();
+                            }
+                        }
+                    })
+                });
+            });
+            $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res) {
+                    var select = document.getElementById('id-tipo');
+                    $(select).empty();
+                    $(select).append($('<option></option>').attr("value", '').text('------'))
+                    $.each(res, function (id, value) {
+                        $(select).append($('<option></option>').attr("value", value.id).text(value.text))
+                    })
+            });
+            $('#id_premiacao').change(function () {
+                $.get(`/tipos_materiais/${$(this).val()}`, function (res) {
+                    var select = document.getElementById('id-tipo');
+                    $(select).empty();
+                    $(select).append($('<option></option>').attr("value", '').text('------'))
+                    $.each(res, function (id, value) {
+                        $(select).append($('<option></option>').attr("value", value.id).text(value.text))
+                    })
+                })
+            });
+
+             // Mudando nome do arquivo selecionado
+            $('.dialog .modal-body .column2 .botao').click(function (e) {
+               $('.dialog .modal-body .column2 input#file').change(function () {
+                    var val = $(this).val().split('\\')[2];
+                    if (val)
+                        document.getElementById('label-file').innerHTML = val ;
+                    else
+                        document.getElementById(`label-file`).innerHTML = 'Nenhum arquivo selecionado' ;
+                })
+            });
 
              //get_tipo(contarSelects());
              carregar(contarSelects());

@@ -127,6 +127,7 @@ strong#dicas-modal{
   float: left;
 }
 .column2{
+  display: none;
   margin-left: 30px;
   float: left;
 }
@@ -136,10 +137,14 @@ strong#dicas-modal{
   border-radius: 2px !important;
 }
 .column3{
+  display: none;
   margin-left: 30px;
   float: left;
-  padding-top: 15px;
+  padding-top: 10px;
 }
 #file{
   display: none;!important;
+}
+#id_url{
+  margin-top: 5px;
 }

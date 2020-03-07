@@ -160,8 +160,13 @@ def empresa_download(request, id):
 
 def salvar_material(request):
     if request.POST:
-        tipo = request.POST.get('tipo')
-        inscricao = request.POST.get('inscricao')
+        tipo = int(request.POST.get('tipo'))
         file = request.FILES.get('file')
-    messages.success(request, 'Material adicionado com sucesso.')
+        inscricao = int(request.POST.get('inscricao'))
+        url = request.POST.get('url')
+        if tipo:
+            inscricao_instance = Inscricao.objects.get(id=inscricao)
+            tipo = TipoMaterial.objects.get(id=tipo)
+            Material.objects.create(inscricao=inscricao_instance, tipo=tipo, arquivo=file, url=url)
+            messages.success(request, 'Material adicionado com sucesso.')
     return redirect('/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao)
