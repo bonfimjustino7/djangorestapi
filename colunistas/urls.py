@@ -51,6 +51,7 @@ urlpatterns = [
 	url(r'^inscricoes_cadastradas/$', views.inscricoes_cadastradas),
 	url(r'^admin/inscricao/finalizar/$', views.finalizar),
 	url(r'^empresa_download/(?P<id>\d+)/$', views.empresa_download),
+	url(r'^delete/(?P<pk>\w+)/$', views.delete_material),
 	url(r'^salvar_material', views.salvar_material),
 
 ]

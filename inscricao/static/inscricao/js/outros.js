@@ -128,6 +128,35 @@ function carregar(cont){
                         document.getElementById(`label-file`).innerHTML = 'Nenhum arquivo selecionado' ;
                 })
             });
+            var form;
+
+            $('form#material_form').submit( async function (e) {
+                e.preventDefault();
+
+                var tipo = $('.column1 select').val();
+                var url = $('#id_url').val();
+                var file = document.getElementById('file').files[0];
+                form = new FormData();
+                form.append('file', file);
+                form.append('tipo', tipo);
+                form.append('url', url);
+                form.append('inscricao', $('#pk').html());
+                try {
+                    $('.carregar').show().fadeIn();
+                    let r = await fetch('/salvar_material', {method: "POST", body: form});
+                    const resposta = await r.json();
+                    console.log(resposta);
+                    if (resposta.mensagem){
+                        $(`<ul class="messagelist"><li style="margin: 0!important;" class="success">${resposta.mensagem}</li></ul>`).insertBefore('.modal-content .modal-body')
+                    }
+                    $('.carregar').hide().fadeOut();
+                }catch (e) {
+                    console.log(e);
+                }
+            
+            });
+
+
 
              //get_tipo(contarSelects());
              carregar(contarSelects());

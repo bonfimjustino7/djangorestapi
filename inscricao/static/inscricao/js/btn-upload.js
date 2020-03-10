@@ -5,11 +5,11 @@ function alterarURL(){
         var a = $(`#material_set-${i} td.field-url p`);
         if(!$(`#material_set-${i} .field-url p`).is(':empty')){
              $(`#material_set-${i} td.field-url p`).remove(); //apaga a div atual
-             $(`<a href="${a.html()}" class="view-file" target="_blank" id="view-file-set-${i}">Visualizar</a>`).appendTo(`#material_set-${i} td.field-url`);
+             $(`<a href="${a.html()}" class="view-file" target="_blank" id="view-file-set-${i}">Visualizar</a> <span style="margin-top: 5px!important; display: inline-block; color: #908b8b; font-size: 11px">Link</span>`).appendTo(`#material_set-${i} td.field-url`);
         }
-        else{
-            $('<span> - </span>').appendTo(`#material_set-${i} td.field-url p`);
-        }
+        // else{
+        //     $('<span> - </span>').appendTo(`#material_set-${i} td.field-url p`);
+        // }
     }
 }
 
@@ -30,7 +30,7 @@ $(document).ready(function () {
 
             // var a = $(`#id_material_set-${i}-arquivo`);
 
-            var id = ref_img.split('/')[5].split('.')[1]
+            var id = ref_img.split('/')[5].split('.')[1];
             console.log(id);
             if(formatos_img.indexOf(id) > -1){
                 $(`<a href="${ref_img}" class="view-file"  id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
@@ -38,15 +38,18 @@ $(document).ready(function () {
             else{
                 $(`<a href="/baixar_material/${ref_img.split('/')[5].split('.')[0]}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
             }
+
+            $(`<span style="margin-top: 5px!important; display: inline-block; color: #908b8b; font-size: 11px">Arquivo ${id}</span>`).appendTo(`#material_set-${i} td.field-arquivo`);
+
         }
-        else{
-            $('<span> - </span>').appendTo(`#material_set-${i} .field-arquivo p`); //apaga a div atual
-            // $(`<input type="file" name="material_set-${i}-arquivo" id="id_material_set-${i}-arquivo" style="display: none"/>`).appendTo(`#material_set-${i} td.field-arquivo`);
-            // $(`<label for="id_material_set-${i}-arquivo"class="file" style="width: 250px !important;">
-            //         <span class="botao" id="id_material_set-${i}-arquivo-cpy">Selecione</span>
-            //         <span class="label" id="id_material_set-${i}-arquivo-label">Nenhum arquivo selecionado</span>
-            //     </label>`).appendTo(`#material_set-${i} td.field-arquivo`);
-        }
+        // else{
+        //     $('<span> - </span>').appendTo(`#material_set-${i} .field-arquivo p`); //apaga a div atual
+        //     // $(`<input type="file" name="material_set-${i}-arquivo" id="id_material_set-${i}-arquivo" style="display: none"/>`).appendTo(`#material_set-${i} td.field-arquivo`);
+        //     // $(`<label for="id_material_set-${i}-arquivo"class="file" style="width: 250px !important;">
+        //     //         <span class="botao" id="id_material_set-${i}-arquivo-cpy">Selecione</span>
+        //     //         <span class="label" id="id_material_set-${i}-arquivo-label">Nenhum arquivo selecionado</span>
+        //     //     </label>`).appendTo(`#material_set-${i} td.field-arquivo`);
+        // }
     }
     alterarURL();
      // $('.add-row a').click(function () {

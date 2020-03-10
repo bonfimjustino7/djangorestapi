@@ -12,6 +12,7 @@ from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.html import strip_tags
+from django.views.decorators.csrf import csrf_exempt
 
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from colunistas import settings
@@ -158,6 +159,7 @@ def empresa_download(request, id):
     empresa.save()
     return response
 
+@csrf_exempt
 def salvar_material(request):
     if request.POST:
         tipo = int(request.POST.get('tipo'))
@@ -167,6 +169,20 @@ def salvar_material(request):
         if tipo:
             inscricao_instance = Inscricao.objects.get(id=inscricao)
             tipo = TipoMaterial.objects.get(id=tipo)
-            Material.objects.create(inscricao=inscricao_instance, tipo=tipo, arquivo=file, url=url)
+            material = Material.objects.create(inscricao=inscricao_instance, tipo=tipo, arquivo=file, url=url)
             messages.success(request, 'Material adicionado com sucesso.')
-    return redirect('/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao)
+
+
+        return HttpResponse(json.dumps({
+            "mensagem": "Material salvo com sucesso.",
+            "id": material.id,
+            "url": material.url,
+            "arquivo": material.arquivo.name,
+        }), 200)
+    # return redirect('/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao)
+
+def delete_material(request, pk):
+    material = Material.objects.get(id=pk)
+    material.delete()
+    messages.success(request, 'Material apagado com sucesso.')
+    return redirect(request.GET['to'])

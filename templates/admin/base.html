@@ -145,17 +145,7 @@
 
         $('#id_cep').blur(pesquisaCep);
         
-        function remover(arg){
-            return arg.replace('-', '')
-        }
 
-        $('body').on("submit", function(){
-            $('#id_telefone').val(remover($('#id_telefone').val()))
-            $('#id_celular').val(remover($('#id_celular').val()))
-            $('#id_VP_Telefone').val(remover($('#id_VP_Telefone').val()))
-            $('#id_C1_Telefone').val(remover($('#id_C1_Telefone').val()))
-            $('#id_C2_Telefone').val(remover($('#id_C2_Telefone').val()))
-        });
 
        var behavior = function (val) {
             return val.replace(/\D/g, '').length === 9 ? '00000-0000' : '0000-00009';

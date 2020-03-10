@@ -4,18 +4,18 @@
 
 {% block content %}
 <div class="dialog">
-    <form action="/salvar_material" method="POST" enctype="multipart/form-data">
+    <form action="/salvar_material" method="POST" id="material_form" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" value="{{ original.pk }}" name="inscricao">
+        <input type="hidden" value="{{ id_material }}" name="id_material">
       <div class="modal-content ">
           <div class="modal-header">
             <span style="padding-top: 8px; display: inline-block; font-size: 18px">Novo Material</span>
-
           </div>
           <div class="modal-body">
             <div class="column1">
                 <label class="required">Selecione o tipo de material:</label>
-                <select name="tipo" required></select>
+                <select name="tipo" id="id_tipo" required></select>
             </div>
             <div class="column2">
                 <input type="file" id="file" name="file">
@@ -24,14 +24,19 @@
                     <span class="label">Nenhum arquivo selecionado</span>
                 </label>
             </div>
-           <div class="column3">
+            <div class="column3">
                <label for="id_url" class="required" style="display: block">URL:</label>
                <input type="url" class="vURLField" id="id_url" maxlength="200" name="url">
+            </div>
+           <div class="carregar">
+                <div class="spinner"></div>
            </div>
           </div>
+
           <div class="modal-footer">
               <button type="submit" class="button default" disabled id="salvar">Salvar</button>
-              <a class="close button-cancelar" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
+              <a href="#tabs-2" class="button" id="visualizar">Visualizar</a>
+              <a class="close button" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
           </div>
       </div>
         </form>
@@ -48,9 +53,11 @@
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="{% static 'inscricao/js/dicas.js' %}"></script>
-        <script src="{% static 'inscricao/js/btn-upload.js' %}"></script>
+
         <script src="{% static 'inscricao/js/lightcase.js' %}"></script>
         <script src="{% static 'inscricao/js/outros.js' %}"></script>
+        <script src="{% static 'inscricao/js/tabela.js' %}"></script>
+        <script src="{% static 'inscricao/js/btn-upload.js' %}"></script>
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {
@@ -99,7 +106,7 @@
 
 {% endblock %}
 <div id="content-main">
-
+    <p id="pk" style="display: none">{{original.pk}}</p>
   {% block object-tools %}{{ block.super }}{% endblock %}
     <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
         <div>
