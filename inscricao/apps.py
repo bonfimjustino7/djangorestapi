@@ -15,6 +15,9 @@ def valida_youtube(url):
         url = url[1] + '.' + url[2]
     else:
         url = url[1]
+    url = url.split('/')[0]
+    if not 'youtube.com' == url and not 'youtu.be' == url and not 'vimeo.com' == url:
+        return 'O filme ou vídeo deve estar hospedado no YouTube ou no Vimeo!'
 
     r = requests.get('http://' + url)
     if not r.ok:
@@ -25,8 +28,5 @@ def valida_youtube(url):
         if title == 'YouTube':
             return 'Link inválido. O vídeo não existe no servidor especificado.'
 
-    url = url.split('/')[0]
-    if not 'youtube.com' == url and not 'youtu.be' == url and not 'vimeo.com' == url:
-        return 'O filme ou vídeo deve estar hospedado no YouTube ou no Vimeo!'
 
     return
