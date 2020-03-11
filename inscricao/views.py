@@ -7,7 +7,7 @@ from collections import Counter
 from datetime import datetime
 
 import requests
-from PIL import Image
+from PIL import Image, ImageChops
 from bs4 import BeautifulSoup
 from django.contrib import messages
 from django.contrib.admin.utils import label_for_field, lookup_field, display_for_value, display_for_field
@@ -181,7 +181,10 @@ def salvar_material(request):
 
             if id_material: #se o material já existir só atualiza
                 material = Material.objects.get(id=id_material)
-                if material.tipo == tipo and material.url == url: #se nada mudou só retorna os dados
+                img_1 = Image.open(material.arquivo.path)
+                img_2 = Image.open(file)
+
+                if material.tipo == tipo and material.url == url and img_1 == img_2: #se nada mudou só retorna os dados
                     resposta = {
                         "mensagens": [],
                         "id": material.id,
