@@ -5,7 +5,7 @@ function alterarURL(){
         var a = $(`#material_set-${i} td.field-url p`);
         if(!$(`#material_set-${i} .field-url p`).is(':empty')){
              $(`#material_set-${i} td.field-url p`).remove(); //apaga a div atual
-             $(`<a href="${a.html()}" class="view-file" target="_blank" id="view-file-set-${i}">Visualizar</a> <span style="margin-top: 5px!important; display: inline-block; color: #908b8b; font-size: 11px">Link</span>`).appendTo(`#material_set-${i} td.field-url`);
+             $(`<a href="${a.html()}" class="view-file" target="_blank" id="view-file-set-${i}">Visualizar</a> <span style="margin-top: 5px!important; display: inline-block; color: #908b8b; font-size: 12px">${a.html()}</span>`).appendTo(`#material_set-${i} td.field-url`);
         }
         // else{
         //     $('<span> - </span>').appendTo(`#material_set-${i} td.field-url p`);
@@ -40,7 +40,7 @@ $(document).ready(function () {
                 $(`<a href="/baixar_material/${id_material}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
             }
 
-            $(`<span style="margin-top: 5px!important; display: inline-block; color: #908b8b; font-size: 11px">Arquivo ${id}</span>`).appendTo(`#material_set-${i} td.field-arquivo`);
+            $(`<span style="margin-top: 4px!important; display: inline-block; color: #908b8b; font-size: 12px">Arquivo ${id}</span>`).appendTo(`#material_set-${i} td.field-arquivo`);
 
         }
         // else{

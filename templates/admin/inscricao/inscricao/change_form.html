@@ -43,21 +43,21 @@
 </div>
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/change_form.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/lightcase.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/modal.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/change_form.css' %}?{% now 'U' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/lightcase.css' %}?{% now 'U' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'inscricao/css/modal.css' %}?{% now 'U' %} "/>
     <!-- css boostrap -->
 
 {% endblock %}
 {% block js %}
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="{% static 'inscricao/js/dicas.js' %}"></script>
+        <script src="{% static 'inscricao/js/dicas.js' %}?{% now 'U' %}"></script>
 
-        <script src="{% static 'inscricao/js/lightcase.js' %}"></script>
-        <script src="{% static 'inscricao/js/outros.js' %}"></script>
-        <script src="{% static 'inscricao/js/tabela.js' %}"></script>
-        <script src="{% static 'inscricao/js/btn-upload.js' %}"></script>
+        <script src="{% static 'inscricao/js/lightcase.js' %}?{% now 'U' %}"></script>
+        <script src="{% static 'inscricao/js/outros.js' %}?{% now 'U' %}"></script>
+        <script src="{% static 'inscricao/js/tabela.js' %}?{% now 'U' %}"></script>
+        <script src="{% static 'inscricao/js/btn-upload.js' %}?{% now 'U' %}"></script>
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {

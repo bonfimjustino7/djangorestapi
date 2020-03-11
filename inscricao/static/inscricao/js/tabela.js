@@ -39,6 +39,6 @@ jQuery(document).ready(function ($) {
         if(url){
               $(`<td class="field-url"><p>${url}</p></td>`).appendTo(`#material_set-${i}`);
         }
-        $(`<td class="delete"><a href="/delete/${id}?to=/admin/inscricao/inscricao/${$('#pk').html()}/change/#tabs-2"><input type="button" class="deletelink" style="background-color: #ba2121" name="material_set-${i}-DELETE" id="id_material_set-${i}-DELETE" value="Apagar"></a></td>`).appendTo(`#material_set-${i}`);
+        $(`<td class="delete"><a href="/delete/${id}?to=/admin/inscricao/inscricao/${$('#pk').html()}/change/#tabs-2"><input type="button" class="deletelink" style="background-color: #ba2121" name="material_set-${i}-DELETE" id="delete-material" value="Apagar"></a></td>`).appendTo(`#material_set-${i}`);
     }
 });

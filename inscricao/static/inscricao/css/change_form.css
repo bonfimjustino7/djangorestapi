@@ -86,18 +86,15 @@ strong#dicas p{
 a.view-file{
     display: inline-block;
     float: left;
-    margin: 5px 15px 5px 0px;
+    margin: 0px 15px 5px 0px;
     color: #ffff;
     font-weight: 500;
     font-size: 12px;
-    border: 1px solid #488bc4;
-    background-color: #6f99c8;
-    width: 90px;
+    background-color: #417690;
     text-align: center;
-    width: 90px;
-    text-align: center;
-    padding: 1px;
+    padding: 4px 5px;
     cursor: pointer;
+    border-radius: 3px;
 }
 .vURLField{
     float: left;
@@ -163,4 +160,11 @@ a.view-file:hover{
 }
 #tabs-4 .module{
     margin-bottom: 5px !important;
+}
+#tabs-2 .module table tbody td{
+    padding: 5px !important;
+}
+#delete-material{
+    padding: 5px 10px;
+    background-color: #dc5555!important;
 }
