@@ -56,13 +56,16 @@ def filtrar_estados(request, id):
     estados = [estado.strip(' ') for estado in estados]
     return HttpResponse(json.dumps(estados), content_type='application/json')
 
+
 def get_tipo_materiais(request, id):
     lista_materiais = list(Material.objects.filter(inscricao=id).values('tipo'))
     return HttpResponse(json.dumps(lista_materiais), content_type='application/json')
 
+
 def formularios_custos(request):
     messages.warning(request, 'Rotina ainda não foi implementada.')
     return redirect('/')
+
 
 def inscricoes_cadastradas(request):
     messages.warning(request, 'Rotina ainda não foi implementada.')
@@ -80,7 +83,6 @@ def custos_total(empresa):
 
 def finalizar2(request, *args, **kwargs):
     context = {'finalizar': True}
-    erros = 0
     if request.POST.get('_send'):
         file = request.FILES.get('comprovante')
         filename = settings.COMPROVANTE_URL + '/' + file.name
@@ -98,16 +100,20 @@ def finalizar2(request, *args, **kwargs):
         else:
             empresa = args[0]
 
+        erros = 0
         context['empresa'] = empresa
         context['custo_total'] = '%.2f' % float(custos_total(empresa))
         for inscricao in empresa.inscricao_set.all():
             if inscricao.status == 'A':
                 erros += 1
-            if erros > 0:
-                context['finalizar'] = False
-                messages.warning(request, 'Existem %d inscrições com erro.' % erros)
+
+        if erros > 0:
+            context['finalizar'] = False
+            messages.warning(request,
+                             'O fechamento não pode seguir adiante pois existem %d inscrições com erro.' % erros)
 
         return render(request, 'finalizar.html', {'context': context})
+
 
 @login_required
 def finalizar(request):
@@ -136,6 +142,7 @@ def finalizar(request):
             else:
                 messages.error(request, 'Você não tem nenhuma empresa inscrita.')
                 return redirect('/')
+
 
 def empresa_download(request, id):
     empresa = Empresa.objects.get(id=id)

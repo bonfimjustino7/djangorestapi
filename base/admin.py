@@ -9,12 +9,11 @@ from poweradmin.admin import PowerModelAdmin, PowerTabularInline
 from base.models import *
 
 
-
-
 class PrecoInline(PowerTabularInline):
     model = Preco
     extra = 0
     form = PrecoForm
+
 
 @admin.register(Premiacao)
 class PremiacaoAdmin(admin.ModelAdmin):
