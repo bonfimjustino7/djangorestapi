@@ -547,7 +547,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
         totais = Counter()
         for mat in formset.cleaned_data:
             if mat:
-                totais[ mat['id'].tipo ] += 1 #mudança para o readonly
+                totais[ str(mat['id'].tipo) ] += 1 #mudança para o readonly
 
         erros = []
 

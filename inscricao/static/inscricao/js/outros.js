@@ -78,11 +78,21 @@ function carregar(cont){
             $(`.dialog .modal-body .column2 label span.botao`).attr({'id':`botao_file`});
             $(`.dialog .modal-body .column2 label span.label`).attr({'id':`label-file`});
 
-            $(`fieldset.module tr#material_set-${contarSelects()-1}`).css('display', 'none'); // removendo o ultimo tr
-
+            // Botao cancelar
+            $('#cancelar').click(function () {
+                $('#id-tipo').val('');
+                $('#id_url').val('');
+                $('#file').val('');
+                $('#label-file').html('Nenhum arquivo selecionado');
+                $('.messagelist').remove();
+                $('#id_material').val('');
+            });
 
             $('.dialog .modal-body .column1 select').change(function () {
                 $('.dialog .modal-content .modal-footer button').removeAttr('disabled');
+                $('#id_url').val('');
+                $('#file').val('');
+                $('#label-file').html('Nenhum arquivo selecionado');
                 var valor = $(this).val();
                 $.get(`/tipos_materiais/${$('#id_premiacao').val()}`, function (res){
                     $.each(res, function (id, value) {
@@ -136,18 +146,30 @@ function carregar(cont){
                 var tipo = $('.column1 select').val();
                 var url = $('#id_url').val();
                 var file = document.getElementById('file').files[0];
+                var id_material = $('#id_material').val();
                 form = new FormData();
                 form.append('file', file);
                 form.append('tipo', tipo);
                 form.append('url', url);
                 form.append('inscricao', $('#pk').html());
+                form.append('id_material', id_material)
                 try {
                     $('.carregar').show().fadeIn();
                     let r = await fetch('/salvar_material', {method: "POST", body: form});
                     const resposta = await r.json();
                     console.log(resposta);
-                    if (resposta.mensagem){
-                        $(`<ul class="messagelist"><li style="margin: 0!important;" class="success">${resposta.mensagem}</li></ul>`).insertBefore('.modal-content .modal-body')
+                    if (resposta.mensagens){
+                        $('.messagelist').remove();
+                        $(`<ul class="messagelist"></ul>`).insertBefore('.modal-content .modal-body');
+                        for(var i = 0; i < resposta.mensagens.length; i++){
+                            $(`<li style="margin: 0!important;" class="${resposta.mensagens[i].tipo}">${resposta.mensagens[i].msg}</li>`).appendTo('.messagelist');
+                        }
+                        $('#id_material').val(resposta.id);
+                    }
+                    else{
+                        if(resposta.redirect){
+                            window.location.replace(resposta.redirect);
+                        }
                     }
                     $('.carregar').hide().fadeOut();
                 }catch (e) {

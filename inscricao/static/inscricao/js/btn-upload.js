@@ -31,12 +31,13 @@ $(document).ready(function () {
             // var a = $(`#id_material_set-${i}-arquivo`);
 
             var id = ref_img.split('/')[5].split('.')[1];
+            var id_material = $(`#material_set-${i} #pk_material`).html();
             console.log(id);
             if(formatos_img.indexOf(id) > -1){
                 $(`<a href="${ref_img}" class="view-file"  id="view-file-set-${i}" data-rel="lightcase">Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
             }
             else{
-                $(`<a href="/baixar_material/${ref_img.split('/')[5].split('.')[0]}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
+                $(`<a href="/baixar_material/${id_material}/" class="view-file" id="view-file-set-${i}" >Visualizar</a>`).appendTo(`#material_set-${i} td.field-arquivo`);
             }
 
             $(`<span style="margin-top: 5px!important; display: inline-block; color: #908b8b; font-size: 11px">Arquivo ${id}</span>`).appendTo(`#material_set-${i} td.field-arquivo`);
