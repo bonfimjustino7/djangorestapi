@@ -21,6 +21,7 @@ class PrecoForm(ModelForm):
         super(PrecoForm, self).__init__(*args, **kwargs)
         self.fields['categoria'].empty_label = "Qualquer categoria"
 
+
 class RegistroEmpresaForm(forms.ModelForm):
     regional = forms.ModelChoiceField(queryset=Regional.objects.all(), help_text='Consulte o regulamento para saber em qual delas a sua região se enquadra.', required=True)
     nome = forms.CharField(label='Nome da Empresa', max_length=30, help_text='Use o nome de fantasia simplificado da empresa, sem "Ltda", "Propaganda", "Comunicação", "Criação", "Promoções", etc.')
