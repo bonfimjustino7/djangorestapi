@@ -188,10 +188,15 @@ def salvar_material(request):
 
             if id_material: #se o material já existir só atualiza
                 material = Material.objects.get(id=id_material)
-                img_1 = Image.open(material.arquivo.path)
-                img_2 = Image.open(file)
-
-                if material.tipo == tipo and material.url == url and img_1 == img_2: #se nada mudou só retorna os dados
+                extension_list = ['.jpg', '.png', '.jpeg', '.gif']
+                extension = os.path.splitext(material.arquivo.path)[-1]
+                if extension in extension_list:
+                    img_1 = Image.open(material.arquivo.path)
+                    img_2 = Image.open(file)
+                else:
+                    img_1 = material.arquivo
+                    img_2 = None
+                if visualizar and material.tipo == tipo and material.url == url and img_1 == img_2: #se nada mudou só retorna os dados
                     resposta = {
                         "mensagens": [],
                         "id": material.id,
