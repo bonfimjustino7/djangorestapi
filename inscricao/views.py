@@ -172,19 +172,35 @@ def salvar_material(request):
         inscricao = request.POST.get('inscricao')
         url = request.POST.get('url')
         id_material = request.POST.get('id_material')
-        if tipo:
+        visualizar = request.POST.get('visualizar')
+        mensagens = []
+
+        if tipo and url or file: # se o tipo existe salva
             inscricao_instance = Inscricao.objects.get(id=inscricao)
             tipo = TipoMaterial.objects.get(id=tipo)
-            if id_material:
+
+            if id_material: #se o material já existir só atualiza
                 material = Material.objects.get(id=id_material)
-                material.tipo = tipo
-                material.arquivo = file
-                material.url = url
-                material.save()
-                messages.success(request, 'Material alterado com sucesso.')
+                if material.tipo == tipo and material.url == url: #se nada mudou só retorna os dados
+                    resposta = {
+                        "mensagens": [],
+                        "id": material.id,
+                        "url": material.url,
+                        "arquivo": material.arquivo.name,
+                    }
+                    return HttpResponse(json.dumps(resposta), 200)
+
+                else:
+                    material.tipo = tipo
+                    material.arquivo = file
+                    material.url = url
+                    material.save()
+                    messages.success(request, 'Material alterado com sucesso.')
             else:
                 material = Material.objects.create(inscricao=inscricao_instance, tipo=tipo, arquivo=file, url=url)
                 messages.success(request, 'Material criado com sucesso.')
+        else:
+            return HttpResponse(json.dumps({"mensagens": mensagens.append({'tipo': 'error', 'msg': 'Insira ao menos o tipo do material e um url ou link'})}))
         #Criticas
         erro = False
 
@@ -422,7 +438,7 @@ def salvar_material(request):
 
         if len(erros) > 0:
             inscricao_instance.status = 'A'
-            mensagens = []
+
 
             mensagens.append({
                 "tipo": "warning",
@@ -435,22 +451,30 @@ def salvar_material(request):
                 "msg": erro,
             })
             inscricao_instance.save()
-
-            return HttpResponse(json.dumps({
+            resposta = {
                 "mensagens": mensagens,
                 "id": material.id,
                 "url": material.url,
                 "arquivo": material.arquivo.name,
-            }), 200)
+            }
 
         else:
+            if visualizar:
+                resposta = {
+                    "mensagens": [{'tipo': 'success', 'msg': 'Material alterado com sucesso.'}],
+                    "id": material.id,
+                    "url": material.url,
+                    "arquivo": material.arquivo.name,
+                }
+            else:
+                resposta = {
+                        "mensagem": None,
+                        "redirect": '/redirect?to=/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao
+                    }
             inscricao_instance.status = 'V'
             inscricao_instance.save()
-            return HttpResponse(json.dumps({
-               "mensagem": None,
-               "redirect": '/redirect?to=/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao
-            }), 200)
 
+        return HttpResponse(json.dumps(resposta), 200)
 
 
     # return redirect('/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao)

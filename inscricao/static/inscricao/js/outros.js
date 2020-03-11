@@ -140,6 +140,46 @@ function carregar(cont){
             });
             var form;
 
+            $('#visualizar').click( async function () {
+                if($('#id-tipo').val() && $('#file').val() || $('#id_url').val()){
+                    var tipo = $('.column1 select').val();
+                var url = $('#id_url').val();
+                var file = document.getElementById('file').files[0];
+                var id_material = $('#id_material').val();
+                form = new FormData();
+                form.append('file', file);
+                form.append('tipo', tipo);
+                form.append('url', url);
+                form.append('inscricao', $('#pk').html());
+                form.append('id_material', id_material);
+                form.append('visualizar', $('#visualizar').val());
+
+                try {
+                    $('.carregar').show().fadeIn();
+                    let r = await fetch('/salvar_material', {method: "POST", body: form});
+                    const resposta = await r.json();
+                    console.log(resposta);
+                    $('.messagelist').remove();
+                    $(`<ul class="messagelist"></ul>`).insertBefore('.modal-content .modal-body');
+                    for(var i = 0; i < resposta.mensagens.length; i++){
+                        $(`<li style="margin: 0!important;" class="${resposta.mensagens[i].tipo}">${resposta.mensagens[i].msg}</li>`).appendTo('.messagelist');
+                    }
+                    console.log(resposta.url);
+                    if(resposta.url){
+                        window.open(resposta.url,  '_blank');
+                    }else{
+                        window.open('/media/' + resposta.arquivo,  '_blank');
+                    }
+                    $('#id_material').val(resposta.id);
+
+                    $('.carregar').hide().fadeOut();
+                }catch (e) {
+                    console.log(e);
+                }
+                }
+
+            });
+
             $('form#material_form').submit( async function (e) {
                 e.preventDefault();
 
@@ -152,7 +192,7 @@ function carregar(cont){
                 form.append('tipo', tipo);
                 form.append('url', url);
                 form.append('inscricao', $('#pk').html());
-                form.append('id_material', id_material)
+                form.append('id_material', id_material);
                 try {
                     $('.carregar').show().fadeIn();
                     let r = await fetch('/salvar_material', {method: "POST", body: form});
