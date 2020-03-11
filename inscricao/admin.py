@@ -709,16 +709,18 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
         # Checagem adicional
         if 'Filme' in lista or 'Videocase' in lista:
-            check = False
-            url = ''
+            lista = []
+            lista2 = []
+            erro = False
+
             for mat in formset.cleaned_data:
-                if mat.get('url', False):
-                    if not mat.get('url', False) == url:
-                        url = mat.get('url', False)
-                    else:
-                        check = True
-                        break
-            if check:
+                if mat['id'].url:
+                    lista.append(mat['id'].url)
+            for l in lista:
+                if lista.count(l) > 1:
+                    print(lista.count(l))
+                    erro = True
+            if erro:
                 erros.append('Não podem haver urls iguais.')
 
         # Validação de URL

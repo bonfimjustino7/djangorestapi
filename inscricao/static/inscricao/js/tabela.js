@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
     $('<thead><tr></tr></tr></thead>').insertBefore('.module table tbody');
     $('<th class="original"></th>').appendTo('.module table thead tr');
     $('<th>Tipo</th>').appendTo('.module table thead tr');
-    $('<th>Arquivo</th>').appendTo('.module table thead tr');
+    $('<th>Arquivo/URL</th>').appendTo('.module table thead tr');
     $('<th>Apagar?</th>').appendTo('.module table thead tr');
 
     for(var i = 0; i < contarSelects(); i++){
