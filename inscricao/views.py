@@ -375,7 +375,7 @@ def salvar_material(request):
         if 'Filme' in lista or 'Videocase' in lista:
             check = False
             for mat in inscricao_instance.material_set.all():
-                if material.url and mat.url:
+                if material.url and mat.url and not material == mat:
                     if mat.url == material.url:
                         check = True
                         break
