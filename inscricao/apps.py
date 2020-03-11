@@ -30,5 +30,4 @@ def valida_youtube(url):
         if title == 'YouTube':
             return 'Link inválido. O vídeo não existe no servidor especificado.'
 
-
-    return
+        return
