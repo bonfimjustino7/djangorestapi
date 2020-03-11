@@ -80,12 +80,7 @@ function carregar(cont){
 
             // Botao cancelar
             $('#cancelar').click(function () {
-                $('#id-tipo').val('');
-                $('#id_url').val('');
-                $('#file').val('');
-                $('#label-file').html('Nenhum arquivo selecionado');
-                $('.messagelist').remove();
-                $('#id_material').val('');
+                window.location.reload();
             });
 
             $('.dialog .modal-body .column1 select').change(function () {
