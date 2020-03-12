@@ -1,0 +1,76 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+{% block title %}Meus dados{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}" />
+{% endblock %}
+{% block content %}
+    <h1>Finalizar Inscrição</h1>
+    <div id="content-main">
+        <form action="" method="POST" id="finalizar_form" enctype="multipart/form-data">
+            <input type="hidden" name="empresa" value="{{context.empresa.id}}">
+            {% csrf_token %}
+            <fieldset class="module aligned">
+
+                <div class="box-input">
+                    <label for="id_nome_completo" class="form required">{{form.nome_completo.label}}:</label>
+                   {{form.nome_completo}}
+                      {% if form.nome_completo.errors %}
+                        <ul>
+                            {% for error in form.nome_completo.errors%}
+                                <li><strong style="color: red">{{error|escape}}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+
+                <div class="box-input">
+                    <label for="id_email" class="form required">{{form.email.label}}:</label>
+                    {{form.email}}
+                    {% if form.email.errors %}
+                        <ul>
+                            {% for error in form.email.errors%}
+                                <li><strong style="color: red">{{error|escape}}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </fieldset>
+            <fieldset class="aligned module">
+                <h2>Empresas Associadas</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 80%">Empresa</th>
+                                 <th style="width: 600px">Ver</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         {% for empresa in empresas %}
+                            <tr class="form-row">
+                                <td>{{empresa.nome}}</td>
+                                <td><a href="{{empresa.link}}">Acessar</a></td>
+                            </tr>
+                         {% endfor %}
+                        </tbody>
+                    </table>
+
+            </fieldset>
+
+            <div class="submit-row">
+                <a href="/admin" style="float: left"><input type="button" value="Voltar"></a>
+                <input type="submit" class="button default" name="_send" value="Salvar">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
