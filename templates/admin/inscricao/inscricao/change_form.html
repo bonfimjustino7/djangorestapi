@@ -6,7 +6,7 @@
 <div class="dialog">
     <form action="/salvar_material" method="POST" id="material_form" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="hidden" value="{{ original.pk }}" name="inscricao">
+        <input type="hidden" value="{{ original.pk }}" name="inscricao" id="id_inscricao">
         <input type="hidden" value="{{ id_material }}" name="id_material" id="id_material">
       <div class="modal-content ">
           <div class="modal-header">
@@ -67,9 +67,9 @@
 
         <script>
 
-            $('#cancelar').click(function () {
-                $('.dialog').css('display', 'none');
-            });
+            // $('#cancelar').click(function () {
+            //     $('.dialog').css('display', 'none');
+            // });
 
             function verificarCombo(){
                 //console.log(document.getElementById('id_empresa').length);

@@ -80,7 +80,8 @@ function carregar(cont){
 
             // Botao cancelar
             $('#cancelar').click(function () {
-                window.location.reload();
+                var id = $('#id_inscricao').val();
+                location.href = `/redirect?to=/admin/inscricao/inscricao/${id}/change/#tabs-2`;
             });
 
             $('.dialog .modal-body .column1 select').change(function () {
