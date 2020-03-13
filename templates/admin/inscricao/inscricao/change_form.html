@@ -19,7 +19,7 @@
             </div>
             <div class="column2">
                 <input type="file" id="file" name="file">
-                <label class="file" style="width: 250px !important;" for="file">
+                <label class="file" style="width: 100% !important;" for="file">
                     <span class="botao">Selecione</span>
                     <span class="label">Nenhum arquivo selecionado</span>
                 </label>
@@ -34,9 +34,9 @@
           </div>
 
           <div class="modal-footer">
-              <button type="submit" class="button default" disabled id="salvar">Salvar</button>
-              <input type="button" class="button" id="visualizar" name="visualizar" value="Visualizar" />
-              <a class="close button" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
+              <button type="submit" class="button default" disabled id="salvar" style="font-size: 14px">Inserir na Inscrição</button>
+              <input type="button" class="button default" id="visualizar" name="visualizar" value="Visualizar" />
+              <a class="close button default" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
           </div>
       </div>
         </form>
@@ -87,6 +87,9 @@
                 var ref = window.location.href;
                 var ref = ref.split('change')[0] + 'delete';
                 $(a).prop('href', ref);
+
+                $('#tabs-2 fieldset div.field-resumo div label').remove();
+                $('#tabs-2 fieldset div.field-resumo div.readonly').css('margin-left', '20px')
            });
 
             var input = document.querySelectorAll('.form-row input');
