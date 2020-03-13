@@ -19,11 +19,14 @@
 .aligned label.only{
     width: 120px !important;
 }
+.aligned label.form{
+    width: 100px !important;
+}
 label.required .declaracao{
     width: 100px !important;
 }
 input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], textarea, select, .vTextField{
-    width: 100% !important;
+    width: 50% !important;
 }
 .readonly{
     margin-left: 50px !important;
@@ -38,4 +41,7 @@ input[type=text], input[type=password], input[type=email], input[type=url], inpu
 .aligned label.declaracao{
     width: 600px !important;
     float: left;
+}
+thead th, td{
+    padding: 5px 30px;!important;
 }

@@ -168,3 +168,35 @@ class DadosFiscaisEmpresaForm(forms.Form):
     cnpj = BRCNPJField(label='CNPJ', widget=CAMPO_TEXTO_PADRAO)
     inscricao_estadual = forms.CharField(label='Inscrição Estadual', required=False, widget=CAMPO_TEXTO_PADRAO)
     inscricao_municipal = forms.CharField(label='Inscrição Municipal', required=False, widget=CAMPO_TEXTO_PADRAO)
+
+
+class UsuarioForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UsuarioForm, self).__init__(*args, **kwargs)
+        self.fields['email'].initial = kwargs['instance'].user.email
+
+    email = forms.EmailField(label='Email', required=True)
+    nome_completo = forms.CharField(label='Nome completo', required=True)
+
+    def clean_nome_completo(self):
+
+        nome_completo = self.cleaned_data.get('nome_completo')
+        usuario = Usuario.objects.filter(nome_completo__exact=nome_completo)
+        if usuario and nome_completo != self.instance.nome_completo:
+            self._errors['nome_completo'] = self.error_class(['Já existe esse nome.'])
+        else:
+            return nome_completo
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        consulta = User.objects.filter(email=email)
+
+        if consulta.count() and email != self.instance.user.email:
+            self._errors['email'] = self.error_class(['Esse email já existe.'])
+        else:
+            return email
+
+    class Meta:
+        model = Usuario
+        fields = ('nome_completo','email')

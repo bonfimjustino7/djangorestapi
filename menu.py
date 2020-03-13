@@ -12,6 +12,7 @@ from admin_tools.menu import items, Menu
 from admin_tools.menu.items import MenuItem
 
 from base.models import Premiacao
+from util.stdlib import is_admin
 
 
 class CustomAppList(items.AppList):
@@ -26,36 +27,39 @@ class CustomAppList(items.AppList):
 
 
 class CustomMenu(Menu):
+    def init_with_context(self, context):
+        request = context.get('request')
 
-    def __init__(self, **kwargs):
-        Menu.__init__(self, **kwargs)
         self.children += [
             items.MenuItem('Tela Inicial', reverse('admin:index')),
             items.MenuItem('Empresas',
-                children=[
-                    items.MenuItem('Nova Empresa', '/admin/inscricao/empresa/add'),
-                    items.MenuItem('Empresas Cadastradas', '/admin/inscricao/empresa/')
-                ]
-            ),
+                           children=[
+                               items.MenuItem('Nova Empresa', '/admin/inscricao/empresa/add'),
+                               items.MenuItem('Empresas Cadastradas', '/admin/inscricao/empresa/')
+                           ]
+                           ),
             items.MenuItem('Inscricões',
-                children=[
-                    items.MenuItem('Nova Inscrição', '/admin/inscricao/inscricao/add'),
-                    items.MenuItem('Inscrições Cadastradas', '/admin/inscricao/inscricao/'),
-                    items.MenuItem('Finalizar Inscrição', '/admin/inscricao/finalizar'),
-                ]
-            ),
+                           children=[
+                               items.MenuItem('Nova Inscrição', '/admin/inscricao/inscricao/add'),
+                               items.MenuItem('Inscrições Cadastradas', '/admin/inscricao/inscricao/'),
+                               items.MenuItem('Finalizar Inscrição', '/admin/inscricao/finalizar'),
+                           ]
+                           ),
             items.MenuItem('Impressões',
-                children=[
-                    items.MenuItem('Formulário de Custos', '/fomulario_custos/'),
-                    items.MenuItem('Inscrições Cadastradas', '/inscricoes_cadastradas/'),
-                ]
-            ),
+                           children=[
+                               items.MenuItem('Formulário de Custos', '/fomulario_custos/'),
+                               items.MenuItem('Inscrições Cadastradas', '/inscricoes_cadastradas/'),
+                           ]
+                           ),
             items.MenuItem('Informações',
-                children = [items.MenuItem(premiacao, premiacao.url_nova_aba()) for premiacao in Premiacao.objects.all()]
-            ),
+                           children=[items.MenuItem(premiacao, premiacao.url_nova_aba()) for premiacao in
+                                     Premiacao.objects.all()]
+                           ),
             CustomAppList(
                 u'Adminstração',
                 models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
             ),
-
         ]
+        if not is_admin(request.user):
+            self.children += [items.MenuItem('Meus Dados', '/admin/meus-dados')]
+

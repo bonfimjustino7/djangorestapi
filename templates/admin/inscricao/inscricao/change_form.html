@@ -204,7 +204,7 @@
                         <a href="" class="deletelink">Excluir Inscrição</a>
                     </p>
                 {% endif %}
-                <input type="submit" value="Salvar e adicionar outro(a)" {% if original.status == 'A' %} disabled {% endif %} name="_addanother">
+                <input type="submit" value="Salvar e adicionar outro(a)" {%if not original %}disabled {%endif%}name="_addanother">
                 <input type="submit" class="default" value="Salvar" name="_continue">
 
             </div>

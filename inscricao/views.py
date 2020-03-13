@@ -12,17 +12,19 @@ from bs4 import BeautifulSoup
 from django.contrib import messages
 from django.contrib.admin.utils import label_for_field, lookup_field, display_for_value, display_for_field
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from colunistas import settings
 from inscricao.apps import valida_youtube
+from inscricao.forms import UsuarioForm
 from inscricao.models import Material, Empresa, EmpresaUsuario, Usuario, Inscricao
-from util.stdlib import get_model_values, get_model_labels
+from util.stdlib import get_model_values, get_model_labels, is_admin
 from django.db import models
 
 def tipo_materiais(request, id):
@@ -199,7 +201,6 @@ def salvar_material(request):
                         "arquivo": material.arquivo.name,
                     }
                     return HttpResponse(json.dumps(resposta), 200)
-
                 else:
                     material.tipo = tipo
                     material.arquivo = file
@@ -211,6 +212,7 @@ def salvar_material(request):
                 messages.success(request, 'Material criado com sucesso.')
         else:
             return HttpResponse(json.dumps({"mensagens": mensagens.append({'tipo': 'error', 'msg': 'Insira ao menos o tipo do material e um url ou link'})}))
+
         #Criticas
         erro = False
 
@@ -221,165 +223,8 @@ def salvar_material(request):
                 totais[str(mat.tipo)] += 1
         erros = []
 
-        # Regra 1
-        regra1 = False
-        codigo = inscricao_instance.categoria.codigo
-        for categoria in ('BRD10', 'MID10', 'RPB10', 'DES10', 'PRM10', 'PRM20', 'PRM30'):
-            if categoria in codigo:
-                regra1 = True
-                break
-
-        if regra1:
-            if not inscricao_instance.videocase and not inscricao_instance.apresentacao:
-                erros.append(
-                     "Nesta Área e nesta Categoria é obrigatório incluir uma apresentação (como PPT) ou um videocase. "
-                     "Veja no site em ‘Como preparar os seus materiais'.")
-
-        # regra 2
-        if inscricao_instance.premiacao.codigo == 'FIL':
-            if totais['10'] + totais['9'] >= 1:
-                erros.append(
-                    "Nesta Área e nesta Categoria, não basta apresentar o videocase ou a apresentação. "
-                    "Indique a quantidade e o tipo de peça referente ao trabalho")
-
-            # Regra 3
-        if 'INT1' in codigo:
-            if len(totais.keys()) < 2:
-                erros.append('Deve haver pelo menos 2 tipos de materiais diferentes para esta categoria.')
-
-            # Regra 4
+        # Regra 4
         lista = list(totais.keys())
-        if 'BRC101' == codigo or 'BRC103' == codigo:
-            if 'Filme' not in lista:
-                erros.append('O Tipo de material "Filme" é obrigatório para essa categoria.')
-
-        elif 'BRC102' == codigo or 'BRC104' == codigo:
-            if 'Mídia Digital' not in lista and 'Filme' not in lista:
-                erros.append(
-                    'Os Tipos de materiais "Filme ou Mídias Digitais" são obrigatórios para essa categoria.')
-
-        elif 'BRC105' == codigo:
-            if 'Jornal' not in lista and 'Revista' not in lista:
-                erros.append('Os Tipos de materiais "Jornal ou Revista" são obrigatórios para essa categoria.')
-
-        # Regra 5
-        if inscricao_instance.premiacao.codigo == 'IMP':
-            for imp in range(100, 200 + 1):
-                c = 'IMP%d' % imp
-                if c in codigo:
-                    if 'Jornal' not in lista or 'Revista' not in lista:
-                        erros.append('É obrigatório ter os materiais Jornal e Revista para essa categoria.')
-                    break
-
-        # Regra 7
-        if 'DIG30' in codigo:
-            if 'Web Sites' not in lista or len(lista) > 1:
-                erros.append('É obrigatório ter somente Web Sites para essa categoria.')
-
-        elif 'DIG1' in codigo:
-            if 'Mídia Digital' not in lista:
-                erros.append('É obrigatório ter somente Mídias Digitais para essa categoria.')
-
-        # Regra 8
-        if 'FIL1' in codigo or 'FIL20' in codigo:
-            if 'Filme' not in lista:
-                erros.append('É obrigatório ter o material Filme para essa categoria.')
-
-        # Regra 9
-        if 'DIR201' == codigo:
-            if 'Filme' not in lista and 'Rádio' not in lista:  # Se nenhum dois dois estiver na lista
-                erros.append('É obrigatório ter um dos materiais Filme ou Rádio para essa categoria.')
-
-        elif 'DIR202' == codigo:
-            if 'Jornal' not in lista and 'Revista' not in lista and 'Promo' not in lista:  # Se nenhum dois três estiver na lista
-                erros.append('É obrigatório ter um materiais de Jornal, Revista e Promo para essa categoria.')
-
-        elif 'DIR203' == codigo:
-            if 'Digital' not in lista:
-                erros.append('É obrigatório ter o material Digital para essa categoria.')
-
-        elif 'DIR204' == codigo or 'DIR205' == codigo:
-            if 'Promo' not in lista:
-                erros.append('É obrigatório ter o material Promo para essa categoria.')
-
-        elif 'DIR206' == codigo:
-            if 'Digital' not in lista and 'Web Sites' not in lista and 'Promo' not in lista:
-                erros.append(
-                    'É obrigatório ter um desses materiais "Digital, Web Sites ou Promo" para essa categoria.')
-
-        elif 'DIR207' == codigo:
-            if 'Promo' not in lista:
-                erros.append('É obrigatório ter o material Promo para essa categoria.')
-
-        # Regra 10
-        if 'MID101' == codigo or 'MID102' == codigo:
-            if 'Filme' not in lista:
-                erros.append('É obrigatório ter o material Filme para essa categoria.')
-
-        elif 'MID103' == codigo:
-            if 'Rádio' not in lista:
-                erros.append('É obrigatório ter o material Rádio para essa categoria.')
-
-        elif 'MID104' == codigo:
-            if 'Jornal' not in lista:
-                erros.append('É obrigatório ter o material Jornal para essa categoria.')
-
-        elif 'MID105' == codigo:
-            if 'Revista' not in lista:
-                erros.append('É obrigatório ter o material Revista para essa categoria.')
-
-        elif 'MID106' == codigo:
-            if 'Exterior' not in lista:
-                erros.append('É obrigatório ter o material Exterior para essa categoria.')
-
-        elif 'MID107' == codigo or 'MID108' == codigo:
-            if 'Digital' not in lista:
-                erros.append('É obrigatório ter o material Digital para essa categoria.')
-
-        # Regra 11
-        if 'EXT1' in codigo or 'EXT20' in codigo:
-            if 'Exterior' not in lista:
-                erros.append('É obrigatório ter o material Exterior para essa categoria.')
-
-        # Regra 13
-        if 'PRM1' in codigo or 'PRM2' in codigo or 'PRM3' in codigo:
-            if 'Promo' not in lista:
-                erros.append('É obrigatório ter o material Promo para essa categoria.')
-
-        elif 'PRM404' == codigo:
-            if 'Web Sites' not in lista and 'Digital' not in lista:
-                erros.append(
-                    'É obrigatório ter o um dos desses materiais Web Sites, Digital para essa categoria.')
-
-        elif 'PRM4' in codigo:
-            if 'Promo' not in lista:
-                erros.append('É obrigatório ter o material Promo para essa categoria.')
-
-        elif 'RAD1' in codigo or 'RAD20' in codigo:
-            if 'Rádio' not in lista:
-                erros.append('É obrigatório ter o material Rádio para essa categoria.')
-
-        # Regra 16
-        if 'TEC10' in codigo:
-            if 'Filme' not in lista:
-                erros.append('É obrigatório ter o material Filme para essa categoria.')
-
-        elif 'TEC206' == codigo:
-            if 'Rádio' not in lista and 'Filme' not in lista:
-                erros.append('É obrigatório ter o material Rádio ou Filme para essa categoria.')
-
-        elif 'TEC201' == codigo or 'TEC202' == codigo or 'TEC204' == codigo:
-            if 'Rádio' not in lista:
-                erros.append('É obrigatório ter o material Rádio para essa categoria.')
-
-        elif 'TEC203' == codigo or 'TEC205' == codigo or 'TEC206' == codigo:
-            if 'Filme' not in lista:
-                erros.append('É obrigatório ter o material Filme para essa categoria.')
-
-        elif 'TEC30' in codigo:
-            if 'Jornal' not in lista and 'Revista' not in lista and 'Exterior' not in lista and 'Promo' not in lista:
-                erros.append(
-                    'É obrigatório ter um desses materiais: Jornal, Revista, Exterior ou Promo para essa categoria.')
 
         # Checagem adicional
         if 'Filme' in lista or 'Videocase' in lista:
@@ -449,7 +294,6 @@ def salvar_material(request):
         if len(erros) > 0:
             inscricao_instance.status = 'A'
 
-
             mensagens.append({
                 "tipo": "warning",
                 "msg": "Inscrição foi alterada, mas contém os seguintes erros:",
@@ -487,8 +331,6 @@ def salvar_material(request):
         return HttpResponse(json.dumps(resposta), 200)
 
 
-    # return redirect('/admin/inscricao/inscricao/%s/change/#tabs-2' % inscricao)
-
 def delete_material(request, pk):
     material = Material.objects.get(id=pk)
     material.delete()
@@ -497,3 +339,27 @@ def delete_material(request, pk):
 
 def url_redirect(request):
     return redirect(request.GET['to'])
+
+def meus_dados(request):
+    if not is_admin(request.user):
+        usuario = get_object_or_404(Usuario, user=request.user)
+        if request.POST:
+            form = UsuarioForm(request.POST, instance=usuario)
+            if form.is_valid():
+                f = form.save(commit=False)
+                f.nome_completo = form.cleaned_data.get('nome_completo')
+                user = User.objects.get(id=usuario.user.id)
+                user.email = form.cleaned_data.get('email')
+                user.save()
+
+                f.save()
+                messages.success(request, 'Usuário alterado com sucesso.')
+        else:
+            form = UsuarioForm(instance=usuario)
+        empresas = []
+        for emp in usuario.empresausuario_set.all():
+            empresas.append({'link': '/admin/inscricao/empresa/%s/change/' %emp.empresa_id, 'nome': emp.empresa})
+
+        return render(request, 'meusdados.html', {'form': form, 'empresas': empresas})
+    else:
+        return HttpResponseForbidden()

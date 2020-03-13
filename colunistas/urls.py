@@ -54,6 +54,7 @@ urlpatterns = [
 	url(r'^delete/(?P<pk>\w+)/$', views.delete_material),
 	url(r'^salvar_material', views.salvar_material),
 	url(r'^redirect', views.url_redirect),
+	url(r'^admin/meus-dados', views.meus_dados),
 
 
 ]
