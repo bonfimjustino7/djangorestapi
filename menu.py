@@ -35,14 +35,15 @@ class CustomMenu(Menu):
             items.MenuItem('Empresas',
                            children=[
                                items.MenuItem('Nova Empresa', '/admin/inscricao/empresa/add'),
-                               items.MenuItem('Empresas Cadastradas', '/admin/inscricao/empresa/')
+                               items.MenuItem('Empresas Cadastradas', '/admin/inscricao/empresa/'),
+                               items.MenuItem('Empresas Finalizadas', '/admin/inscricao/finalizadas/')
                            ]
                            ),
             items.MenuItem('Inscricões',
                            children=[
                                items.MenuItem('Nova Inscrição', '/admin/inscricao/inscricao/add'),
                                items.MenuItem('Inscrições Cadastradas', '/admin/inscricao/inscricao/'),
-                               items.MenuItem('Finalizar Inscrição', '/admin/inscricao/finalizar'),
+                               items.MenuItem('Finalizar Inscrições', '/admin/inscricao/finalizar'),
                            ]
                            ),
             items.MenuItem('Impressões',
@@ -56,8 +57,8 @@ class CustomMenu(Menu):
                                      Premiacao.objects.all()]
                            ),
             CustomAppList(
-                u'Adminstração',
-                models=('django.contrib.*', 'admin_tools.dashboard.models.DashboardPreferences',),
+                u'Administração',
+                models=('django.contrib.*', ),
             ),
         ]
         if not is_admin(request.user):

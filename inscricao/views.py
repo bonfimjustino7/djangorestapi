@@ -79,7 +79,6 @@ def custo_total(empresa):
     inscricoes = Inscricao.objects.filter(empresa=empresa)
     for inscricao in inscricoes:
         total += inscricao.custo()
-
     return total
 
 

@@ -44,7 +44,7 @@ class AgenciaInline(admin.TabularInline):
 
 @admin.register(EmpresaAgencia)
 class EmpresaAgenciaAdmin(admin.ModelAdmin):
-    list_display = ('agencia', 'empresa', 'uf')
+    list_display = ('agencia', 'empresa', 'uf', )
 
     def get_queryset(self, request):
         qs = super(EmpresaAgenciaAdmin, self).get_queryset(request)
@@ -76,7 +76,7 @@ class EmpresaUsuarioAdmin(admin.ModelAdmin):
 @admin.register(Empresa)
 class EmpresaAdmin(PowerModelAdmin):
     list_filter = ('regional', 'area')
-    list_display = ('nome', 'uf', 'cidade', 'area')
+    list_display = ('nome', 'uf', 'cidade', 'area', 'status')
 
     def get_buttons(self, request, object_id):
         buttons = super(EmpresaAdmin, self).get_buttons(request, object_id)
@@ -92,11 +92,11 @@ class EmpresaAdmin(PowerModelAdmin):
             'fields': (('VP_Nome', 'VP_Cargo'), ('VP_Email', 'VP_DDD', 'VP_Telefone'))
         }),
         (
-        'OUTROS CONTATOS NA EMPRESA (Profissionais que também receberão as comunicações da Abracomp sobre a premiação.)',
-        {
-            'fields': (('C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone'),
-                       ('C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',))
-        }),
+            'OUTROS CONTATOS NA EMPRESA '
+            '(Profissionais que também receberão as comunicações da Abracomp sobre a premiação.)',
+            {'fields': (('C1_Nome', 'C1_Cargo', 'C1_Email', 'C1_DDD', 'C1_Telefone'),
+                        ('C2_Nome', 'C2_Cargo', 'C2_Email', 'C2_DDD', 'C2_Telefone',))}
+        ),
     )
     inlines = [AgenciaInline]
     form = RegistroEmpresaForm
@@ -177,7 +177,6 @@ class MaterialInline(admin.TabularInline):
     extra = 0
 
 
-
 class AnoFilter(admin.SimpleListFilter):
     title = 'ano'
     parameter_name = 'ano'
@@ -235,9 +234,8 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
     tab_materiais = (
         MaterialInline,
+        (None, {'fields': ('resumo',)}),
         ("Materiais Adicionais", {'fields': ('videocase', 'apresentacao')}),
-        ("Resumo", {'fields': ('resumo',)}),
-
     )
 
     tab_ficha_agencia = (
@@ -793,6 +791,7 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
             return HttpResponseRedirect(redirect_url)
 
         return super(InscricaoAdmin, self).response_change(request, obj)
+
 
 @admin.register(Finalizadas)
 class FinalizadasAdmin(EmpresaAdmin):

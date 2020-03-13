@@ -121,6 +121,7 @@ class Preco(models.Model):
                                   show_all=False, on_delete=models.PROTECT)
     preco = models.DecimalField('Preço Regular', max_digits=16, decimal_places=2)
     preco_serie = models.DecimalField('Preço para Série', blank=True, null=True, max_digits=16, decimal_places=2)
+    contabiliza_materiais = models.BooleanField('Contabiliza Materiais', default=False)
 
     class Meta:
         ordering = ('premiacao', 'categoria', )

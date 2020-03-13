@@ -199,7 +199,33 @@ class Inscricao(models.Model):
         return resumo
 
     def custo(self):
-        return 0
+        total = 0
+        tipo_preco = Preco.objects.filter(premiacao=self.premiacao, categoria=self.categoria)
+        if tipo_preco.count() == 0:
+            categoria_generica = '%s000' % self.categoria.codigo[:3]
+            categoria_generica = Categoria.objects.filter(codigo=categoria_generica)
+            if categoria_generica.count() > 0:
+                tipo_preco = Preco.objects.filter(premiacao=self.premiacao, categoria=categoria_generica[0])
+
+            if tipo_preco.count() == 0:
+                tipo_preco = Preco.objects.filter(premiacao=self.premiacao, categoria__isnull=True)
+                if tipo_preco.count() == 0:
+                    return 0
+
+        tipo_preco = tipo_preco[0]
+
+        if tipo_preco.contabiliza_materiais:
+            # se houver apenas uma peça e houver preço isolado, utilizar o preço indicado
+            # se não, somar os preços individuais
+            mais_de_uma = self.material_set.count() > 1
+            for material in self.material_set.all():
+                if mais_de_uma and tipo_preco.preco_serie:
+                    total += tipo_preco.preco_serie
+                else:
+                    total += tipo_preco.preco
+        else:
+            total = tipo_preco.preco
+        return total
 
     def save(self, *args, **kwargs):
         if not self.seq:
@@ -248,9 +274,11 @@ def handler_file(sender, **kwargs):
         if os.path.exists(path):
             os.remove(path)
 
+
 class FinalizadasManager(models.Manager):
     def get_queryset(self):
         return super(FinalizadasManager, self).get_queryset().filter(status='F')
+
 
 class Finalizadas(Empresa):
     objects = FinalizadasManager()

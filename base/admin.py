@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from inscricao.forms import PrecoForm
+from base.forms import PrecoForm
 from smart_selects import form_fields
 
 from poweradmin.admin import PowerModelAdmin, PowerTabularInline

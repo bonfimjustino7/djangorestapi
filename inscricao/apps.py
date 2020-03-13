@@ -9,16 +9,17 @@ class InscricaoConfig(AppConfig):
 
 
 def valida_youtube(url):
-    url = url.split('//')
+    url = url.split('://')
     try:
-        url = url[1].split('www.')[1]
+        if len(url) > 1 and url[1].startswith('www.'):
+            url = url[1].replace('www.', '')
+        else:
+            url = url[1]
         host = url.split('/')[0]
-
     except:
-        url = url[0].split('www.')[1]
-        host = url.split('/')[0]
+        host = ''
 
-    if not 'youtube.com' == host and not 'youtu.be' == host and not 'vimeo.com' == host:
+    if host != 'youtube.com' and not host != 'youtu.be' and host != 'vimeo.com':
         return 'O filme ou vídeo deve estar hospedado no YouTube ou no Vimeo!'
 
     r = requests.get('http://' + url)
@@ -29,5 +30,3 @@ def valida_youtube(url):
         title = soup.title.text
         if title == 'YouTube':
             return 'Link inválido. O vídeo não existe no servidor especificado.'
-
-        return

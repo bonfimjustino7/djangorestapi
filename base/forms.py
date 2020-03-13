@@ -1,24 +1,25 @@
 #coding: utf-8
 from django import forms
-from django.contrib.auth.models import User
+from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 
-from util.models import EmailAgendado
+from .models import *
 
-CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs = {'class': 'input'})
-CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs = {'class': 'input'})
-CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs = {'class': 'input'})
+
+CAMPO_TEXTO_PADRAO = forms.widgets.TextInput(attrs={'class': 'input'})
+CAMPO_EMAIL_PADRAO = forms.widgets.EmailInput(attrs={'class': 'input'})
+CAMPO_SENHA_PADRAO = forms.widgets.PasswordInput(attrs={'class': 'input'})
 
 
 class LoginForm(forms.Form):
     usuario = forms.CharField(
         required=True,
         label='Usuário',
-        widget=forms.widgets.TextInput(attrs = {'class': 'input', 'placeholder': 'Usuário'}),
+        widget=forms.widgets.TextInput(attrs={'class': 'input', 'placeholder': 'Usuário'}),
     )
     senha = forms.CharField(
         required=True,
-        widget=forms.widgets.PasswordInput(attrs = {'class': 'input', 'placeholder': 'Senha'}),
+        widget=forms.widgets.PasswordInput(attrs={'class': 'input', 'placeholder': 'Senha'}),
     )
 
 
@@ -69,7 +70,21 @@ class Registro2Form(forms.Form):
 
 class ResetSenhaForm(forms.Form):
     email = forms.EmailField(
-        required = True,
-        label = 'E-mail',
-        widget = forms.widgets.EmailInput(attrs = {'class': 'input', 'placeholder': 'E-mail'})
+        required=True,
+        label='E-mail',
+        widget=forms.widgets.EmailInput(attrs = {'class': 'input', 'placeholder': 'E-mail'})
     )
+
+
+class PrecoForm(ModelForm):
+    categoria = ChainedForeignKey(Categoria, chained_field='premiacao', chained_model_field='premiacao',
+                                  blank=True, null=True, help_text='Deixe em branco para o caso geral',
+                                  show_all=False, on_delete=models.PROTECT)
+
+    class Meta:
+        model = Preco
+        exclude = ('premiacao',)
+
+    def __init__(self, *args, **kwargs):
+        super(PrecoForm, self).__init__(*args, **kwargs)
+        self.fields['categoria'].empty_label = "Qualquer categoria"
