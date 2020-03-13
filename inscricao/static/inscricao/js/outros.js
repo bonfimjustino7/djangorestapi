@@ -305,3 +305,5 @@ function carregar(cont){
         console.info('Entered the page!');
          get_tipo(contarSelects())
     });
+
+    $('.field-resumo label').remove();

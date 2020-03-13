@@ -35,7 +35,7 @@ function getDicaByName(name){
         })
 }
 $(document).ready(function () {
-    $('<strong id="dicas">Dicas: <p id="obs"></p></strong>').appendTo('#tabs-2'); //criando o elemento
+    $('<strong style="display: block; margin-top: 20px" id="dicas">Dicas: <p id="obs"></p></strong>').insertAfter('#tabs-2 .field-apresentacao'); //criando o elemento
     $('#dicas').hide(); // ocultando o elemento
     $('<strong id="dicas-modal">Dicas: <p id="obs-modal"></p></strong>').appendTo('.dialog .modal-body'); //criando o elemento
     $('#dicas-modal').hide(); // ocultando o elemento
