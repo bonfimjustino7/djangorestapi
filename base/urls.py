@@ -15,4 +15,3 @@ urlpatterns = [
     url('logout/$', logoutview, name = 'logout'),
 
 ]
-

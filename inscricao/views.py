@@ -72,11 +72,11 @@ def inscricoes_cadastradas(request):
     return redirect('/')
 
 
-def custos_total(empresa):
+def custo_total(empresa):
     total = 0
     inscricoes = Inscricao.objects.filter(empresa=empresa)
     for inscricao in inscricoes:
-        total += inscricao.material_set.all().count() * 100
+        total += inscricao.custo()
 
     return total
 
@@ -102,7 +102,7 @@ def finalizar2(request, *args, **kwargs):
 
         erros = 0
         context['empresa'] = empresa
-        context['custo_total'] = '%.2f' % float(custos_total(empresa))
+        context['custo_total'] = '%.2f' % float(custo_total(empresa))
         for inscricao in empresa.inscricao_set.all():
             if inscricao.status == 'A':
                 erros += 1

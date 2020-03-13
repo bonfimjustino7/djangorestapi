@@ -198,6 +198,8 @@ class Inscricao(models.Model):
 
         return resumo
 
+    def custo(self):
+        return 0
 
     def save(self, *args, **kwargs):
         if not self.seq:

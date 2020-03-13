@@ -65,8 +65,4 @@ if settings.LOCAL:
 if 'theme' in settings.INSTALLED_APPS:
 	urlpatterns += [url(r'^/', include('theme.urls')), ]
 
-# urlpatterns += [
-# CMS
-# url(r'^/', include('cms.urls')), # django 1
-# path('', include('cms.urls')), # django 2
-# ]
+
