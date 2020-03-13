@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 
-from django.conf.urls import url, include
+from django.conf.urls import url, include, handler500
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
@@ -66,4 +66,7 @@ if settings.LOCAL:
 if 'theme' in settings.INSTALLED_APPS:
 	urlpatterns += [url(r'^/', include('theme.urls')), ]
 
+
+handler500 = views.handler500
+handler404 = views.handler404
 

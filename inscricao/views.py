@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.contrib.admin.utils import label_for_field, lookup_field, display_for_value, display_for_field
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
@@ -340,6 +341,7 @@ def delete_material(request, pk):
 def url_redirect(request):
     return redirect(request.GET['to'])
 
+@csrf_exempt
 def meus_dados(request):
     if not is_admin(request.user):
         usuario = get_object_or_404(Usuario, user=request.user)
@@ -362,4 +364,17 @@ def meus_dados(request):
 
         return render(request, 'meusdados.html', {'form': form, 'empresas': empresas})
     else:
-        return HttpResponseForbidden()
+        raise PermissionDenied
+
+
+def handler500(request):
+    return render(request, '500.html')
+
+
+def handler404(request):
+    return render(request, '404.html')
+
+
+def handler405(request):
+    return render(request, '405.html')
+
