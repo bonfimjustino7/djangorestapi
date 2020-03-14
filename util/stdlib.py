@@ -83,9 +83,8 @@ def get_model_values(obj, fields=None, exclude=[], extras=[]):
     values = []
     if not fields:
         fields = get_model_labels(obj) #pega todos os campos
-    else:
-        fields += extras  # colocando os campos extras
 
+    fields += extras  # colocando os campos extras
     for e in exclude:
         fields.remove(e)  # removendo os campos exclude
 
@@ -116,6 +115,8 @@ def get_model_labels(obj, fields=None, exclude=[], extras=[]):
     labels = {}
     if not fields:
         labels = model_to_dict(obj)
+        for field in extras:
+            labels[field] = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
     else:
         for field in fields + extras:
             labels[field] = obj._meta.model.objects.values_list(field, flat=True).get(id=obj.id)
