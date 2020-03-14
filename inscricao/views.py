@@ -141,7 +141,7 @@ def finalizar(request):
     else:
         if request.user.is_active:
             usuario = Usuario.objects.filter(user=request.user)
-            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='F')
+            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='A')
             if len(empresa_usuario) > 1:
                 empresas = list(empresa_usuario.values_list('empresa', 'empresa__nome'))
                 empresas_aux = []
