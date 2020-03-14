@@ -176,6 +176,7 @@ class Inscricao(models.Model):
     status = models.CharField(max_length=1, default='A', choices=STATUS_INSCRICAO)
     videocase = models.URLField('Videocase', max_length=512, null=True, blank=True)
     apresentacao = models.URLField('Apresentação', max_length=512, null=True, blank=True)
+    preco_final = models.DecimalField('Preço Calculado', max_digits=16, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return u'%s' % self.seq
