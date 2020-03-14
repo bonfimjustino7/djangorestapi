@@ -10,7 +10,18 @@
     background-color: #f8f8f8;
     border: 1px solid #eee;
 }
-.aligned label#empresa_selected, .aligned label.check{
+.aligned label.check{
+    width: 15px !important;
+   text-align: right;
+}
+label.check input{
+    height:18px;
+    width: 18px;
+    display: inline-block;
+    position: relative;
+    left: -40px;
+}
+.aligned label#empresa_selected{
     width: 60px !important;
 }
 .aligned label.id{

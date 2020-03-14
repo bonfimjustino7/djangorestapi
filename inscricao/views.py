@@ -10,13 +10,16 @@ import requests
 from PIL import Image, ImageChops
 from bs4 import BeautifulSoup
 from django.contrib import messages
+from django.contrib.admin.models import LogEntry, ADDITION
 from django.contrib.admin.utils import label_for_field, lookup_field, display_for_value, display_for_field
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
+
 from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 
@@ -92,7 +95,15 @@ def finalizar2(request, *args, **kwargs):
         empresa = Empresa.objects.get(id=request.POST['empresa'])
         empresa.status = 'F'
         empresa.dtfinalizacao = datetime.now()
+        LogEntry.objects.log_action(
+            user_id=request.user.pk, content_type_id=ContentType.objects.get_for_model(empresa).pk,
+            object_id=empresa.pk,
+            object_repr=empresa.serializable_value('nome'),
+            action_flag=ADDITION,
+            change_message='Finalizada.'
+        )
         empresa.save()
+
         messages.success(request, 'Inscrição Finalizada.')
         return redirect('/')
     else:
@@ -104,10 +115,14 @@ def finalizar2(request, *args, **kwargs):
 
         erros = 0
         context['empresa'] = empresa
-        context['custo_total'] = '%.2f' % float(custo_total(empresa))
+
+        total = 0
         for inscricao in empresa.inscricao_set.all():
             if inscricao.status == 'A':
                 erros += 1
+            total += inscricao.custo()
+
+        context['custo_total'] = total
 
         if erros > 0:
             context['finalizar'] = False
@@ -126,7 +141,7 @@ def finalizar(request):
     else:
         if request.user.is_active:
             usuario = Usuario.objects.filter(user=request.user)
-            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='A')
+            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='F')
             if len(empresa_usuario) > 1:
                 empresas = list(empresa_usuario.values_list('empresa', 'empresa__nome'))
                 empresas_aux = []

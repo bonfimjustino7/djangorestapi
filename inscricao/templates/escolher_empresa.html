@@ -9,8 +9,8 @@
 
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}?{% now 'U' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}?{% now 'U' %}" />
 {% endblock %}
 {% block content %}
     <h1>Finalizar Inscrição</h1>
