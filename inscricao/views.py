@@ -4,6 +4,8 @@ import datetime
 import io
 import json
 import os
+import shutil
+import tempfile
 import zipfile
 from collections import Counter
 
@@ -12,17 +14,14 @@ from PIL import Image, ImageChops
 from bs4 import BeautifulSoup
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry, ADDITION
-from django.contrib.admin.utils import label_for_field, lookup_field, display_for_value, display_for_field
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
-from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template
 
-from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from xhtml2pdf.document import pisaDocument
 
@@ -138,12 +137,12 @@ def finalizar2(request, *args, **kwargs):
     if request.POST.get('_send'):
         empresa = Empresa.objects.get(id=request.POST['empresa'])
         empresa.status = 'F'
-        empresa.dtfinalizacao = datetime.now()
-
-        file = request.FILES.get('comprovante')
-        file_ext = os.path.splitext(file.name)[-1]
-        filename = '%s/%s%s' % (settings.COMPROVANTE_URL, empresa.id, file_ext)
-        default_storage.save(filename, file) # salvando comprovante
+        empresa.dtfinalizacao = datetime.datetime.now()
+        empresa.comprovante = request.FILES.get('comprovante')
+        # file = request.FILES.get('comprovante')
+        # file_ext = os.path.splitext(file.name)[-1]
+        # filename = '%s/%s%s' % (settings.COMPROVANTE_URL, empresa.id, file_ext)
+        # default_storage.save(filename, file) # salvando comprovante
 
         LogEntry.objects.log_action(
             user_id=request.user.pk, content_type_id=ContentType.objects.get_for_model(empresa).pk,
@@ -213,6 +212,14 @@ def finalizar(request):
                 messages.error(request, 'Você não tem nenhuma empresa inscrita.')
                 return redirect('/')
 
+def create_temporary_copy(material, inscricao):
+    extencao = material.arquivo.name.split('/')[1]
+    filename = str(inscricao.agencia).upper() + '-' + str((inscricao.titulo).lower()) + '(%s)' % str(material.tipo)[
+                                                                                                 :3] + '-' + extencao
+    temp_dir = tempfile.gettempdir()
+    temp_path = os.path.join(temp_dir, filename)
+    shutil.copy2(material.arquivo.path, temp_path)
+    return temp_path, filename
 
 def empresa_download(request, id):
     empresa = Empresa.objects.get(id=id)
@@ -240,7 +247,7 @@ def empresa_download(request, id):
             writer.writerow(get_model_values(inscricao))
 
     response = HttpResponse(content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename=exportacao_%s.zip' % datetime.today()
+    response['Content-Disposition'] = 'attachment; filename=exportacao_%s.zip' % datetime.datetime.today()
     z = zipfile.ZipFile(response, 'w', zipfile.ZIP_DEFLATED )  ## write zip to response
 
     for filename in arquivos_csv:
@@ -250,10 +257,10 @@ def empresa_download(request, id):
     for incricao in empresa.inscricao_set.all():
         for material in incricao.material_set.all():
             if material.arquivo:
-                caminho = os.path.relpath(os.path.join(material.arquivo.path), os.path.join(material.arquivo.path, '..'))
-                z.write(material.arquivo.path, caminho)
+                temporary, filename = create_temporary_copy(material, inscricao)
+                z.write(temporary, filename)
     z.close()
-    empresa.dtexportacao = datetime.now()
+    empresa.dtexportacao = datetime.datetime.now()
     empresa.save()
     return response
 

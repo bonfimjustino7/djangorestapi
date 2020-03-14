@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django.db import models
 from django.dispatch import receiver
+from django.utils.formats import localize
 from localflavor.br.forms import BRCNPJField
 from django.contrib.auth.models import User
 from base.models import *
@@ -293,3 +294,18 @@ class Finalizadas(Empresa):
 
     def download_inscricao(self):
         return mark_safe('<a href="/empresa_download/%s">Download das Inscrições</a>' % self.pk)
+
+    def comprovante_link(self):
+        if self.comprovante:
+            return mark_safe('<a href="%s">Comprovante</a>' % self.comprovante.url)
+        return mark_safe('-')
+    comprovante_link.short_description = 'Comprovante'
+
+    def valor_inscricoes(self):
+        total = 0
+        for inscricao in self.inscricao_set.all():
+            total += inscricao.custo()
+
+        return mark_safe('R$ %s' % localize(total))
+    valor_inscricoes.short_description = "Valor das Inscrições"
+

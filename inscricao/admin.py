@@ -795,4 +795,4 @@ class InscricaoAdmin(PowerModelAdmin, TabbedModelAdmin):
 
 @admin.register(Finalizadas)
 class FinalizadasAdmin(EmpresaAdmin):
-    list_display = ('nome', 'dtexportacao', 'download_inscricao')
+    list_display = ('nome', 'dtexportacao', 'download_inscricao', 'comprovante_link', 'valor_inscricoes', 'regional')
