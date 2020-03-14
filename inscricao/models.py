@@ -194,7 +194,7 @@ class Inscricao(models.Model):
 
         resumo = ''
         for k, v in totais.items():
-            resumo += '%s (%s)\n' % (k, v)
+            resumo += '%s (%s), ' % (k, v)
 
         return resumo
 

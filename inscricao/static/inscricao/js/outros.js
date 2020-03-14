@@ -306,4 +306,3 @@ function carregar(cont){
          get_tipo(contarSelects())
     });
 
-    $('.field-resumo label').remove();
