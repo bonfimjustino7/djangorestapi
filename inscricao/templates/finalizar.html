@@ -9,8 +9,8 @@
 
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}?{% now 'U' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}?{% now 'U' %}" />
 {% endblock %}
 {% block content %}
     <h1>Finalizar Inscrição</h1>
@@ -75,15 +75,11 @@
                   </div>
              </fieldset>
             <fieldset class="module aligned">
-                <div class="box-input">
-                    <label class="check"><input type="checkbox" id="check" required></label>
-                    <label for="check" class="required declaracao">Declaro conhecer o Regulamento da premiação e concordar integralmente com os seus termos</label>
-                </div>
+                <label for="check" class="required declaracao">Declaro conhecer o Regulamento da premiação e concordar integralmente com os seus termos</label>
+                 <label class="check"><input type="checkbox" id="check" required></label>
             </fieldset>
             <fieldset class="module aligned">
-                <div class="box-input">
-                    <a href="https://colunistas.com.br/pc2019-como-participar/" target="_blank">Clique aqui para acessar os Regulamentos em PDF.</a>
-                </div>
+                <a href="https://colunistas.com.br/pc2019-como-participar/" target="_blank">Clique aqui para acessar os Regulamentos em PDF.</a>
             </fieldset>
             <div class="submit-row">
                 <p style="float: left; font-weight: bold; color: red">Antes de enviar, tenha a certeza de ter salvado e lido o Regulamento, especialmente o item V - Outras Informações.</p>
