@@ -71,6 +71,8 @@ class Empresa(models.Model):
     C2_Telefone = models.CharField(u'Celular', max_length=9, blank=True, null=True, help_text=u'XXXXX-XXXX')
     status = models.CharField('Situação', max_length=1, choices=STATUS_ENVIO, default='A')
     dtfinalizacao = models.DateTimeField('Dt.Finalização', blank=True, null=True)
+    comprovante = models.FileField('Comprovante de Depósito',
+                                   upload_to='comprovantes', null=True, blank=True)
     dtexportacao = models.DateTimeField('Dt.Exportação', blank=True, null=True)
 
     def __str__(self):
@@ -286,8 +288,8 @@ class Finalizadas(Empresa):
 
     class Meta:
         proxy = True
-        verbose_name = 'Finalizada'
-        verbose_name_plural = 'Finalizadas'
+        verbose_name = 'Inscrição Finalizada'
+        verbose_name_plural = 'Inscrições Finalizadas'
 
     def download_inscricao(self):
         return mark_safe('<a href="/empresa_download/%s">Download das Inscrições</a>' % self.pk)

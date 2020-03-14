@@ -31,6 +31,7 @@ from inscricao.models import Material, Empresa, EmpresaUsuario, Usuario, Inscric
 from util.stdlib import get_model_values, get_model_labels, is_admin
 from django.db import models
 
+
 def tipo_materiais(request, id):
     premiacao = Premiacao.objects.get(id=id)
     context = premiacao.materiais.all().values_list('id', 'descricao', 'arquivo', 'url').order_by('id')
@@ -89,12 +90,15 @@ def custo_total(empresa):
 def finalizar2(request, *args, **kwargs):
     context = {'finalizar': True}
     if request.POST.get('_send'):
-        file = request.FILES.get('comprovante')
-        filename = settings.COMPROVANTE_URL + '/' + file.name
-        default_storage.save(filename, file) # salvando comprovante
         empresa = Empresa.objects.get(id=request.POST['empresa'])
         empresa.status = 'F'
         empresa.dtfinalizacao = datetime.now()
+
+        file = request.FILES.get('comprovante')
+        file_ext = os.path.splitext(file.name)[-1]
+        filename = '%s/%s%s' % (settings.COMPROVANTE_URL, empresa.id, file_ext)
+        default_storage.save(filename, file) # salvando comprovante
+
         LogEntry.objects.log_action(
             user_id=request.user.pk, content_type_id=ContentType.objects.get_for_model(empresa).pk,
             object_id=empresa.pk,
@@ -120,7 +124,10 @@ def finalizar2(request, *args, **kwargs):
         for inscricao in empresa.inscricao_set.all():
             if inscricao.status == 'A':
                 erros += 1
-            total += inscricao.custo()
+            else:
+                inscricao.preco_final = inscricao.custo()
+                inscricao.save()
+                total += inscricao.preco_final
 
         context['custo_total'] = total
 
@@ -163,21 +170,37 @@ def finalizar(request):
 
 def empresa_download(request, id):
     empresa = Empresa.objects.get(id=id)
-    path = settings.EXPORTACAO + '/%s_2020.csv' % empresa
     exclude = ['area', 'regional']
     extras = ['area__descricao', 'regional__nome']
 
-    if not os.path.exists(path):
-        with open(path, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(get_model_labels(empresa, None, exclude, extras))
-            writer.writerow(get_model_values(empresa, None, exclude, extras))
+    arquivos_csv = []
+    filename = settings.EXPORTACAO + '/empresa%s.csv' % empresa
+    arquivos_csv.append(filename)
+
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(get_model_labels(empresa, None, exclude, extras))
+        writer.writerow(get_model_values(empresa, None, exclude, extras))
+
+    filename = settings.EXPORTACAO + '/inscricao%s.csv' % empresa
+    arquivos_csv.append(filename)
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        tot_inscricoes = 0
+        for inscricao in Inscricao.objects.filter(empresa=empresa):
+            tot_inscricoes += 1
+            if tot_inscricoes == 1:
+                writer.writerow(get_model_labels(inscricao))
+            writer.writerow(get_model_values(inscricao))
 
     response = HttpResponse(content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=exportacao_%s.zip' % datetime.today()
     z = zipfile.ZipFile(response, 'w', zipfile.ZIP_DEFLATED )  ## write zip to response
-    p = os.path.relpath(os.path.join(path), os.path.join(path, '..'))
-    z.write(path, p)
+
+    for filename in arquivos_csv:
+        p = os.path.relpath(os.path.join(filename), os.path.join(filename, '..'))
+        z.write(filename, p)
+
     for incricao in empresa.inscricao_set.all():
         for material in incricao.material_set.all():
             if material.arquivo:
@@ -187,6 +210,7 @@ def empresa_download(request, id):
     empresa.dtexportacao = datetime.now()
     empresa.save()
     return response
+
 
 @csrf_exempt
 def salvar_material(request):
