@@ -1,10 +1,11 @@
+import cgi
 import csv
+import datetime
 import io
 import json
 import os
 import zipfile
 from collections import Counter
-from datetime import datetime
 
 import requests
 from PIL import Image, ImageChops
@@ -19,9 +20,11 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import get_template
 
 from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
+from xhtml2pdf.document import pisaDocument
 
 from base.models import Premio, Premiacao, Regional, TipoMaterial
 from colunistas import settings
@@ -67,10 +70,53 @@ def get_tipo_materiais(request, id):
     lista_materiais = list(Material.objects.filter(inscricao=id).values('tipo'))
     return HttpResponse(json.dumps(lista_materiais), content_type='application/json')
 
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = io.BytesIO()
+    pdf = pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+def exportar_custos(request, *args):
+
+    if request.POST:
+        empresa_id = request.POST.get('empresa')
+        empresa = Empresa.objects.get(id=empresa_id)
+    else:
+        empresa = args[0]
+
+    data = {}
+    pdf = render_to_pdf('pdf.html', data)
+    return HttpResponse(pdf, content_type='application/pdf')
 
 def formularios_custos(request):
-    messages.warning(request, 'Rotina ainda não foi implementada.')
-    return redirect('/')
+    context = {}
+
+    if request.POST:
+        return exportar_custos(request)
+    else:
+        if request.user.is_active:
+            usuario = Usuario.objects.filter(user=request.user)
+            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='A')
+            if len(empresa_usuario) > 1:
+                empresas = list(empresa_usuario.values_list('empresa', 'empresa__nome'))
+                empresas_aux = []
+                for empresa in empresas:
+                    empresas_aux.append({
+                        'id': empresa[0],
+                        'nome': empresa[1]
+                    })
+                context['empresas'] = empresas_aux
+                return render(request, 'escolher_empresa_exportacao.html', {'context': context})
+
+            elif len(empresa_usuario) == 1:
+                return exportar_custos(request, empresa_usuario.get().empresa)
+
+            else:
+                messages.error(request, 'Você não tem nenhuma empresa inscrita.')
+                return redirect('/')
 
 
 def inscricoes_cadastradas(request):
