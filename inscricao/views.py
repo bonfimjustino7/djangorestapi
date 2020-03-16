@@ -209,7 +209,10 @@ def finalizar(request):
                 return finalizar2(request, empresa_usuario.get().empresa)
 
             else:
-                messages.error(request, 'Você não tem nenhuma empresa inscrita.')
+                if EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='F'):
+                    messages.error(request, 'Sua inscrição já foi finalizada. Agora é esperar o resultado!')
+                else:
+                    messages.error(request, 'Você ainda não tem nenhuma empresa inscrita.')
                 return redirect('/')
 
 def create_temporary_copy(material, inscricao):
