@@ -79,6 +79,8 @@ def render_to_pdf(template_src, context_dict={}):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
+
+
 def exportar_custos(request, *args):
 
     if request.POST:
@@ -87,7 +89,23 @@ def exportar_custos(request, *args):
     else:
         empresa = args[0]
 
-    data = {}
+    totais = Counter()
+    inscricoes = Inscricao.objects.filter(empresa=empresa.pk)
+    for inscricao in inscricoes:
+        totais[str(inscricao.premiacao)] += 1
+
+    data = {
+        'inscricoes': [],
+        'logo': 'http://' + request.META['HTTP_HOST'] + '/static/base/img/logo.png'
+
+    }
+    for c, v in totais.items():
+        data['inscricoes'].append({
+            'premiacao': c,
+            'qtd': v,
+            'valor': 0
+        })
+
     pdf = render_to_pdf('pdf.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
 
@@ -99,7 +117,7 @@ def formularios_custos(request):
     else:
         if request.user.is_active:
             usuario = Usuario.objects.filter(user=request.user)
-            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario, empresa__status='A')
+            empresa_usuario = EmpresaUsuario.objects.filter(usuario=usuario)
             if len(empresa_usuario) > 1:
                 empresas = list(empresa_usuario.values_list('empresa', 'empresa__nome'))
                 empresas_aux = []
