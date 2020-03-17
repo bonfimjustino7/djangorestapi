@@ -49,6 +49,40 @@ $(document).ready(function () {
     $('#id_videocase').focusin(function () {
        getDicaByName('Videocase');
     });
+    $('#id_videocase').click(function () {
+        if(!$('.field-videocase a.view-file').length){ // se não existe um botão
+            $('<a  class="view-file" id="view-videocase">Visualizar</a>').appendTo('.field-videocase');
+
+           $('.field-videocase #view-videocase').click(function () {
+                var url = $('#id_videocase').val();
+                var newurl = '';
+                if(url.indexOf('//') >= 0){
+                    newurl = url
+                }else{
+                    newurl = 'http://' + url
+                }
+                window.open(newurl, '_blank')
+            });
+        }
+    });
+
+    $('#id_apresentacao').click(function () {
+        if(!$('.field-apresentacao a.view-file').length){ // se não existe um botão
+            $('<a  class="view-file" id="view-apresentacao">Visualizar</a>').appendTo('.field-apresentacao');
+
+           $('.field-apresentacao #view-apresentacao').click(function () {
+                var url = $('#id_apresentacao').val();
+                var newurl = '';
+                if(url.indexOf('//') >= 0){
+                    newurl = url
+                }else{
+                    newurl = 'http://' + url
+                }
+                window.open(newurl, '_blank')
+            });
+        }
+    });
+
     $('#id_apresentacao').focusin(function () {
        getDicaByName('Apresentação');
     });
