@@ -90,7 +90,8 @@
 </div>
 {% endblock %}
 {% load poweradmin %}
-{% if not request.user.is_superuser or not request.user|has_group:"Admin" %}
+{% is_admin as admin %}
+{% if not admin %}
 {% empresas_cadastradas as emp_cadastradas%}
 <div class="quadros">
     <div class="quadro">

@@ -54,7 +54,13 @@ def inscricoes_com_erro(context):
         return erros
     else:
         return -1
-
+@register.simple_tag(takes_context=True)
+def is_admin(context):
+    user = context.get('request').user
+    if user.is_superuser or user.groups.filter(name='Admin').exists():
+        return True
+    else:
+        return False
 
 @register.inclusion_tag('admin/date_hierarchy.html', takes_context=True)
 def power_date_hierarchy(context, cl):
