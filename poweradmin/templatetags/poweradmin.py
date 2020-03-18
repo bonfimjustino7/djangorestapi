@@ -1,10 +1,13 @@
 # coding: utf-8
 from django.contrib.admin.views.main import PAGE_VAR
+from django.contrib.auth.models import Group
 from django.template import Library
 from datetime import datetime
 
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+
+from inscricao.models import EmpresaUsuario, Usuario, Inscricao
 
 register = Library()
 DOT = '.'
@@ -12,6 +15,45 @@ DOT = '.'
 @register.filter(name='strptime')
 def strptime(value, mash):
     return datetime.strptime(value, mash)
+
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    group = Group.objects.get(name=group_name)
+    return True if group in user.groups.all() else False
+
+@register.simple_tag(takes_context=True)
+def empresas_cadastradas(context):
+    user = context.get('request').user
+    usuario = Usuario.objects.filter(user=user)
+    if usuario:
+        empresas = EmpresaUsuario.objects.filter(usuario=usuario.get())
+        return empresas.count()
+    else:
+        return 0
+
+@register.simple_tag(takes_context=True)
+def inscricoes_cadastradas(context):
+    user = context.get('request').user
+    usuario = Usuario.objects.filter(user=user)
+    if usuario:
+        inscricoes = Inscricao.objects.filter(usuario=usuario.get())
+        return inscricoes.count()
+    else:
+        return 0
+
+@register.simple_tag(takes_context=True)
+def inscricoes_com_erro(context):
+    user = context.get('request').user
+    usuario = Usuario.objects.filter(user=user)
+    if usuario:
+        inscricoes = Inscricao.objects.filter(usuario=usuario.get())
+        erros = 0
+        for inscricao in inscricoes:
+            if inscricao.status == 'A':
+                erros += 1
+        return erros
+    else:
+        return -1
 
 
 @register.inclusion_tag('admin/date_hierarchy.html', takes_context=True)

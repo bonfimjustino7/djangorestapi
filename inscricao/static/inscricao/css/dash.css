@@ -1,0 +1,72 @@
+.quadros {
+    font-family: Arial, sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+    padding: 10px;
+  }
+  @media (max-width: 768px) {
+    .quadros {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .quadros .quadro {
+    background: #efefef;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #d6d6d6;
+  }
+  .quadros .quadro:hover {
+    background: #eaeaea;
+    border-bottom: 1px solid #bcbcbc;
+  }
+  .quadros .quadro .check{
+      height: 50px;
+      color: #00897B;
+  }
+  .quadros .quadro h2 {
+    font-size: 18px;
+    margin: 0 0 15px 0;
+    padding: 0;
+  }
+  .quadros .quadro h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 50px;
+    font-weight: normal;
+    line-height: 25px;
+  }
+  .quadros .quadro a {
+    text-decoration: none;
+  }
+  .quadros .quadro .print {
+    color: #000;
+  }
+  .quadros .quadro .print svg {
+    height: 35px;
+  }
+  .quadros .quadro .print:hover {
+    color: #00897B;
+  }
+  .quadros .quadro .btn {
+    background: #00897B;
+    color: white;
+    padding: 8px 25px;
+    font-weight: bold;
+    border-radius: 25px;
+  }
+  .quadros .quadro .btn:hover {
+    background: #00564d;
+  }
+  
+  .verde {
+    color: #00897B;
+  }
+  

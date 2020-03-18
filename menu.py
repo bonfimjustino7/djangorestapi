@@ -48,7 +48,7 @@ class CustomMenu(Menu):
                            ),
             items.MenuItem('Impressões',
                            children=[
-                               items.MenuItem('Formulário de Custos', '/fomulario_custos/'),
+                               items.MenuItem('Formulário de Custos', '/formulario_custos/'),
                                items.MenuItem('Inscrições Cadastradas', '/inscricoes_cadastradas/'),
                            ]
                            ),
