@@ -70,6 +70,7 @@ def get_tipo_materiais(request, id):
     lista_materiais = list(Material.objects.filter(inscricao=id).values('tipo'))
     return HttpResponse(json.dumps(lista_materiais), content_type='application/json')
 
+
 def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
@@ -78,7 +79,6 @@ def render_to_pdf(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
-
 
 
 def exportar_custos(request, *args):
@@ -108,6 +108,7 @@ def exportar_custos(request, *args):
 
     pdf = render_to_pdf('pdf.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
+
 
 def formularios_custos(request):
     context = {}

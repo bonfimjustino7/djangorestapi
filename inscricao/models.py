@@ -15,7 +15,7 @@ from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
 from django.db.models.signals import m2m_changed, post_save, post_delete
 
 
-STATUS_ENVIO = (('A', 'Em aberto'), ('F', 'Finalizado'))
+STATUS_ENVIO = (('A', 'Em aberto'), ('V','Validado'), ('F', 'Finalizado'))
 
 
 class FileField(models.FileField):
