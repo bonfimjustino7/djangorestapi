@@ -142,19 +142,27 @@ class EmpresaAdmin(PowerModelAdmin):
             EmpresaUsuario.objects.get_or_create(usuario=usuario, empresa=obj)
 
     def save_formset(self, request, form, formset, change):
-        duplicidade = 0
+        existentes = Counter()
+        duplicidade = False
         instances = formset.save(commit=False)
-        existentes = formset.cleaned_data
+        for obj in formset.deleted_objects:
+            obj.delete()
+
+        for existente in formset.cleaned_data:
+            existentes[existente['agencia']] +=1
+
         for instance in instances:
-            for agencia in existentes:
-                if instance.agencia == agencia['agencia']:
-                    duplicidade += 1
-            if duplicidade < 2:
-                instance.save()
-                formset.save_m2m()
-            else:
-                messages.warning(request, 'Não é permitido agências com mesmo nome. A agência duplicada foi excluída')
-                form.instance.status = 'A'
+            if not duplicidade:
+                for c, v in existentes.items():
+                    if instance.agencia == c:
+                        if v == 1:
+                            instance.save()
+                        else:
+                            duplicidade = True
+                            break
+        if duplicidade:
+            messages.warning(request, 'Não é permitido agências com mesmo nome. A agência duplicada foi excluída')
+            form.instance.status = 'A'
 
         # Verifica se a regional é a mesma da premiação
         ufs_da_regional = []
@@ -170,7 +178,8 @@ class EmpresaAdmin(PowerModelAdmin):
                                  (instance.agencia, form.cleaned_data['regional']))
                 form.instance.status = 'A'
         form.save()
-        return super(EmpresaAdmin, self).save_formset(request, form, formset, change)
+
+
 
 
 class MaterialInline(admin.TabularInline):

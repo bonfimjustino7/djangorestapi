@@ -62,6 +62,20 @@ def is_admin(context):
     else:
         return False
 
+
+@register.simple_tag(takes_context=True)
+def empresas_pendentes(context):
+    user = context.get('request').user
+    usuario = Usuario.objects.filter(user=user)
+    cont = 0
+    if usuario:
+        empresas = EmpresaUsuario.objects.filter(usuario=usuario.get())
+        for empresa in empresas:
+            if empresa.empresa.status =='A':
+                cont +=1
+        return cont
+    else:
+        return cont
 @register.inclusion_tag('admin/date_hierarchy.html', takes_context=True)
 def power_date_hierarchy(context, cl):
     """

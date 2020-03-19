@@ -70,6 +70,7 @@ def get_tipo_materiais(request, id):
     lista_materiais = list(Material.objects.filter(inscricao=id).values('tipo'))
     return HttpResponse(json.dumps(lista_materiais), content_type='application/json')
 
+
 def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
@@ -78,7 +79,6 @@ def render_to_pdf(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
-
 
 
 def exportar_custos(request, *args):
@@ -109,11 +109,18 @@ def exportar_custos(request, *args):
     pdf = render_to_pdf('pdf.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
 
+
 def formularios_custos(request):
     context = {}
 
     if request.POST:
-        return exportar_custos(request)
+        empresa_id = request.POST.get('empresa')
+        if Empresa.objects.get(id=empresa_id).status != 'A':
+            return exportar_custos(request)
+        else:
+            messages.error(request, 'Esta empresa não está validada')
+            return redirect('/')
+
     else:
         if request.user.is_active:
             usuario = Usuario.objects.filter(user=request.user)
@@ -130,11 +137,14 @@ def formularios_custos(request):
                 return render(request, 'escolher_empresa_exportacao.html', {'context': context})
 
             elif len(empresa_usuario) == 1:
-                return exportar_custos(request, empresa_usuario.get().empresa)
-
+                if not empresa_usuario.get().status == 'A':
+                    return exportar_custos(request, empresa_usuario.get().empresa)
+                else:
+                    messages.error(request, 'Esta empresa não está validada')
             else:
                 messages.error(request, 'Você não tem nenhuma empresa inscrita.')
-                return redirect('/')
+
+            return redirect('/')
 
 
 def inscricoes_cadastradas(request):
