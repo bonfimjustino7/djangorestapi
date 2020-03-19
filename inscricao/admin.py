@@ -130,6 +130,7 @@ class EmpresaAdmin(PowerModelAdmin):
 
     def save_model(self, request, obj, form, change):
         area = form.cleaned_data['area'].pk
+        obj.status = 'V'
         obj.save()
 
         # se a empresa for uma agência de publicidade, já incluir automaticamente a agência no inline
@@ -153,6 +154,7 @@ class EmpresaAdmin(PowerModelAdmin):
                 formset.save_m2m()
             else:
                 messages.warning(request, 'Não é permitido agências com mesmo nome. A agência duplicada foi excluída')
+                form.instance.status = 'A'
 
         # Verifica se a regional é a mesma da premiação
         ufs_da_regional = []
@@ -166,7 +168,8 @@ class EmpresaAdmin(PowerModelAdmin):
                 'Trabalhos da Agência %s que não está sediada na regional %s só podem concorrer '
                 'ao Colunistas Técnica, inscritos por produtoras, estúdios, etc.' %
                                  (instance.agencia, form.cleaned_data['regional']))
-
+                form.instance.status = 'A'
+        form.save()
         return super(EmpresaAdmin, self).save_formset(request, form, formset, change)
 
 
