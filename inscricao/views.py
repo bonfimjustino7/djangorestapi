@@ -329,10 +329,9 @@ def salvar_material(request):
                     material.arquivo = file
                     material.url = url
                     material.save()
-                    messages.success(request, 'Material alterado com sucesso.')
             else:
                 material = Material.objects.create(inscricao=inscricao_instance, tipo=tipo, arquivo=file, url=url)
-                messages.success(request, 'Material criado com sucesso.')
+
         else:
             return HttpResponse(json.dumps({"mensagens": mensagens.append({'tipo': 'error', 'msg': 'Insira ao menos o tipo do material e um url ou link'})}))
 
