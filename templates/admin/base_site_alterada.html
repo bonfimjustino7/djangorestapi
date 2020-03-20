@@ -1,31 +1,10 @@
 {% extends "admin/base.html" %}
-{% load cms_tags %}
-
-{% block title %}{{ title }} | {% site_name %}{% endblock %}
-
-{% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">{% site_name %}</a></h1>
-{% endblock %}
-
+{% load admin_tools_menu_tags %}
 {% block extrastyle %}
-{{ block.super }}
-<style type="text/css">
-    label { text-align: left; margin-right: 10px}
-
-    .aligned label {
-        width: 100px !important;
-    }
-    .form-row { border-bottom: 0px !important; }
-
-    .vForeignKeyRawIdAdminField, .inline-group .tabular td.original p {
-        display: none;
-    }
-
-    .inline-group .tabular tr.has_original td {
-        padding-top: 1em !important;
-    }
-    .related-widget-wrapper-link {
-        display: none !important;
-    }
-</style>
+    {{ block.super }}
+    {% if user.is_active and user.is_staff and not is_popup %}{% admin_tools_render_menu_css %}{% endif %}
+{% endblock %}
+{% block nav-global %}
+    {{ block.super }}
+    {% if user.is_active and user.is_staff and not is_popup %}{% admin_tools_render_menu %}{% endif %}
 {% endblock %}

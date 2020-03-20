@@ -1,7 +1,6 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/base_site_alterada.html" %}
 {% load i18n admin_urls static admin_modify %}
 {% block title %}Meus dados{% endblock %}
-
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
 {{ media }}
@@ -12,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "inscricao/css/finalizar_inscricao.css" %}" />
 {% endblock %}
+
 {% block content %}
     <h1>Meus Dados</h1>
     <div id="content-main">
@@ -44,7 +44,9 @@
                         </ul>
                     {% endif %}
                 </div>
+                 <a href="{% url 'admin:password_change' %}" class="button" style="margin-top: 10px; display: inline-block">Trocar Senha</a>
             </fieldset>
+
             <fieldset class="aligned module">
                 <h2>Empresas Associadas</h2>
                     <table>

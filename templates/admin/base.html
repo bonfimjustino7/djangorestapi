@@ -55,7 +55,6 @@
             <img class="logo" src="{% static 'base/img/logo.png' %}" alt="" style="padding-top:5px" height="70" width="120">
         </div>
         {% block usertools %}
-        {% if has_permission %}
         <div id="user-tools" style="padding-top: 12px;"> <!-- editando aqui -->
             {% block welcome-msg %}
                 {% trans 'Welcome,' %}
@@ -71,13 +70,12 @@
                         <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
                     {% endif %}
                 {% endif %}
-                {% if user.has_usable_password %}
-                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
-                {% endif %}
+<!--                {% if user.has_usable_password %}-->
+<!--                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /-->
+<!--                {% endif %}-->
                 <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
             {% endblock %}
         </div>
-        {% endif %}
         {% endblock %}
         {% block nav-global %}{{ block.super }}{% endblock %}
     </div>
@@ -104,7 +102,7 @@
 
         {% block pretitle %}{% endblock %}
         {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-        {% block content %}    
+        {% block content %}
         {% block object-tools %}{% endblock %}
         {{ content }}
         {% endblock %}
@@ -144,7 +142,7 @@
         }
 
         $('#id_cep').blur(pesquisaCep);
-        
+
 
 
        var behavior = function (val) {
