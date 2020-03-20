@@ -240,8 +240,9 @@ function carregar(cont){
                 //console.log($(this).val())
                  habilarCampos($(this).val(), campo, classe)
             })
+
             $('.mostrar').click(function () {
-               $('.dialog').css('display', 'block');
+               $('.salvar').css('display', 'block');
             });
 
             // $(`<select name="${contarSelects()}"></select>'`).appendTo('.dialog .modal-body .column1')

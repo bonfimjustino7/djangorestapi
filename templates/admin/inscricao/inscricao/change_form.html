@@ -3,7 +3,7 @@
 {% load i18n admin_urls static admin_modify %}
 
 {% block content %}
-<div class="dialog">
+<div class="dialog salvar">
     <form action="/salvar_material" method="POST" id="material_form" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" value="{{ original.pk }}" name="inscricao" id="id_inscricao">
@@ -40,6 +40,25 @@
           </div>
       </div>
         </form>
+</div>
+
+<div class="dialog delete">
+      <div class="modal-content ">
+          <div class="modal-header">
+            <span style="padding-top: 8px; display: inline-block; font-size: 18px">Tem Certeza?</span>
+          </div>
+          <div class="modal-body">
+            <div class="column1">
+                <label class="required">Selecione o tipo de material:</label>
+                <select name="tipo" id="id_tipo" required></select>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="button default" disabled id="salvar" style="font-size: 14px">Inserir na Inscrição</button>
+              <input type="button" class="button default" id="visualizar" name="visualizar" value="Visualizar" />
+              <a class="close button default" id="cancelar" href="#" style="margin-right: 20px">Cancelar</a>
+          </div>
+      </div>
 </div>
 {% block extrastyle %}
     {{ block.super }}
